@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          This is the beginning of our Captsone project!
+          Welcome to Noggn.
         </p>
       </header>
     </div>
