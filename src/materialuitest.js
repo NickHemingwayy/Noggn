@@ -3,6 +3,8 @@ import {Link } from "react-router-dom";
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,8 +19,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import HomeIcon from '@material-ui/icons/Home';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import GroupIcon from '@material-ui/icons/Group';
+import PersonIcon from '@material-ui/icons/Person';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const drawerWidth = 240;
 
@@ -119,7 +124,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            Noggn
           </Typography>
         </Toolbar>
       </AppBar>
@@ -143,18 +148,18 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Dashboard', 'New Project', 'Teams'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon>{index % 2 === 0 ? <HomeIcon /> : <AddBoxIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {['Profile', 'Settings'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon>{index % 2 === 0 ? <PersonIcon /> : <SettingsIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
@@ -162,9 +167,9 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Link to="/"><button>
+        <Link to="/"><Button variant="contained" color="primary">
           back
-        </button>
+        </Button>
         </Link>
       </main>
     </div>
