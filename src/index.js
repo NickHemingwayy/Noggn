@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <BrowserRouter>
+  {/*Switches between paths for Links! I think you can add as many as you want */}
   <Switch>
     <Route exact path="/" component={App} />
     <Route path ="/materialuitest" component={Test} />

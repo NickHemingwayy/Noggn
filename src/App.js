@@ -1,8 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Router from 'next/router';
-import {Link } from "react-router-dom";
+import {Link } from "react-router-dom"; //Import Links
 
 
 
@@ -16,6 +15,7 @@ function App() {
           Welcome to Noggn.
           
         </p>
+        {/* Link Component */}
         <Link to="/materialuitest"><button>
           Go to page 2
         </button>
