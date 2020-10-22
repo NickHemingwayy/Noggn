@@ -9,6 +9,7 @@ class Home extends React.Component{
         fire.auth().signOut();
     }
 
+  
     render(){
         return(
             <div className="App">

@@ -9,6 +9,7 @@ class Login extends React.Component{
 
         fire.auth().signInWithEmailAndPassword(email,password).then((u)=> {
             console.log("Successfully Logged In");
+        
         })
         .catch((err) => {
             console.log("Error: " + err.toString());
