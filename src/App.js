@@ -1,18 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import fire from './config/fire';
+import Home from './Home.js';
+import Login from './Login.js';
 
-function App() {
+class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      user: null,
+    }
+
+    this.authListener = this.authListener.bind(this);
+
+  }
+
+  componentDidMount() {
+    this.authListener();
+  }
+
+  authListener() {
+    fire.auth().onAuthStateChanged((user) => {
+      if(user){
+        this.setState({user});
+      }else{
+        this.setState({user:null});
+      }
+    })
+  }
+render(){
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Welcome to Noggn.
-        </p>
-      </header>
+        {this.state.user ? (<Home/>):(<Login/>)}
     </div>
   );
+}
 }
 
 export default App;

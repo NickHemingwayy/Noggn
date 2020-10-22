@@ -3,9 +3,14 @@
 }
 
 .App-logo {
-    height: 15vmin;
-    pointer-events: none;
+    height: 18vmin;
+    transition:transform .3s ease-out;
 }
+
+
+.App-logo:hover{
+    transform: scale(1.2);
+  }
 
 
 .App-header {
@@ -15,7 +20,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
+    font-size: calc(20px + 2vmin);
     color: #282c34;
 }
 
