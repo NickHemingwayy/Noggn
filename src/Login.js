@@ -1,8 +1,9 @@
 import React from 'react';
 import fire from './config/fire';
-import { makeStyles } from '@material-ui/core/styles';
+//import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
+//import logo from './logo.svg';
+import './App.css';
 
 class Login extends React.Component{
 
@@ -34,7 +35,7 @@ class Login extends React.Component{
     
     render(){
         return(
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center'}} className = 'Login'>
             <div>
               <div>Email</div>
               <TextField id="email" label="Email" variant="outlined" />
@@ -45,8 +46,8 @@ class Login extends React.Component{
               <TextField id="password" label="Password" variant="outlined" />
              {/* <input id="password" placeholder="Enter Password.." type="text"/> */}
             </div>
-            <button style={{margin: '10px'}} onClick={this.login}>Login</button>
-            <button style={{margin: '10px'}} onClick={this.signUp}>Sign Up</button>
+            <button style={{margin: '10px'}} onClick={this.login} className='LoginBtn'>Login</button>
+            <button style={{margin: '10px'}} onClick={this.signUp} className='SignUpBtn'>Sign Up</button>
           </div>
         )
     }

@@ -1,5 +1,15 @@
 .App {
+    min-height: 100vh;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+    background-image: url("Login-BG.png");
+    background-size:     cover;             
+    background-repeat:   no-repeat;
+    background-position: center center;
 }
 
 .App-logo {
@@ -14,7 +24,6 @@
 
 
 .App-header {
-    background-color: white;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -28,3 +37,29 @@
     color: #61dafb;
 }
 
+.Login{
+    font-size: 20px;
+}
+.LoginBtn{
+    border: none;
+    padding: 10px 22px;
+    background-color: #2d2e4e;
+    color:white;
+    
+}
+.SignUpBtn{
+    border: none;
+    padding: 10px 22px;
+    background-color: #2d2e4e;
+    color:white;
+}
+.LoginBtn:hover{
+    transform: scale(1.2);
+}
+.SignUpBtn:hover{
+    transform: scale(1.2);
+}
+.login-logo{
+    transform:scale(2);
+    padding: 50px;
+}

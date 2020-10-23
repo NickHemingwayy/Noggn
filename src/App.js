@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import fire from './config/fire';
 import Home from './Home.js';
 import Login from './Login.js';
-//test
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -16,7 +15,6 @@ class App extends Component {
     this.authListener = this.authListener.bind(this);
 
   }
-
 
   componentDidMount() {
     this.authListener();
