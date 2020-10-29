@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import fire from './config/fire';
 import logo from './logo.svg';
 import './App.css';
 
-class Home extends React.Component{
+class Home extends Component{
 
     logout(){
         fire.auth().signOut();

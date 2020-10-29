@@ -3,6 +3,7 @@ import './App.css';
 import fire from './config/fire';
 import Home from './Home.js';
 import Login from './Login.js';
+import ChatApp from './chatApp.js';
 
 class App extends Component {
   constructor(props){
@@ -27,12 +28,12 @@ class App extends Component {
       }else{
         this.setState({user:null});
       }
-    })
+    });
   }
 render(){
   return (
     <div className="App">
-        {this.state.user ? (<Home/>):(<Login/>)}
+        {this.state.user ? (<ChatApp/>):(<Login/>)}
     </div>
   );
 }
