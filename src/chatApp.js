@@ -21,10 +21,10 @@ function ChatApp() {
 
   return (
     <div className="chatApp">
+      <button onClick = {Logout}>Logout</button>
       <header>
         <h1>Chat App💬</h1>
       </header>
-
       <section>
         {<ChatRoom />}
       </section>
@@ -34,7 +34,7 @@ function ChatApp() {
 }
 
 
-
+// responsible for the inputs/writes to DB and receiving/returning the message
 function ChatRoom() {
 
   const dummy = useRef();
@@ -81,7 +81,7 @@ function ChatRoom() {
   </>)
 }
 
-
+// Is used directly by the ChatRoom function to return the message and verify who sent it
 function ChatMessage(props) {
   const { text, uid, photoURL } = props.message;
 
@@ -93,8 +93,13 @@ function ChatMessage(props) {
       <p>{text}</p>
     </div>
   </>)
-
 }
+
+
+function Logout(){
+  auth.signOut();
+}
+
 
 export default ChatApp;
 
