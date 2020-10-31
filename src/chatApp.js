@@ -24,7 +24,7 @@ function ChatApp() {
     <div className="chatApp">
       <button onClick = {Logout}>Logout</button>
       <header>
-        <h1>Chat App💬 {user.uid}</h1>
+        <h1>Chat App💬 {GetName}</h1>
 
       </header>
       <section>
@@ -33,12 +33,6 @@ function ChatApp() {
 
     </div>
   );
-}
-
-function getName(){
-  const [user] = useAuthState(auth);
-  
-  return xxx;
 }
 
 // responsible for the inputs/writes to DB and receiving/returning the message
@@ -57,12 +51,16 @@ function ChatRoom() {
     e.preventDefault();
 
     const { uid, photoURL } = auth.currentUser;
+    
+    //TODO: Add name into message collection
+    const name = GetName;
 
     await messagesRef.add({
       text: formValue,
       createdAt: + new Date(),
       uid,
-      photoURL
+      photoURL,
+      //name: GetName
     })
 
     setFormValue('');
@@ -90,18 +88,30 @@ function ChatRoom() {
 
 // Is used directly by the ChatRoom function to return the message and verify who sent it
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL, name } = props.message;
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+  
 
   return (<>
     <div className={`message ${messageClass}`}>
+      {/* the name of the user that sent the message */}
+      <p>{uid}</p>
       <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
       <p>{text}</p>
     </div>
   </>)
 }
 
+//Gets the user's name that sent the message
+
+function GetName(){
+  const [user] = useAuthState(auth);
+  const nameRef = firestore.collection('Users');
+  const nameQuery = nameRef.where("uid", "==", user.uid);
+  const [name] = nameQuery.get();
+  return name;
+}
 
 function Logout(){
   auth.signOut();

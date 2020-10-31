@@ -27,16 +27,13 @@ class Login extends React.Component{
         
         fire.auth().createUserWithEmailAndPassword(email,password)
         .then((u)=> {
-          const user = fire.auth().currentUser;
-          var displayName = name;
-          const usernameRef = fire.firestore().collection('Users');
-          usernameRef.add ({
+          const user = fire.auth().currentUser; //get the current user 
+          var displayName = name; //create a variable based on input in form
+          const usernameRef = fire.firestore().collection('Users'); //create a record in users
+          usernameRef.add ({ //add the display name and user id to the collection document
                 name: displayName,
                 uid: user.uid
           })
-            //return user.updateProfile({
-            //    displayName: document.getElementById("displayName").value
-           // }) 
            
         })
         .catch((err) => {
@@ -52,7 +49,7 @@ class Login extends React.Component{
            
                 <div>
                 
-            <TextField id="displayName" label="Name" variant="outlined"/>
+            <TextField id="displayName" label="Full Name" variant="outlined"/>
               <div>Email</div>
               <TextField id="email" label="Email" variant="outlined" />
               {/*<input id="email" placeholder="Enter Email.." type="text"/> */}
