@@ -23,9 +23,21 @@ class Login extends React.Component{
     signUp(){
         const email = document.querySelector('#email').value;
         const password = document.querySelector('#password').value;
-
-        fire.auth().createUserWithEmailAndPassword(email,password).then((u)=> {
-            console.log("Successfully Signed Up");
+        const name = document.querySelector('#displayName').value;
+        
+        fire.auth().createUserWithEmailAndPassword(email,password)
+        .then((u)=> {
+          const user = fire.auth().currentUser;
+          var displayName = name;
+          const usernameRef = fire.firestore().collection('Users');
+          usernameRef.add ({
+                name: displayName,
+                uid: user.uid
+          })
+            //return user.updateProfile({
+            //    displayName: document.getElementById("displayName").value
+           // }) 
+           
         })
         .catch((err) => {
             console.log("Error: " + err.toString());
@@ -36,7 +48,11 @@ class Login extends React.Component{
     render(){
         return(
             <div style={{ textAlign: 'center'}} className = 'Login'>
-            <div>
+            
+           
+                <div>
+                
+            <TextField id="displayName" label="Name" variant="outlined"/>
               <div>Email</div>
               <TextField id="email" label="Email" variant="outlined" />
               {/*<input id="email" placeholder="Enter Email.." type="text"/> */}

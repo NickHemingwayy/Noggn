@@ -16,14 +16,16 @@ const auth = fire.auth();
 const analytics = fire.analytics();
 
 function ChatApp() {
-
+  
   const [user] = useAuthState(auth);
+  
 
   return (
     <div className="chatApp">
       <button onClick = {Logout}>Logout</button>
       <header>
-        <h1>Chat App💬</h1>
+        <h1>Chat App💬 {user.uid}</h1>
+
       </header>
       <section>
         {<ChatRoom />}
@@ -33,6 +35,11 @@ function ChatApp() {
   );
 }
 
+function getName(){
+  const [user] = useAuthState(auth);
+  
+  return xxx;
+}
 
 // responsible for the inputs/writes to DB and receiving/returning the message
 function ChatRoom() {
@@ -42,7 +49,7 @@ function ChatRoom() {
   const query = messagesRef.orderBy('createdAt').limit(25);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
-
+  
   const [formValue, setFormValue] = useState('');
 
 
