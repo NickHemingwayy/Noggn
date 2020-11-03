@@ -1,5 +1,6 @@
 import React from 'react';
 import fire from './config/fire';
+import firebase from 'firebase/app';
 
 //MATERIAL UI
 import TextField from '@material-ui/core/TextField';
@@ -11,6 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import './App.css';
 import './login.css';
 import mainLogo from './Logo Color.png';
+import googleImage from './googlesignin.png';
 
     
 class Login extends React.Component{
@@ -51,6 +53,18 @@ class Login extends React.Component{
 
     }
 
+    //SIGN IN WITH GOOGLE AUTHENTICATION
+    signInGoogle(){        
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
+        fire.auth().signInWithPopup(provider).then((u) =>{
+            console.log(u.user)
+        }).catch((err=>{
+            console.log("Error: " + err.toString());
+        }))
+    }
+
     
     render(){
         return(
@@ -74,6 +88,10 @@ class Login extends React.Component{
             </div>
             <Button variant="contained" color="primary" onClick={this.login} style={{marginRight: '10px', marginTop: '10px'}}>Login</Button>
             <Button variant="contained" color="primary" onClick={this.signUp} style={{marginTop: '10px'}}>Sign Up for Free</Button>
+            <div className="GoogleLogin">
+            <h4>Or Sign in with</h4>
+            </div>
+            <button onClick={this.signInGoogle}><img src={googleImage} width='25px'></img></button>
 
            {/* <button style={{margin: '10px'}} onClick={this.login} className='LoginBtn'>Login</button>
             <button style={{margin: '10px'}} onClick={this.signUp} className='SignUpBtn'>Sign Up</button> */}
