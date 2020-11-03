@@ -33,14 +33,15 @@ class Login extends React.Component{
         const password = document.querySelector('#password').value;
         const name = document.querySelector('#displayName').value;
         
+        //Record Names in the User Collection along with UserID
         fire.auth().createUserWithEmailAndPassword(email,password)
         .then((u)=> {
-          const user = fire.auth().currentUser; //get the current user 
-          var displayName = name; //create a variable based on input in form
-          const usernameRef = fire.firestore().collection('Users'); //create a record in users
-          usernameRef.add ({ //add the display name and user id to the collection document
+          const user = fire.auth().currentUser; 
+          var displayName = name; 
+          const usernameRef = fire.firestore().collection('Users');
+          usernameRef.add ({ 
                 name: displayName,
-                uid: user.uid
+                uid: user.uid //We want to include the UID along with the Name so it can be used later
           })
            
         })
@@ -61,16 +62,15 @@ class Login extends React.Component{
                 <h4>Create an account to start collaborating with your teams in real time. Or Sign in.</h4>
                 <div className ='Field'>
             
-            <TextField id="displayName" label="Full Name" variant="outlined" fullwidth />
+            <TextField id="displayName" label="Full Name" variant="outlined" style={{width: '80%'}} />
               <div className ='Field'>
-              <TextField id="email" label="Email" variant="outlined" fullwidth required/>
+              <TextField id="email" label="Email" variant="outlined" style={{width: '80%'}} required/>
               </div>
             </div>
             <div className = 'Field'>
               
-              <TextField id="password" label="Password" variant="outlined" type="password" fullwidth required />
+              <TextField id="password" label="Password" variant="outlined" type="password" style={{width: '80%'}} required />
             
-              <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
             </div>
             <Button variant="contained" color="primary" onClick={this.login} style={{marginRight: '10px', marginTop: '10px'}}>Login</Button>
             <Button variant="contained" color="primary" onClick={this.signUp} style={{marginTop: '10px'}}>Sign Up for Free</Button>
