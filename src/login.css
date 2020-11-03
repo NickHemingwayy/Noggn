@@ -1,0 +1,26 @@
+.Form {
+    text-align: left;
+    color: #2D2E4E;
+
+
+}
+.Field{
+   margin-top: 10px;
+   margin-right: 10px;
+}
+
+.FormBox{
+    margin: 10%;
+    display: flex;
+    justify-content: left;
+    background-color: white;
+    align-items: left;
+    padding:5%;
+    width: 40%;
+    border-radius: 3%;
+
+}
+
+.ButtonBox{
+    margin-right: 20px;
+}

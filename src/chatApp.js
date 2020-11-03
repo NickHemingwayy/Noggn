@@ -24,7 +24,7 @@ function ChatApp() {
     <div className="chatApp">
       <button onClick = {Logout}>Logout</button>
       <header>
-        <h1>Chat App💬 {GetName}</h1>
+        <h1>Chat App💬 {user.email}</h1>
 
       </header>
       <section>
@@ -51,9 +51,9 @@ function ChatRoom() {
     e.preventDefault();
 
     const { uid, photoURL } = auth.currentUser;
-    
+
     //TODO: Add name into message collection
-    const name = GetName;
+   // const name = GetName;
 
     await messagesRef.add({
       text: formValue,
@@ -105,13 +105,14 @@ function ChatMessage(props) {
 
 //Gets the user's name that sent the message
 
-function GetName(){
+/*function GetName(uid){
   const [user] = useAuthState(auth);
   const nameRef = firestore.collection('Users');
-  const nameQuery = nameRef.where("uid", "==", user.uid);
-  const [name] = nameQuery.get();
-  return name;
-}
+  const nameQuery = nameRef.where("uid", "==", uid);
+  //const [name] = nameQuery.get();
+  nameRef.useCollectionData(nameQuery)
+  return nameQuery['name'];
+} */
 
 function Logout(){
   auth.signOut();

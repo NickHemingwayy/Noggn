@@ -1,10 +1,18 @@
 import React from 'react';
 import fire from './config/fire';
-//import { makeStyles } from '@material-ui/core/styles';
+
+//MATERIAL UI
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+
+
 //import logo from './logo.svg';
 import './App.css';
+import './login.css';
+import mainLogo from './Logo Color.png';
 
+    
 class Login extends React.Component{
 
     login(){
@@ -41,26 +49,35 @@ class Login extends React.Component{
         })
 
     }
+
     
     render(){
         return(
-            <div style={{ textAlign: 'center'}} className = 'Login'>
+            <div className ='FormBox'>
+            <div className = 'Form'>
+        
+                <img src ={mainLogo} />
+                <h1>Welcome to Noggn.</h1>
+                <h4>Create an account to start collaborating with your teams in real time. Or Sign in.</h4>
+                <div className ='Field'>
             
-           
-                <div>
-                
-            <TextField id="displayName" label="Full Name" variant="outlined"/>
-              <div>Email</div>
-              <TextField id="email" label="Email" variant="outlined" />
-              {/*<input id="email" placeholder="Enter Email.." type="text"/> */}
+            <TextField id="displayName" label="Full Name" variant="outlined" fullwidth />
+              <div className ='Field'>
+              <TextField id="email" label="Email" variant="outlined" fullwidth required/>
+              </div>
             </div>
-            <div>
-              <div>Password</div>
-              <TextField id="password" label="Password" variant="outlined" />
-             {/* <input id="password" placeholder="Enter Password.." type="text"/> */}
+            <div className = 'Field'>
+              
+              <TextField id="password" label="Password" variant="outlined" type="password" fullwidth required />
+            
+              <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
             </div>
-            <button style={{margin: '10px'}} onClick={this.login} className='LoginBtn'>Login</button>
-            <button style={{margin: '10px'}} onClick={this.signUp} className='SignUpBtn'>Sign Up</button>
+            <Button variant="contained" color="primary" onClick={this.login} style={{marginRight: '10px', marginTop: '10px'}}>Login</Button>
+            <Button variant="contained" color="primary" onClick={this.signUp} style={{marginTop: '10px'}}>Sign Up for Free</Button>
+
+           {/* <button style={{margin: '10px'}} onClick={this.login} className='LoginBtn'>Login</button>
+            <button style={{margin: '10px'}} onClick={this.signUp} className='SignUpBtn'>Sign Up</button> */}
+          </div>
           </div>
         )
     }
