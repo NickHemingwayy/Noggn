@@ -3,7 +3,7 @@ import './App.css';
 import fire from './config/fire';
 import Home from './Home.js';
 import Login from './Login.js';
-import ChatApp from './chatApp.js';
+import RightNav from './chatApp.js';
 
 class App extends Component {
   constructor(props){
@@ -33,7 +33,7 @@ class App extends Component {
 render(){
   return (
     <div className="App">
-        {this.state.user ? (<ChatApp/>):(<Login/>)}
+        {this.state.user ? (<RightNav/>):(<Login/>)}
     </div>
   );
 }
