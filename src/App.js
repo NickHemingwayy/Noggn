@@ -32,7 +32,7 @@ class App extends Component {
   }
 render(){
   return (
-    <div className="App">
+    <div> {/*can use className ='App' here*/}
         {this.state.user ? (<RightNav/>):(<Login/>)}
     </div>
   );

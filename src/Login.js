@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 
 //import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 import './login.css';
 import mainLogo from './Logo Color.png';
 import googleImage from './googlesignin.png';
@@ -70,7 +70,7 @@ class Login extends React.Component{
     
     render(){
         return(
-            <div className = 'Image'>
+            <div className ='Image'>
             <div className ='FormBox'>
             <div className = 'Form'>
         
@@ -101,6 +101,7 @@ class Login extends React.Component{
           </div>
           </div>
           </div>
+          
         )
     }
 }

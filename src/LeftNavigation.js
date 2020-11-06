@@ -26,14 +26,22 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+
+import HomeIcon from '@material-ui/icons/Home';
+import GroupIcon from '@material-ui/icons/Group';
+import SettingsIcon from '@material-ui/icons/Settings';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
 
 import icon from './Icon.png';
+import { Typography } from '@material-ui/core';
+import LeftNav from './LeftNavigation.css';
     
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+    
   root: {
     display: 'flex',
   },
@@ -83,10 +91,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   toolbar: {
+    
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
+    color: '#2D2E4E',
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
@@ -94,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  ListItemIcon:{
+    color: '#2D2E4E',
+  }
 }));
 
 export default function MiniDrawer() {
@@ -110,6 +123,7 @@ export default function MiniDrawer() {
   };
 
   return (
+      <div className="background">
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
@@ -153,18 +167,18 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Dashboard', 'Teams'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon>{index % 2 === 0 ? <HomeIcon /> : <GroupIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {['Settings', 'Profile'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon>{index % 2 === 0 ? <SettingsIcon /> : <AccountCircleIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
@@ -172,10 +186,9 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        
-
 
       </main>
+    </div>
     </div>
   );
 }
