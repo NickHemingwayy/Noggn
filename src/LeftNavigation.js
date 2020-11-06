@@ -1,14 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import fire from './config/fire.js';
-import TextField from '@material-ui/core/TextField';
+
 import './chatApp.css';
 
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
-
-import {useAuthState} from 'react-firebase-hooks/auth';
-import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -25,8 +21,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-
 import HomeIcon from '@material-ui/icons/Home';
 import GroupIcon from '@material-ui/icons/Group';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -34,7 +28,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 import icon from './Icon.png';
-import { Typography } from '@material-ui/core';
+
 import LeftNav from './LeftNavigation.css';
     
 
@@ -109,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MiniDrawer() {
+export default function LeftNavigation() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -165,7 +159,7 @@ export default function MiniDrawer() {
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
-        <Divider />
+        
         <List>
           {['Dashboard', 'Teams'].map((text, index) => (
             <ListItem button key={text}>
@@ -181,12 +175,13 @@ export default function MiniDrawer() {
               <ListItemIcon>{index % 2 === 0 ? <SettingsIcon /> : <AccountCircleIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
+            
           ))}
         </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
+            {/*Diagrams will go here */}
       </main>
     </div>
     </div>
