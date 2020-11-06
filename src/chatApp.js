@@ -10,6 +10,7 @@ import 'firebase/analytics';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
+import MiniDrawer from './LeftNavigation.js';
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -37,10 +38,15 @@ function RightNav(){
   }
   
   return(
+    <div>
+      <MiniDrawer/>
     <div style = {navStyle} className="rightNav">
+
       <button onClick = {() => setState(!toggle)} className="toggle">{toggleInd}</button>
       {toggle ? <ChatApp/> : null}
     </div>
+    </div>
+    
   )
 }
 

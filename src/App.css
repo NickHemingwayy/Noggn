@@ -6,7 +6,8 @@
     align-items: center;
     height: 100%;
     justify-content: center;
-    background-image: url("Login-BG.png");
+    /*background-image: url("Login-BG.png");*/
+    background-color: #F1F2F8;
     background-size:     cover;             
     background-repeat:   no-repeat;
     background-position: center center;

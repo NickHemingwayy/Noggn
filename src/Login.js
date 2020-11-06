@@ -70,6 +70,7 @@ class Login extends React.Component{
     
     render(){
         return(
+            <div className = 'Image'>
             <div className ='FormBox'>
             <div className = 'Form'>
         
@@ -97,6 +98,7 @@ class Login extends React.Component{
 
            {/* <button style={{margin: '10px'}} onClick={this.login} className='LoginBtn'>Login</button>
             <button style={{margin: '10px'}} onClick={this.signUp} className='SignUpBtn'>Sign Up</button> */}
+          </div>
           </div>
           </div>
         )

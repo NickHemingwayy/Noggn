@@ -1,5 +1,8 @@
 /* DESKTOP
 --------------*/
+.Image {
+  background-image: url("Login-BG.png");
+}
 
 .Form {
     text-align: left;
