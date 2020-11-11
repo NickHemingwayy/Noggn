@@ -13,6 +13,7 @@ import {useCollectionData} from 'react-firebase-hooks/firestore';
 import LeftNav from './LeftNavigation.js';
 import SendIcon from '@material-ui/icons/Send';
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -179,7 +180,9 @@ function ChatMessage(props) {
   return (<>
     <div className={`message ${messageClass}`}>
       {/* the name of the user that sent the message */}
+      <Tooltip title={user}>
       <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
+      </Tooltip>
       {/*<img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/> */}
       <p>{text}</p>
     </div>
