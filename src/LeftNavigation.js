@@ -170,7 +170,7 @@ export default function LeftNavigation() {
         </List>
         <Divider />
         <List>
-          {['Settings', 'Profile'].map((text, index) => (
+          {['Logout','Settings', 'Profile'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <SettingsIcon /> : <AccountCircleIcon />}</ListItemIcon>
               <ListItemText primary={text} />

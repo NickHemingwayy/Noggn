@@ -68,6 +68,6 @@
 
   @media only screen and (max-width: 1200px) {
     [class="FormBox"] {
-      width: 90%;
+      width: 80%;
     }
   }

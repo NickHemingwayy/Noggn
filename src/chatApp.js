@@ -11,10 +11,14 @@ import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 import LeftNav from './LeftNavigation.js';
+import SendIcon from '@material-ui/icons/Send';
+import Avatar from '@material-ui/core/Avatar';
 
 const firestore = fire.firestore();
 const auth = fire.auth();
 const analytics = fire.analytics();
+
+
 
 //
 function RightNav(){
@@ -60,15 +64,16 @@ function ChatApp() {
 
 
   return (
-
-    <div className="chatApp">
-      <header>
+    <div>
+    <div className ="headerSection">
+      <h1>this is where the timer will go</h1>
         <button onClick = {Logout} className="logoutBtn">Logout</button>
-      </header>
-      <section>
+      </div>
+      <div className="chatApp">
+      <div className="chatAppSection">
         {<ChatRoom />}
-      </section>
-      
+      </div>
+    </div>
     </div>
   );
 }
@@ -142,12 +147,23 @@ function ChatRoom() {
 
     </main>
 
-    <form onSubmit={sendMessage}>
-
-      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="New Message..." />
+    <form onSubmit={sendMessage} >
     
-
-      <button type="submit" disabled={!formValue} className="submitBtn">✉</button>
+    <TextField
+          id="outlined-multiline-flexible"
+          label="Type Something"
+          multiline
+          rowsMax={3}
+          value={formValue}
+          onChange={(e) => setFormValue(e.target.value)}
+          variant="outlined"
+          style={{width: "80%"}}
+          
+        />
+        
+     {/* <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="New Message..." /> */}
+    
+      <button type="submit" disabled={!formValue} className="submitBtn"><SendIcon style={{color:'#5855FC', fontSize: '30px'}}/></button>
 
     </form>
   </>)
@@ -163,7 +179,8 @@ function ChatMessage(props) {
   return (<>
     <div className={`message ${messageClass}`}>
       {/* the name of the user that sent the message */}
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
+      <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
+      {/*<img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/> */}
       <p>{text}</p>
     </div>
   </>)
