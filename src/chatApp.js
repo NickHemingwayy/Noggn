@@ -68,7 +68,9 @@ function ChatApp() {
     <div>
     <div className ="headerSection">
       <h1>this is where the timer will go</h1>
+      
         <button onClick = {Logout} className="logoutBtn">Logout</button>
+        <hr></hr>
       </div>
       <div className="chatApp">
       <div className="chatAppSection">
@@ -172,7 +174,7 @@ function ChatRoom() {
 
 // Is used directly by the ChatRoom function to return the message and verify who sent it
 function ChatMessage(props) {
-  const { text, uid, photoURL, user } = props.message;
+  const { text, uid, photoURL, user, createdAt } = props.message;
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
@@ -183,8 +185,9 @@ function ChatMessage(props) {
       <Tooltip title={user}>
       <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
       </Tooltip>
-      {/*<img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/> */}
+      
       <p>{text}</p>
+      {/* TODO: Convert CreatedAt Unix timestamp and display nex to message*/}
     </div>
   </>)
 }
