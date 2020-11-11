@@ -156,7 +156,7 @@ function ChatRoom() {
           id="outlined-multiline-flexible"
           label="Type Something"
           multiline
-          rowsMax={3}
+          rowsMax={2}
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           variant="outlined"
