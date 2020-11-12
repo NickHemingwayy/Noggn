@@ -95,7 +95,7 @@ class Login extends React.Component{
                 <h4>Create an account to start collaborating with your teams in real time. Or Sign in.</h4>
                 <div className ='Field'>
             
-            <TextField id="displayName" label="Full Name" variant="outlined" style={{width: '80%'}} className={ classes.input}/>
+            <TextField id="displayName" label="Full Name" variant="outlined" style={{width: '80%'}} className={ classes.input} color="#2D2E4E"/>
               <div className ='Field'>
               <TextField id="email" label="Email" variant="outlined" style={{width: '80%'}} className={classes.input} required/>
               

@@ -63,6 +63,10 @@
     position: absolute;
     background-color: white;
   }
+
+  #messagesDiv{
+    overflow-y: auto;
+  }
   
   main {
     padding: 5%;

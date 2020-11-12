@@ -65,7 +65,7 @@ function RightNav(){
 function ChatApp() {
   
   const [user] = useAuthState(auth);
-
+  
 
   return (
     <div>
@@ -102,6 +102,8 @@ function ChatRoom() {
   const currUser = fire.auth().currentUser; 
 
   const userRef = fire.firestore().collection("Users");
+
+  
 
   function getUser(){
     userRef.onSnapshot((querySnapshot) =>{
@@ -145,14 +147,18 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
+  
+
   return (<>
-    <main>
+  { <script>var msgDiv = document.getElementById("messageDiv");
+  msgDiv.scrollTop = msgDiv.scrollHeight;</script>}
+      <main id="messageDiv">
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
 
   <span ref={dummy}></span>
 
     </main>
-
+    
     <form onSubmit={sendMessage} >
     
     <TextField
