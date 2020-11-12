@@ -178,16 +178,23 @@ function ChatMessage(props) {
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
+  //Convert Unix time stamp to time
+  var timeStamp = createdAt;
+  var date = new Date(timeStamp);
+  var utcString = date.toUTCString();
+  var time = utcString.slice(-11, -7);
+
 
   return (<>
-    <div className={`message ${messageClass}`}>
-      {/* the name of the user that sent the message */}
+    <div className={`message ${messageClass}`}>      
       <Tooltip title={user}>
       <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
-      </Tooltip>
       
-      <p>{text}</p>
-      {/* TODO: Convert CreatedAt Unix timestamp and display nex to message*/}
+      {/*Tooltip acts as a hover that displays the name */}
+      </Tooltip>
+      <p className="textP">{text}</p>
+      <h6 className="timeStamp">{time}</h6>
+
     </div>
   </>)
 }
