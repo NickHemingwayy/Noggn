@@ -60,7 +60,7 @@ class Login extends React.Component{
         })
         .catch((err) => {
             console.log("Error: " + err.toString());
-            document.getElementById("signup-error").innerHTML = "Your password must be more than 6 characters Please try again."
+            document.getElementById("signup-error").innerHTML = "Your password must be more than 6 characters. Please try again."
         })
 
     }

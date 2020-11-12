@@ -14,6 +14,8 @@ import LeftNav from './LeftNavigation.js';
 import SendIcon from '@material-ui/icons/Send';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -25,17 +27,17 @@ const analytics = fire.analytics();
 function RightNav(){
 
   let navWidth = '';
-  let toggleInd = '<'
+  let toggleInd = <ChevronLeftIcon style={{fontSize: '30px'}}/>
   const [toggle, setState] = useState(true);
   console.log(toggle);
 
 
   if(toggle == false){
     navWidth = '5%'
-    toggleInd = '<'
+    toggleInd = <ChevronLeftIcon/>
   }else{
     navWidth = '25%'
-    toggleInd = '>'
+    toggleInd = <ChevronRightIcon/>
   }
 
   let navStyle = {
@@ -47,9 +49,10 @@ function RightNav(){
 
       <LeftNav/> {/*This is where the left Navigation Comes in*/}
     <div style = {navStyle} className="rightNav">
-
+      <div>
       <button onClick = {() => setState(!toggle)} className="toggle">{toggleInd}</button>
       {toggle ? <ChatApp/> : null}
+      </div>
     </div>
     </div>
     
