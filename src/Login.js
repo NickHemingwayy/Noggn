@@ -6,6 +6,8 @@ import firebase from 'firebase/app';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
+import { withStyles } from "@material-ui/core/styles";
+//import Alert from '@material-ui/lab/Alert';
 
 
 //import logo from './logo.svg';
@@ -14,7 +16,12 @@ import './login.css';
 import mainLogo from './Logo Color.png';
 import googleImage from './googlesignin.png';
 
-    
+const styles = {
+  input: {
+    color: "#2D2E4E",
+  }
+};
+
 class Login extends React.Component{
 
     login(){
@@ -27,6 +34,8 @@ class Login extends React.Component{
         })
         .catch((err) => {
             console.log("Error: " + err.toString());
+            document.getElementById("login-error").innerHTML = "We couldn't find an account that matched. Please try again."
+            
         })
     }
 
@@ -51,6 +60,7 @@ class Login extends React.Component{
         })
         .catch((err) => {
             console.log("Error: " + err.toString());
+            document.getElementById("signup-error").innerHTML = "Your password must be more than 6 characters Please try again."
         })
 
     }
@@ -63,14 +73,20 @@ class Login extends React.Component{
         fire.auth().signInWithPopup(provider).then((u) =>{
             console.log(u.user)
         }).catch((err=>{
+            alert("We're sorry, something went wrong. Please try again.")
             console.log("Error: " + err.toString());
+            
         }))
     }
 
     
     render(){
+        const { classes } = this.props;
         return(
+            <div>
+            
             <div className ='Image'>
+            
             <div className ='FormBox'>
             <div className = 'Form'>
         
@@ -79,25 +95,26 @@ class Login extends React.Component{
                 <h4>Create an account to start collaborating with your teams in real time. Or Sign in.</h4>
                 <div className ='Field'>
             
-            <TextField id="displayName" label="Full Name" variant="outlined" style={{width: '80%'}} />
+            <TextField id="displayName" label="Full Name" variant="outlined" style={{width: '80%'}} className={ classes.input}/>
               <div className ='Field'>
-              <TextField id="email" label="Email" variant="outlined" style={{width: '80%'}} required/>
+              <TextField id="email" label="Email" variant="outlined" style={{width: '80%'}} className={classes.input} required/>
+              
               </div>
             </div>
             <div className = 'Field'>
               
-              <TextField id="password" label="Password" variant="outlined" type="password" style={{width: '80%'}} required />
-            
+              <TextField id="password" label="Password" variant="outlined" type="password" style={{width: '80%'}} className= {classes.input} required />
+              <div id="login-error" className="errorMessage"></div>
+              <div id="signup-error" className="errorMessage"></div>
             </div>
+            
             <Button variant="contained" color="primary" onClick={this.login} style={{marginRight: '10px', marginTop: '10px'}}>Login</Button>
             <Button variant="contained" color="primary" onClick={this.signUp} style={{marginTop: '10px'}}>Sign Up for Free</Button>
             <div className="GoogleLogin">
             <h4>Or Sign in with</h4>
             </div>
             <button onClick={this.signInGoogle}><img src={googleImage} width='25px'></img></button>
-
-           {/* <button style={{margin: '10px'}} onClick={this.login} className='LoginBtn'>Login</button>
-            <button style={{margin: '10px'}} onClick={this.signUp} className='SignUpBtn'>Sign Up</button> */}
+          </div>
           </div>
           </div>
           </div>
@@ -106,4 +123,4 @@ class Login extends React.Component{
     }
 }
 
-export default Login;
+export default withStyles(styles)(Login);
