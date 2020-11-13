@@ -68,10 +68,20 @@ class Login extends React.Component{
     //SIGN IN WITH GOOGLE AUTHENTICATION
     signInGoogle(){        
         var provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope('profile');
-        provider.addScope('email');
+        //provider.addScope('profile');
+       // provider.addScope('email');
         fire.auth().signInWithPopup(provider).then((u) =>{
-            console.log(u.user)
+            //get the current user
+            const user = fire.auth().currentUser;
+            //add the google information to the users collection
+                const googleAccountRef = fire.firestore().collection('Users');
+                googleAccountRef.doc(user.uid).set ({ 
+                name: user.displayName,
+                uid: user.uid, 
+                photoURL: user.photoURL
+          })
+            
+            
         }).catch((err=>{
             alert("We're sorry, something went wrong. Please try again.")
             console.log("Error: " + err.toString());

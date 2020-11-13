@@ -30,6 +30,7 @@ function RightNav(){
   let toggleInd = <ChevronLeftIcon style={{fontSize: '30px'}}/>
   const [toggle, setState] = useState(true);
   console.log(toggle);
+  
 
 
   if(toggle == false){
@@ -66,7 +67,7 @@ function ChatApp() {
   
   const [user] = useAuthState(auth);
   
-  
+ 
 
   return (
     <div>
