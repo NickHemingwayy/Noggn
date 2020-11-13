@@ -7,8 +7,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from "@material-ui/core/styles";
-//import Alert from '@material-ui/lab/Alert';
+import { ThemeProvider } from '@material-ui/styles';
 
+import theme from "./theme.js";
 
 //import logo from './logo.svg';
 //import './App.css';
@@ -16,11 +17,6 @@ import './login.css';
 import mainLogo from './Logo Color.png';
 import googleImage from './googlesignin.png';
 
-const styles = {
-  input: {
-    color: "#2D2E4E",
-  }
-};
 
 class Login extends React.Component{
 
@@ -91,8 +87,8 @@ class Login extends React.Component{
 
     
     render(){
-        const { classes } = this.props;
         return(
+            <ThemeProvider theme={theme}>
             <div>
             
             <div className ='Image'>
@@ -105,15 +101,15 @@ class Login extends React.Component{
                 <h4>Create an account to start collaborating with your teams in real time. Or Sign in.</h4>
                 <div className ='Field'>
             
-            <TextField id="displayName" label="Full Name" variant="outlined" style={{width: '80%'}} className={ classes.input} color="#2D2E4E"/>
+            <TextField id="displayName" label="Full Name" variant="outlined" style={{width: '80%'}} color="secondary"/>
               <div className ='Field'>
-              <TextField id="email" label="Email" variant="outlined" style={{width: '80%'}} className={classes.input} required/>
+              <TextField id="email" label="Email" variant="outlined" style={{width: '80%'}} color='secondary' required/>
               
               </div>
             </div>
             <div className = 'Field'>
               
-              <TextField id="password" label="Password" variant="outlined" type="password" style={{width: '80%'}} className= {classes.input} required />
+              <TextField id="password" label="Password" variant="outlined" type="password" style={{width: '80%'}} color='secondary' required />
               <div id="login-error" className="errorMessage"></div>
               <div id="signup-error" className="errorMessage"></div>
             </div>
@@ -128,9 +124,10 @@ class Login extends React.Component{
           </div>
           </div>
           </div>
+          </ThemeProvider>
           
         )
     }
 }
 
-export default withStyles(styles)(Login);
+export default Login;

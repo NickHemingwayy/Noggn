@@ -16,6 +16,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Button from '@material-ui/core/Button';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from "./theme.js";
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -46,6 +49,7 @@ function RightNav(){
   }
   
   return(
+    <ThemeProvider theme={theme}>
     <div>
 
       <LeftNav/> {/*This is where the left Navigation Comes in*/}
@@ -56,7 +60,7 @@ function RightNav(){
       </div>
     </div>
     </div>
-    
+    </ThemeProvider>
   )
 }
 
@@ -185,13 +189,14 @@ function ChatRoom() {
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           variant="outlined"
-          style={{width: "80%"}}
+          color='secondary'
+          style={{width: "70%"}}
           
         />
         
      {/* <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="New Message..." /> */}
-    
-      <button type="submit" disabled={!formValue} className="submitBtn"><SendIcon style={{color:'#5855FC', fontSize: '30px'}}/></button>
+      <Button variant="contained" color="primary"type="submit" disabled={!formValue} style={{marginLeft: "5%"}}>Send</Button>
+      
 
     </form>
   </>)
