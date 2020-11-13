@@ -66,9 +66,6 @@
 
   #messagesDiv{
     overflow-y: auto;
-  }
-  
-  main {
     padding: 5%;
     height:80%;
     margin-bottom: 5%;
@@ -77,6 +74,16 @@
     position: relative;
     flex-direction: column;
   }
+  
+  /*main {
+    padding: 5%;
+    height:80%;
+    margin-bottom: 5%;
+    overflow-y: auto;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+  }*/
   
   main::-webkit-scrollbar {
     width: 0.25rem;
@@ -135,7 +142,7 @@
     border-radius: 10px;
     position: relative;
     color: white;
-    text-align: center;
+    text-align: left;
   }
 
   .timeStamp {

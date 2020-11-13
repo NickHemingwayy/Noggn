@@ -66,6 +66,7 @@ function ChatApp() {
   
   const [user] = useAuthState(auth);
   
+  
 
   return (
     <div>
@@ -79,6 +80,7 @@ function ChatApp() {
       <div className="chatAppSection">
         {<ChatRoom />}
       </div>
+      
     </div>
     </div>
   );
@@ -147,17 +149,30 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
+  function setScroll(){
+    var msgDiv = document.getElementById("messagesDiv");
+    //console.log(msgDiv);
+    if(msgDiv !== null){
+      console.log(msgDiv);
+      console.log("Height = " + msgDiv.scrollHeight);
+      console.log("Scrolled : " + msgDiv.scrollTop);
+      msgDiv.scrollTop = msgDiv.scrollHeight;
+      console.log("Scrolled after: " + msgDiv.scrollTop);
+    }
+  }
   
 
   return (<>
-  { <script>var msgDiv = document.getElementById("messageDiv");
-  msgDiv.scrollTop = msgDiv.scrollHeight;</script>}
-      <main id="messageDiv">
+
+      
+      <div id="messagesDiv">
+     
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
 
-  <span ref={dummy}></span>
-
-    </main>
+    <span ref={dummy}></span>
+    {setScroll()}
+    </div>
+    
     
     <form onSubmit={sendMessage} >
     
