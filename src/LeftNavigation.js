@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Route} from "react-router-dom";
 
 import './chatApp.css';
 
@@ -31,6 +33,7 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 
 
 import icon from './Icon.png';
+import Profile from './profile.js';
 
 import LeftNav from './LeftNavigation.css';
     
@@ -124,6 +127,7 @@ export default function LeftNavigation() {
   };
 
   return (
+    <BrowserRouter>
       <div className="background">
     <div className={classes.root}>
       <CssBaseline />
@@ -145,7 +149,7 @@ export default function LeftNavigation() {
           >
             <MenuIcon />
           </IconButton>
-          <img src={icon} width='80px'></img>
+          <img src={icon} width='70px'></img>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -169,10 +173,13 @@ export default function LeftNavigation() {
         
         <List>
           {/* HOME */}
+          
+            <Route path="/profile" component={Profile} />
           <ListItem button className={classes.ListItem}>
             <ListItemIcon><HomeIcon color='primary'></HomeIcon></ListItemIcon>
             <ListItemText>Dashboard</ListItemText>
           </ListItem>
+         
           {/* TEAMS */}
           <ListItem button className={classes.ListItem}>
             <ListItemIcon><GroupIcon color='primary'></GroupIcon></ListItemIcon>
@@ -216,6 +223,7 @@ export default function LeftNavigation() {
       </main>
     </div>
     </div>
+    </BrowserRouter> 
   );
 }
 

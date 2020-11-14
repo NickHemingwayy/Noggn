@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import fire from './config/fire.js';
-import TextField from '@material-ui/core/TextField';
+
 import './chatApp.css';
 
 import 'firebase/firestore';
@@ -10,6 +10,7 @@ import 'firebase/analytics';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
+import TextField from '@material-ui/core/TextField';
 import LeftNav from './LeftNavigation.js';
 import SendIcon from '@material-ui/icons/Send';
 import Avatar from '@material-ui/core/Avatar';
