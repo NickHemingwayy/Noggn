@@ -3,11 +3,12 @@ background-color: #F1F2F8;
 }
 
 p{
-    color:black;
+    color:#2D2E4E;
 }
 
 .content{
     display: flex;
     flex-direction: column;
+    align-items: left;
     margin: 10%;
 }
