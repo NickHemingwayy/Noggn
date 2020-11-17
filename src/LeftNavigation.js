@@ -11,6 +11,7 @@ import 'firebase/analytics';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -32,6 +33,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HelpIcon from '@material-ui/icons/Help';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import Avatar from '@material-ui/core/Avatar';
+import theme from "./theme.js";
 
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
@@ -169,7 +171,8 @@ useEffect(() => {
   };
 
   return (
-    <BrowserRouter>
+    <ThemeProvider theme={theme}>
+    
       <div className="background">
     <div className={classes.root}>
       <CssBaseline />
@@ -216,7 +219,7 @@ useEffect(() => {
         <List>
           {/* HOME */}
           
-            <Route path="/profile" component={Profile} />
+          
           <ListItem button className={classes.ListItem}>
             <ListItemIcon><HomeIcon color='primary'></HomeIcon></ListItemIcon>
             <ListItemText>Dashboard</ListItemText>
@@ -266,7 +269,8 @@ useEffect(() => {
       </main>
     </div>
     </div>
-    </BrowserRouter> 
+    
+    </ThemeProvider>
   );
 }
 

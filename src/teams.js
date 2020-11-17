@@ -9,6 +9,9 @@ import 'firebase/analytics';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import LeftNav from './LeftNavigation.js';
+import Button from '@material-ui/core/Button';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from "./theme.js";
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -39,14 +42,15 @@ function TeamPage(){
       }, []);
     
     return(
+      <ThemeProvider theme={theme}>
       <div>
       <div className='background'>
         
       <div className ='content'>
       <h1>Welcome, {user}.</h1>
       <p>This is your dashboard where you can create and select Teams</p>
-      {showForm ?  null : <button onClick = {() => setState(!showForm)}>New Team</button>}
-      {showForm ? <button onClick = {() => setState(!showForm)}>Close</button> : null}
+      {showForm ?  null : <Button onClick = {() => setState(!showForm)} color='primary'>New Team</Button>}
+      {showForm ? <Button onClick = {() => setState(!showForm)} color='primary'>Close</Button> : null}
       {showForm ? <TeamForm/> : null}
       
       </div>
@@ -54,6 +58,7 @@ function TeamPage(){
       </div>
       <LeftNav/>
       </div>
+      </ThemeProvider>
     )
   }
 
@@ -131,8 +136,8 @@ function TeamPage(){
       return(
           <div className = "teamForm">
               <form onSubmit={addTeam}>
-                <TextField id="teamName" label="Team Name" variant="outlined" style={{width: '80%'}} value={formValTeamName} onChange={(e) => setNameFormValue(e.target.value)}/>
-                <TextField id="users" label="Invite team members (email seperated by comma)" variant="outlined" style={{width: '80%'}} value={formValTeamUsers} onChange={(e) => setUsersFormValue(e.target.value)}/>
+                <TextField id="teamName" label="Team Name" variant="outlined" style={{width: '80%'}} value={formValTeamName} onChange={(e) => setNameFormValue(e.target.value)} color='secondary'/>
+                <TextField id="users" label="Invite team members (email seperated by comma)" variant="outlined" style={{width: '80%'}} value={formValTeamUsers} onChange={(e) => setUsersFormValue(e.target.value)} color='secondary'/>
                 <button type="submit" >Create Team</button>
               </form>
           </div>
