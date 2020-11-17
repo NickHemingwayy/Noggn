@@ -22,7 +22,7 @@ const analytics = fire.analytics();
 
 
 //
-function RightNav(){
+function DashBoard(){
 
   let navWidth = '';
   let toggleInd = '<'
@@ -123,10 +123,9 @@ function ChatRoom() {
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    const { uid} = auth.currentUser;
+    const {uid} = auth.currentUser;
 
     //TODO: Add name into message collection
-   // const name = GetName;
 
     await messagesRef.add({
       text: formValue,
@@ -134,8 +133,6 @@ function ChatRoom() {
       uid,
       photoURL,
       user
-      
-      //name: GetName
     })
 
     setFormValue('');
@@ -199,7 +196,7 @@ function Logout(){
 
 
 //export default ChatApp;
-export default RightNav;
+export default DashBoard;
 
 
 

@@ -3,7 +3,8 @@ import './App.css';
 import fire from './config/fire';
 import Home from './Home.js';
 import Login from './Login.js';
-import RightNav from './chatApp.js';
+import DashBoard from './chatApp.js';
+import TeamPage from './teams.js'
 
 class App extends Component {
   constructor(props){
@@ -33,7 +34,7 @@ class App extends Component {
 render(){
   return (
     <div> {/*can use className ='App' here*/}
-        {this.state.user ? (<RightNav/>):(<Login/>)}
+        {this.state.user ? (<TeamPage/>):(<Login/>)}
     </div>
   );
 }
