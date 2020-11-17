@@ -8,6 +8,7 @@ import 'firebase/analytics';
 
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
+import LeftNav from './LeftNavigation.js';
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -39,15 +40,20 @@ function TeamPage(){
     
     return(
       <div>
-      <div>
+      <div className='background'>
+        
+      <div className ='content'>
       <h1>Welcome, {user}.</h1>
       <p>This is your dashboard where you can create and select Teams</p>
       {showForm ?  null : <button onClick = {() => setState(!showForm)}>New Team</button>}
       {showForm ? <button onClick = {() => setState(!showForm)}>Close</button> : null}
       {showForm ? <TeamForm/> : null}
-      </div>
+      
       </div>
       
+      </div>
+      <LeftNav/>
+      </div>
     )
   }
 
