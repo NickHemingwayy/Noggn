@@ -73,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
   },
   ListItem:{
-    paddingTop: 20,
-    paddingBottom:  20
+    paddingTop: 15,
+    paddingBottom:  15
   },
   drawerOpen: {
     width: drawerWidth,
