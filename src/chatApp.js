@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import fire from './config/fire.js';
-import TextField from '@material-ui/core/TextField';
+
 import './chatApp.css';
 
 import 'firebase/firestore';
@@ -10,10 +10,16 @@ import 'firebase/analytics';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
+import TextField from '@material-ui/core/TextField';
 import LeftNav from './LeftNavigation.js';
 import SendIcon from '@material-ui/icons/Send';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Button from '@material-ui/core/Button';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from "./theme.js";
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -25,17 +31,18 @@ const analytics = fire.analytics();
 function DashBoard(){
 
   let navWidth = '';
-  let toggleInd = '<'
+  let toggleInd = <ChevronLeftIcon style={{fontSize: '30px'}}/>
   const [toggle, setState] = useState(true);
   console.log(toggle);
+  
 
 
   if(toggle == false){
     navWidth = '5%'
-    toggleInd = '<'
+    toggleInd = <ChevronLeftIcon/>
   }else{
     navWidth = '25%'
-    toggleInd = '>'
+    toggleInd = <ChevronRightIcon/>
   }
 
   let navStyle = {
@@ -43,16 +50,18 @@ function DashBoard(){
   }
   
   return(
+    <ThemeProvider theme={theme}>
     <div>
 
       <LeftNav/> {/*This is where the left Navigation Comes in*/}
     <div style = {navStyle} className="rightNav">
-
+      <div>
       <button onClick = {() => setState(!toggle)} className="toggle">{toggleInd}</button>
       {toggle ? <ChatApp/> : null}
+      </div>
     </div>
     </div>
-    
+    </ThemeProvider>
   )
 }
 
@@ -62,7 +71,8 @@ function DashBoard(){
 function ChatApp() {
   
   const [user] = useAuthState(auth);
-
+  
+ 
 
   return (
     <div>
@@ -76,6 +86,7 @@ function ChatApp() {
       <div className="chatAppSection">
         {<ChatRoom />}
       </div>
+      
     </div>
     </div>
   );
@@ -99,6 +110,8 @@ function ChatRoom() {
   const currUser = fire.auth().currentUser; 
 
   const userRef = fire.firestore().collection("Users");
+
+  
 
   function getUser(){
     userRef.onSnapshot((querySnapshot) =>{
@@ -139,31 +152,49 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
+  function setScroll(){
+    var msgDiv = document.getElementById("messagesDiv");
+    //console.log(msgDiv);
+    if(msgDiv !== null){
+      console.log(msgDiv);
+      console.log("Height = " + msgDiv.scrollHeight);
+      console.log("Scrolled : " + msgDiv.scrollTop);
+      msgDiv.scrollTop = msgDiv.scrollHeight;
+      console.log("Scrolled after: " + msgDiv.scrollTop);
+    }
+  }
+  
+
   return (<>
-    <main>
+
+      
+      <div id="messagesDiv">
+     
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
 
-  <span ref={dummy}></span>
-
-    </main>
-
+    <span ref={dummy}></span>
+    {setScroll()}
+    </div>
+    
+    
     <form onSubmit={sendMessage} >
     
     <TextField
           id="outlined-multiline-flexible"
           label="Type Something"
           multiline
-          rowsMax={3}
+          rowsMax={2}
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           variant="outlined"
-          style={{width: "80%"}}
+          color='secondary'
+          style={{width: "70%"}}
           
         />
         
      {/* <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="New Message..." /> */}
-    
-      <button type="submit" disabled={!formValue} className="submitBtn"><SendIcon style={{color:'#5855FC', fontSize: '30px'}}/></button>
+      <Button variant="contained" color="primary"type="submit" disabled={!formValue} style={{marginLeft: "5%"}}>Send</Button>
+      
 
     </form>
   </>)
@@ -175,16 +206,23 @@ function ChatMessage(props) {
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
+  //Convert Unix time stamp to time
+  var timeStamp = createdAt;
+  var date = new Date(timeStamp);
+  var utcString = date.toUTCString();
+  var time = utcString.slice(-11, -7);
+
 
   return (<>
-    <div className={`message ${messageClass}`}>
-      {/* the name of the user that sent the message */}
+    <div className={`message ${messageClass}`}>      
       <Tooltip title={user}>
       <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
-      </Tooltip>
       
-      <p>{text}</p>
-      {/* TODO: Convert CreatedAt Unix timestamp and display nex to message*/}
+      {/*Tooltip acts as a hover that displays the name */}
+      </Tooltip>
+      <p className="textP">{text}</p>
+      <h6 className="timeStamp">{time}</h6>
+
     </div>
   </>)
 }

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Route} from "react-router-dom";
 
 import './chatApp.css';
 
@@ -25,9 +27,13 @@ import HomeIcon from '@material-ui/icons/Home';
 import GroupIcon from '@material-ui/icons/Group';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HelpIcon from '@material-ui/icons/Help';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 
 import icon from './Icon.png';
+import Profile from './profile.js';
 
 import LeftNav from './LeftNavigation.css';
     
@@ -66,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
   },
+  ListItem:{
+    paddingTop: 15,
+    paddingBottom:  15
+  },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -89,8 +99,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    color: '#2D2E4E',
+    padding: theme.spacing(0, 2),
+    
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
@@ -117,6 +127,7 @@ export default function LeftNavigation() {
   };
 
   return (
+    <BrowserRouter>
       <div className="background">
     <div className={classes.root}>
       <CssBaseline />
@@ -138,7 +149,7 @@ export default function LeftNavigation() {
           >
             <MenuIcon />
           </IconButton>
-          <img src={icon} width='80px'></img>
+          <img src={icon} width='70px'></img>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -156,28 +167,55 @@ export default function LeftNavigation() {
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? <ChevronRightIcon color='primary'/> : <ChevronLeftIcon />}
           </IconButton>
         </div>
         
         <List>
-          {['Dashboard', 'Teams'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <HomeIcon /> : <GroupIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {/* HOME */}
+          
+            <Route path="/profile" component={Profile} />
+          <ListItem button className={classes.ListItem}>
+            <ListItemIcon><HomeIcon color='primary'></HomeIcon></ListItemIcon>
+            <ListItemText>Dashboard</ListItemText>
+          </ListItem>
+         
+          {/* TEAMS */}
+          <ListItem button className={classes.ListItem}>
+            <ListItemIcon><GroupIcon color='primary'></GroupIcon></ListItemIcon>
+            <ListItemText>Teams</ListItemText>
+          </ListItem>
+          {/* HELP */}
+          <ListItem button className={classes.ListItem}>
+            <ListItemIcon><HelpIcon color='primary'></HelpIcon></ListItemIcon>
+            <ListItemText>Help Center</ListItemText>
+          </ListItem>
+          {/* GITHUB */}
+          <ListItem button className={classes.ListItem}>
+            <ListItemIcon><GitHubIcon color='primary'></GitHubIcon></ListItemIcon>
+            <ListItemText>GitHub</ListItemText>
+          </ListItem>
         </List>
+
         <Divider />
         <List>
-          {['Logout','Settings', 'Profile'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <SettingsIcon /> : <AccountCircleIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-            
-          ))}
+          {/* LOGOUT */}
+          <ListItem button className={classes.ListItem}>
+            <ListItemIcon><ExitToAppIcon color='primary'></ExitToAppIcon></ListItemIcon>
+            <ListItemText>Logout</ListItemText>
+          </ListItem>
+          {/* SETTINGS */}
+          <ListItem button className={classes.ListItem}>
+            <ListItemIcon><SettingsIcon color='primary'></SettingsIcon></ListItemIcon>
+            <ListItemText>Settings</ListItemText>
+          </ListItem>
+          {/* PROFILE */}
+          <ListItem button className={classes.ListItem}>
+            <ListItemIcon><AccountCircleIcon color='primary'></AccountCircleIcon></ListItemIcon>
+            <ListItemText>Profile</ListItemText>
+          </ListItem>
         </List>
+
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
@@ -185,6 +223,7 @@ export default function LeftNavigation() {
       </main>
     </div>
     </div>
+    </BrowserRouter> 
   );
 }
 
