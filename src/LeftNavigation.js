@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route} from "react-router-dom";
+import fire from './config/fire.js';
 
 import './chatApp.css';
 
@@ -30,13 +31,19 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HelpIcon from '@material-ui/icons/Help';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import Avatar from '@material-ui/core/Avatar';
 
+import {useAuthState} from 'react-firebase-hooks/auth';
+import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 import icon from './Icon.png';
 import Profile from './profile.js';
 
 import LeftNav from './LeftNavigation.css';
-    
+const firestore = fire.firestore();
+const auth = fire.auth();
+
+
 
 const drawerWidth = 240;
 
@@ -110,13 +117,48 @@ const useStyles = makeStyles((theme) => ({
   },
   ListItemIcon:{
     color: '#2D2E4E',
-  }
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
 }));
 
+
+
 export default function LeftNavigation() {
+
+const [user,setUser] = useState('');
+const [photoURL,setProfPic] = useState('');
+const currUser = fire.auth().currentUser; 
+
+const userRef = fire.firestore().collection("Users");
+
+
+
+function getUser(){
+  userRef.onSnapshot((querySnapshot) =>{
+    let users = '';
+    let profPic = '';
+    querySnapshot.forEach((doc)=>{
+      if(doc.id == currUser.uid){
+        users = doc.data().name;
+        profPic = doc.data().photoURL;
+      }
+    });
+    setUser(users);
+    setProfPic(profPic);
+  });
+}
+
+useEffect(() => {
+  getUser();
+}, []);
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -200,7 +242,7 @@ export default function LeftNavigation() {
         <Divider />
         <List>
           {/* LOGOUT */}
-          <ListItem button className={classes.ListItem}>
+          <ListItem button className={classes.ListItem} onClick={Logout}>
             <ListItemIcon><ExitToAppIcon color='primary'></ExitToAppIcon></ListItemIcon>
             <ListItemText>Logout</ListItemText>
           </ListItem>
@@ -211,8 +253,9 @@ export default function LeftNavigation() {
           </ListItem>
           {/* PROFILE */}
           <ListItem button className={classes.ListItem}>
-            <ListItemIcon><AccountCircleIcon color='primary'></AccountCircleIcon></ListItemIcon>
-            <ListItemText>Profile</ListItemText>
+             
+            <ListItemIcon><Avatar src={photoURL} className={classes.small}/></ListItemIcon>
+            <ListItemText>{user}</ListItemText>
           </ListItem>
         </List>
 
@@ -227,7 +270,9 @@ export default function LeftNavigation() {
   );
 }
 
-
+function Logout(){
+  auth.signOut();
+}
 
 
 
