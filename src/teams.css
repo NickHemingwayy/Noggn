@@ -1,5 +1,7 @@
 .background{
-background-color: #F1F2F8;
+    display: flex;
+    background-color: #F1F2F8;
+    align-items:left;
 }
 
 p{
@@ -7,8 +9,27 @@ p{
 }
 
 .content{
+    color:#2D2E4E;
     display: flex;
     flex-direction: column;
     align-items: left;
-    margin: 10%;
+    margin-right: 60%;
+    padding: 20px;
+}
+
+.textField{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.teamForm{
+    display: flex;
+    flex-direction: column;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
 }

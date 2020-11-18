@@ -1,6 +1,6 @@
 .background{min-height: 50vh;
     max-height: 40vh;
-    text-align: center;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,3 +8,4 @@
     justify-content: center;
     background-color: #F1F2F8;
 }
+/*} text-align: center; */
