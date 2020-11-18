@@ -74,7 +74,7 @@ function TeamPage() {
             </Button>
           </div>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title" color='secondary'>Create Team</DialogTitle>
+            <DialogTitle id="form-dialog-title" color='secondary'>Create a Noggn Team</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 Add members by inputing their emails separated by commas. For example: test1@gmail.com, test2@gmail.com, test3@gmail.com.
