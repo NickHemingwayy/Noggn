@@ -5,6 +5,7 @@ import './teams.css'
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
+import DashBoard from './chatApp.js';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -46,6 +47,53 @@ function TeamPage() {
     getUser();
   }, []);
 
+  const teamsRef = firestore.collection('Teams');
+  const [room, setRoom] = useState('');
+  function loadTeam(e){
+    console.log(e.target.textContent)
+    let chosenTeam = e.target.textContent;
+    let roomID;
+    teamsRef.onSnapshot((querySnapshot) => {
+      let teamName = '';
+      let admin;
+      querySnapshot.forEach((doc) => {
+        teamName = doc.data().teamName;
+        admin = doc.data().Admin
+        if(teamName == chosenTeam){
+          roomID = '/messages/' + admin + teamName + '/' + admin + teamName
+        }
+
+      });
+      setRoom(roomID);
+    });
+  }
+
+
+  const [currentTeams, setTeamName] = useState([]);
+  function getTeams() { // retrieves all teams in DB
+    teamsRef.onSnapshot((querySnapshot) => {
+      let teamNames = [];
+      let teamName = '';
+      let teamMembers;
+      let roomID;
+      let admin;
+      querySnapshot.forEach((doc) => {
+        teamName = doc.data().teamName;
+        teamMembers = doc.data().splitUsers;
+        admin = doc.data().Admin
+        if(teamMembers.includes(currUser.email) ){
+          roomID = '/messages/' + admin + teamName + '/' + admin + teamName
+          teamNames.push(<Button color="primary" onClick={loadTeam} style={{width: '40%'}}>{teamName}</Button>);
+        }
+
+      });
+      setTeamName(teamNames);
+    });
+  }
+  useEffect(() => {
+    getTeams();
+  }, []);
+  console.log(room)
   {/*MATERIAL UI DIALOG STYLING */ }
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
@@ -55,7 +103,7 @@ function TeamPage() {
     setOpen(false);
   };
   {/*MATERIAL UI DIALOG STYLING*/}
-
+  
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -73,6 +121,13 @@ function TeamPage() {
               Create Team
             </Button>
           </div>
+          
+          <div  className='currentTeams'>
+          <h1>Active Teams:</h1>
+          {currentTeams}
+          {room ? <DashBoard room={room}/> : null}
+          </div>
+
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title" color='secondary'>Create a Noggn Team</DialogTitle>
             <DialogContent>
@@ -82,6 +137,7 @@ function TeamPage() {
               <TeamForm />
             </DialogContent>
           </Dialog>
+          
         </div>
         <LeftNav />
       </div>
@@ -91,6 +147,8 @@ function TeamPage() {
 
 function TeamForm() {
   const teamsRef = firestore.collection('Teams');
+  const messagesRef = firestore.collection('messages');
+
   const [formValTeamName, setNameFormValue] = useState('');
   const [formValTeamUsers, setUsersFormValue] = useState('');
 
@@ -141,11 +199,23 @@ function TeamForm() {
           validTeamName = false;
         }
       }
+
+      splitUsers.push(currUser.email)
+
       if (validTeamName == true) {
         await teamsRef.add({ // Pushes new team to DB
           Admin: uid,
           teamName: formValTeamName,
           splitUsers,
+          teamID : uid+formValTeamName
+        })
+        const newChatRef = firestore.collection('messages/'+uid+formValTeamName+'/'+uid+formValTeamName);
+        await newChatRef.add({ // Pushes new team to DB
+          text: 'Welcome to your new Team!',
+          createdAt: + new Date(),
+          uid:'mEPP5vonIEe6rLayGVlnUPA6uGR2',
+          photoURL: 'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png',
+          user: 'chatAssistant'
         })
         setNameFormValue('');
         setUsersFormValue('');
@@ -169,7 +239,6 @@ function TeamForm() {
             margin="dense"
             id="teamName"
             label="Team Name"
-            type="email"
             fullWidth
             required
             value={formValTeamName}

@@ -28,7 +28,7 @@ const analytics = fire.analytics();
 
 
 //
-function DashBoard(){
+function DashBoard(MessagesRoom){
 
   let navWidth = '';
   let toggleInd = <ChevronLeftIcon style={{fontSize: '30px'}}/>
@@ -57,7 +57,7 @@ function DashBoard(){
     <div style = {navStyle} className="rightNav">
       <div>
       <button onClick = {() => setState(!toggle)} className="toggle">{toggleInd}</button>
-      {toggle ? <ChatApp/> : null}
+      {toggle ? <ChatApp {...MessagesRoom}/> : null}
       </div>
     </div>
     </div>
@@ -68,7 +68,7 @@ function DashBoard(){
 
 
 
-function ChatApp() {
+function ChatApp(MessagesRoom) {
   
   const [user] = useAuthState(auth);
   
@@ -84,7 +84,7 @@ function ChatApp() {
       </div>
       <div className="chatApp">
       <div className="chatAppSection">
-        {<ChatRoom />}
+        {<ChatRoom {...MessagesRoom} />}
       </div>
       
     </div>
@@ -95,10 +95,11 @@ function ChatApp() {
 
 
 // responsible for the inputs/writes to DB and receiving/returning the message
-function ChatRoom() {
+function ChatRoom(MessagesRoom) {
 
   const dummy = useRef();
-  const messagesRef = firestore.collection('messages');
+  console.log(MessagesRoom)
+  const messagesRef = firestore.collection(MessagesRoom.room);
   const query = messagesRef.orderBy('createdAt').limit(25);
 
   const [messages] = useCollectionData(query, { idField: 'id' });

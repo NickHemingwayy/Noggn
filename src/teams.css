@@ -16,6 +16,13 @@ p{
     margin-right: 60%;
     padding: 20px;
 }
+.currentTeams{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-right: 75%;
+    padding: 20px;
+}
 
 .textField{
     display: flex;
