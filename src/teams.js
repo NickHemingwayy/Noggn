@@ -46,6 +46,7 @@ function TeamPage() {
   useEffect(() => {
     getUser();
   }, []);
+  
 
   const teamsRef = firestore.collection('Teams');
   const [room, setRoom] = useState('');
@@ -82,8 +83,8 @@ function TeamPage() {
         teamMembers = doc.data().splitUsers;
         admin = doc.data().Admin
         if(teamMembers.includes(currUser.email) ){
-          roomID = '/messages/' + admin + teamName + '/' + admin + teamName
-          teamNames.push(<Button color="primary" onClick={loadTeam} style={{width: '40%'}}>{teamName}</Button>);
+          roomID = '/messages/' + admin + teamName + '/' + admin + teamName;
+          teamNames.push(<div style={{alignItems: 'left'}}><Button color="primary" onClick={loadTeam}>{teamName}</Button></div>);
         }
 
       });
@@ -94,53 +95,23 @@ function TeamPage() {
     getTeams();
   }, []);
   console.log(room)
-  {/*MATERIAL UI DIALOG STYLING */ }
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  {/*MATERIAL UI DIALOG STYLING*/}
-  
   return (
     <ThemeProvider theme={theme}>
-      <div>
         <div className='background'>
-          <div className='content'>
-            <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>.</h1>
-            <p>This is your dashboard where you can <b>create and select Teams</b></p>
-
+        <div className='content'>
             {/* -----------Nick's form. Keeping here in case mine doesnt work 
             {showForm ?  null : <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Create Team</Button>}
             {showForm ? <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Close</Button> : null}
-            {showForm ? <TeamForm/> : null} */}
-
-            <Button variant="contained" color="primary" onClick={handleClickOpen} style={{width: '40%'}}>
-              Create Team
-            </Button>
+  {showForm ? <TeamForm/> : null} */}
+   
+          {room ? <DashBoard room={room}/> : <DisplayDashboard/>}
           </div>
-          
-          <div  className='currentTeams'>
+          <div className='currentTeams'>
           <h1>Active Teams:</h1>
           {currentTeams}
-          {room ? <DashBoard room={room}/> : null}
           </div>
-
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title" color='secondary'>Create a Noggn Team</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Add members by inputing their emails separated by commas. For example: test1@gmail.com, test2@gmail.com, test3@gmail.com.
-              </DialogContentText>
-              <TeamForm />
-            </DialogContent>
-          </Dialog>
-          
         </div>
         <LeftNav />
-      </div>
     </ThemeProvider>
   )
 }
@@ -272,5 +243,57 @@ function TeamForm() {
   )
 }
 
+function DisplayDashboard(){
+  const [user, setUser] = useState('');
+  const currUser = fire.auth().currentUser;
+
+  const userRef = fire.firestore().collection("Users");
+
+  function getUser() {
+    userRef.onSnapshot((querySnapshot) => {
+      let users = '';
+      querySnapshot.forEach((doc) => {
+        if (doc.id == currUser.uid) {
+          users = doc.data().name;
+        }
+      });
+      setUser(users);
+    });
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return(
+    <ThemeProvider theme={theme}>
+    
+        
+          <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>.</h1>
+          <p>This is your dashboard where you can <b>create and select Teams</b></p>
+          <Button variant="contained" color="primary" onClick={handleClickOpen} style={{width: '40%'}}>
+              Create Team
+            </Button>
+          
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title" color='secondary'>Create a Noggn Team</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Add members by inputing their emails separated by commas. For example: test1@gmail.com, test2@gmail.com, test3@gmail.com.
+              </DialogContentText>
+              <TeamForm />
+            </DialogContent>
+          </Dialog>
+        </ThemeProvider>  )
+
+
+}
 
 export default TeamPage;

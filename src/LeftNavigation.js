@@ -40,8 +40,10 @@ import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 import icon from './Icon.png';
 import Profile from './profile.js';
+import TeamPage from './teams.js';
 
 import LeftNav from './LeftNavigation.css';
+import { SentimentSatisfied } from '@material-ui/icons';
 const firestore = fire.firestore();
 const auth = fire.auth();
 
@@ -129,6 +131,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function LeftNavigation() {
+  const[page, setPage] = useState("");
 
 const [user,setUser] = useState('');
 const [photoURL,setProfPic] = useState('');
@@ -170,6 +173,9 @@ useEffect(() => {
     setOpen(false);
   };
 
+  function goHome(){
+    window.location.reload(false);
+  }
   return (
     <ThemeProvider theme={theme}>
     
@@ -220,7 +226,7 @@ useEffect(() => {
           {/* HOME */}
           
           
-          <ListItem button className={classes.ListItem}>
+          <ListItem button className={classes.ListItem} onClick={goHome}>
             <ListItemIcon><HomeIcon color='primary'></HomeIcon></ListItemIcon>
             <ListItemText>Dashboard</ListItemText>
           </ListItem>
@@ -265,11 +271,11 @@ useEffect(() => {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-            {/*Diagrams will go here */}
       </main>
     </div>
     </div>
     
+
     </ThemeProvider>
   );
 }
@@ -279,4 +285,9 @@ function Logout(){
 }
 
 
+function loadProfile(){
 
+  return(
+    <Profile/>
+  )
+}

@@ -53,7 +53,7 @@ function DashBoard(MessagesRoom){
     <ThemeProvider theme={theme}>
     <div>
 
-      <LeftNav/> {/*This is where the left Navigation Comes in*/}
+    {/*This is where the left Navigation Comes in*/}
     <div style = {navStyle} className="rightNav">
       <div>
       <button onClick = {() => setState(!toggle)} className="toggle">{toggleInd}</button>
@@ -77,10 +77,7 @@ function ChatApp(MessagesRoom) {
   return (
     <div>
     <div className ="headerSection">
-      <h1>this is where the timer will go</h1>
       
-        <button onClick = {Logout} className="logoutBtn">Logout</button>
-        <hr></hr>
       </div>
       <div className="chatApp">
       <div className="chatAppSection">
@@ -178,8 +175,8 @@ function ChatRoom(MessagesRoom) {
     </div>
     
     
-    <form onSubmit={sendMessage} >
-    
+    <form onSubmit={sendMessage} className='chatForm' >
+    <div className='chat'>
     <TextField
           id="outlined-multiline-flexible"
           label="Type Something"
@@ -190,12 +187,13 @@ function ChatRoom(MessagesRoom) {
           variant="outlined"
           color='secondary'
           style={{width: "70%"}}
+          size='small'
           
         />
         
      {/* <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="New Message..." /> */}
-      <Button variant="contained" color="primary"type="submit" disabled={!formValue} style={{marginLeft: "5%"}}>Send</Button>
-      
+      <Button variant="contained" color="primary"type="submit" disabled={!formValue} style={{width: "5%", marginRight: '10px', marginLeft: '10px'}}>Send</Button>
+      </div>
 
     </form>
   </>)

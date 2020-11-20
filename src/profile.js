@@ -21,13 +21,12 @@ const analytics = fire.analytics();
 function Profile(){
 
 
-    const user = useAuthState(auth);
-    user = useState('');
+    
 
         return(
             <div>
             <LeftNav />
-                <p>hi {user.name}</p>
+                <p>hi</p>
             </div>
         )
 
