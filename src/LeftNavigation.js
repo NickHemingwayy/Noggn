@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import fire from './config/fire.js';
 
 import './chatApp.css';
@@ -170,7 +170,9 @@ useEffect(() => {
     setOpen(false);
   };
 
+ 
   return (
+    <Router>
     <ThemeProvider theme={theme}>
     
       <div className="background">
@@ -256,9 +258,8 @@ useEffect(() => {
           </ListItem>
           {/* PROFILE */}
           <ListItem button className={classes.ListItem}>
-             
             <ListItemIcon><Avatar src={photoURL} className={classes.small}/></ListItemIcon>
-            <ListItemText>{user}</ListItemText>
+            <ListItemText>Profile</ListItemText>
           </ListItem>
         </List>
 
@@ -271,6 +272,7 @@ useEffect(() => {
     </div>
     
     </ThemeProvider>
+    </Router>
   );
 }
 

@@ -18,18 +18,22 @@ const auth = fire.auth();
 const analytics = fire.analytics();
 
 
-function Profile(){
+class Profile extends React.Component{
 
 
-    const user = useAuthState(auth);
-    user = useState('');
+   //user = useAuthState(auth);
+//user = useState('');
 
+render(){
         return(
             <div>
-            <LeftNav />
-                <p>hi {user.name}</p>
+            
+                <p>hi </p>
+                <LeftNav />
             </div>
+            
         )
 
+}
 }
 export default Profile;

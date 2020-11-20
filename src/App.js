@@ -6,6 +6,8 @@ import Login from './Login.js';
 import DashBoard from './chatApp.js';
 import TeamPage from './teams.js'
 
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -33,7 +35,8 @@ class App extends Component {
   }
 render(){
   return (
-    <div> {/*can use className ='App' here*/}
+   
+    <div> {/*can use className ='App' here*/} 
         {this.state.user ? (<TeamPage/>):(<Login/>)}
     </div>
   );
