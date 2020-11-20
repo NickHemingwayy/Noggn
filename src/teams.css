@@ -1,6 +1,7 @@
 .background{
     display: flex;
     background-color: #F1F2F8;
+    flex-direction: column;
     align-items:left;
 }
 
@@ -13,14 +14,16 @@ p{
     display: flex;
     flex-direction: column;
     align-items: left;
-    margin-right: 60%;
+    margin-top: 10%;
+    margin-right: 50%;
     padding: 20px;
 }
 .currentTeams{
+    color:#2D2E4E;
     display: flex;
     flex-direction: column;
     align-items: left;
-    margin-right: 75%;
+    margin-right: 63%;
     padding: 20px;
 }
 
