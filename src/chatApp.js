@@ -269,7 +269,7 @@ function ChatCloseMessage(props){
 
   return(
     <div className="chatAppCloseMessages">
-      <Tooltip title ={text} placement="left">
+      <Tooltip title ={text} placement="left" interactive>
       <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
       </Tooltip>
   </div> 
