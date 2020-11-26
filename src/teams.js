@@ -7,8 +7,6 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import DashBoard from './chatApp.js';
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import LeftNav from './LeftNavigation.js';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
@@ -21,7 +19,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const firestore = fire.firestore();
 const auth = fire.auth();
-const analytics = fire.analytics();
 
 
 function TeamPage() {
@@ -35,7 +32,7 @@ function TeamPage() {
     userRef.onSnapshot((querySnapshot) => {
       let users = '';
       querySnapshot.forEach((doc) => {
-        if (doc.id == currUser.uid) {
+        if (doc.id === currUser.uid) {
           users = doc.data().name;
         }
       });
@@ -60,7 +57,7 @@ function TeamPage() {
       querySnapshot.forEach((doc) => {
         teamName = doc.data().teamName;
         admin = doc.data().Admin
-        if(teamName == chosenTeam){
+        if(teamName === chosenTeam){
           roomID = '/messages/' + admin + teamName + '/' + admin + teamName
         }
 
@@ -156,14 +153,14 @@ function TeamForm() {
 
     for (let i = 0; i < splitUsers.length; i++) { //Correctly formats user emails to be pushed to DB array
       splitUsers[i] = splitUsers[i].trim();
-      if (expression.test(splitUsers[i].toLocaleLowerCase()) == false) { //Validates each email string
+      if (expression.test(splitUsers[i].toLocaleLowerCase()) === false) { //Validates each email string
         validEmails = false;
         break;
       }
     }
 
     // validates form details before uplaoding to DB, informs the user accordingly
-    if (formValTeamName != '' && formValTeamUsers != '' && validEmails == true) {
+    if (formValTeamName !== '' && formValTeamUsers !== '' && validEmails === true) {
       for (let i = 0; i < currentTeams.length; i++) {
         console.log(currentTeams[i])
         if (currentTeams[i].includes(formValTeamName) && currentTeams[i].includes(uid)) { // checks if user has already created a team by this name
@@ -173,7 +170,7 @@ function TeamForm() {
 
       splitUsers.push(currUser.email)
 
-      if (validTeamName == true) {
+      if (validTeamName === true) {
         await teamsRef.add({ // Pushes new team to DB
           Admin: uid,
           teamName: formValTeamName,
@@ -253,7 +250,7 @@ function DisplayDashboard(){
     userRef.onSnapshot((querySnapshot) => {
       let users = '';
       querySnapshot.forEach((doc) => {
-        if (doc.id == currUser.uid) {
+        if (doc.id === currUser.uid) {
           users = doc.data().name;
         }
       });

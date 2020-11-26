@@ -6,13 +6,9 @@ import './chatApp.css';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
-
-import {useAuthState} from 'react-firebase-hooks/auth';
-import {useCollectionData} from 'react-firebase-hooks/firestore';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import TextField from '@material-ui/core/TextField';
-import LeftNav from './LeftNavigation.js';
-import SendIcon from '@material-ui/icons/Send';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -23,44 +19,43 @@ import theme from "./theme.js";
 
 const firestore = fire.firestore();
 const auth = fire.auth();
-const analytics = fire.analytics();
 
 
 
 //
-function DashBoard(MessagesRoom){
+function DashBoard(MessagesRoom) {
 
   let navWidth = '';
-  let toggleInd = <ChevronLeftIcon style={{fontSize: '30px'}}/>
+  let toggleInd = <ChevronLeftIcon style={{ fontSize: '30px' }} />
   const [toggle, setState] = useState(true);
   console.log(toggle);
-  
 
 
-  if(toggle == false){
+
+  if (toggle === false) {
     navWidth = '5%'
-    toggleInd = <ChevronLeftIcon/>
-  }else{
+    toggleInd = <ChevronLeftIcon />
+  } else {
     navWidth = '25%'
-    toggleInd = <ChevronRightIcon/>
+    toggleInd = <ChevronRightIcon />
   }
 
   let navStyle = {
     'width': navWidth
   }
-  
-  return(
-    <ThemeProvider theme={theme}>
-    <div>
 
-    {/*This is where the left Navigation Comes in*/}
-    <div style = {navStyle} className="rightNav">
+  return (
+    <ThemeProvider theme={theme}>
       <div>
-      <button onClick = {() => setState(!toggle)} className="toggle">{toggleInd}</button>
-      {toggle ? <ChatApp {...MessagesRoom}/> : <ChatClose {...MessagesRoom} />}
+
+        {/*This is where the left Navigation Comes in*/}
+        <div style={navStyle} className="rightNav">
+          <div>
+            <button onClick={() => setState(!toggle)} className="toggle">{toggleInd}</button>
+            {toggle ? <ChatApp {...MessagesRoom} /> : <ChatClose {...MessagesRoom} />}
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
     </ThemeProvider>
   )
 }
@@ -69,22 +64,18 @@ function DashBoard(MessagesRoom){
 
 
 function ChatApp(MessagesRoom) {
-  
-  const [user] = useAuthState(auth);
-  
- 
 
   return (
     <div>
-    <div className ="headerSection">
-      
+      <div className="headerSection">
+
       </div>
       <div className="chatApp">
-      <div className="chatAppSection">
-        {<ChatRoom {...MessagesRoom} />}
+        <div className="chatAppSection">
+          {<ChatRoom {...MessagesRoom} />}
+        </div>
+
       </div>
-      
-    </div>
     </div>
   );
 }
@@ -103,20 +94,20 @@ function ChatRoom(MessagesRoom) {
 
   const [formValue, setFormValue] = useState('');
 
-  const [user,setUser] = useState('');
-  const [photoURL,setProfPic] = useState('');
-  const currUser = fire.auth().currentUser; 
+  const [user, setUser] = useState('');
+  const [photoURL, setProfPic] = useState('');
+  const currUser = fire.auth().currentUser;
 
   const userRef = fire.firestore().collection("Users");
 
-  
 
-  function getUser(){
-    userRef.onSnapshot((querySnapshot) =>{
+
+  function getUser() {
+    userRef.onSnapshot((querySnapshot) => {
       let users = '';
       let profPic = '';
-      querySnapshot.forEach((doc)=>{
-        if(doc.id == currUser.uid){
+      querySnapshot.forEach((doc) => {
+        if (doc.id === currUser.uid) {
           users = doc.data().name;
           profPic = doc.data().photoURL;
         }
@@ -134,7 +125,7 @@ function ChatRoom(MessagesRoom) {
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    const {uid} = auth.currentUser;
+    const { uid } = auth.currentUser;
 
     await messagesRef.add({
       text: formValue,
@@ -148,10 +139,10 @@ function ChatRoom(MessagesRoom) {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  function setScroll(){
+  function setScroll() {
     var msgDiv = document.getElementById("messagesDiv");
     //console.log(msgDiv);
-    if(msgDiv !== null){
+    if (msgDiv !== null) {
       console.log(msgDiv);
       console.log("Height = " + msgDiv.scrollHeight);
       console.log("Scrolled : " + msgDiv.scrollTop);
@@ -159,21 +150,21 @@ function ChatRoom(MessagesRoom) {
       console.log("Scrolled after: " + msgDiv.scrollTop);
     }
   }
-  
+
 
   return (<>
 
-      
-      <div id="messagesDiv">
-     
+
+    <div id="messagesDiv">
+
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
 
-    <span ref={dummy}></span>
-    {setScroll()}
+      <span ref={dummy}></span>
+      {setScroll()}
     </div>
     <form onSubmit={sendMessage} className='chatForm' >
-    <div className='chat'>
-    <TextField
+      <div className='chat'>
+        <TextField
           id="outlined-multiline-flexible"
           label="Type Something"
           multiline
@@ -182,11 +173,11 @@ function ChatRoom(MessagesRoom) {
           onChange={(e) => setFormValue(e.target.value)}
           variant="outlined"
           color='secondary'
-          style={{width: "70%"}}
+          style={{ width: "70%" }}
           size='small'
-          
+
         />
-      <Button variant="contained" color="primary"type="submit" disabled={!formValue} style={{width: "5%", marginRight: '10px', marginLeft: '10px'}}>Send</Button>
+        <Button variant="contained" color="primary" type="submit" disabled={!formValue} style={{ width: "5%", marginRight: '10px', marginLeft: '10px' }}>Send</Button>
       </div>
     </form>
   </>)
@@ -204,9 +195,9 @@ function ChatMessage(props) {
   var time = utcString.slice(-11, -7);
 
   return (<>
-    <div className={`message ${messageClass}`}>      
+    <div className={`message ${messageClass}`}>
       <Tooltip title={user}>
-      <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
+        <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg' />
       </Tooltip>
       <p className="textP">{text}</p>
       <h6 className="timeStamp">{time}</h6>
@@ -216,28 +207,26 @@ function ChatMessage(props) {
 }
 
 //Gets the chat message and avatar values based on the team for chat close
-function ChatClose(MessagesRoom){
+function ChatClose(MessagesRoom) {
   const dummy = useRef();
-  //console.log(MessagesRoom)
+  
   const messagesRef = firestore.collection(MessagesRoom.room);
   const query = messagesRef.orderBy('createdAt').limitToLast(8);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
 
-  const [formValue, setFormValue] = useState('');
-
-  const [user,setUser] = useState('');
-  const [photoURL,setProfPic] = useState('');
-  const currUser = fire.auth().currentUser; 
+  const [user, setUser] = useState('');
+  const [photoURL, setProfPic] = useState('');
+  const currUser = fire.auth().currentUser;
 
   const userRef = fire.firestore().collection("Users");
 
-  function getUser(){
-    userRef.onSnapshot((querySnapshot) =>{
+  function getUser() {
+    userRef.onSnapshot((querySnapshot) => {
       let users = '';
       let profPic = '';
-      querySnapshot.forEach((doc)=>{
-        if(doc.id == currUser.uid){
+      querySnapshot.forEach((doc) => {
+        if (doc.id === currUser.uid) {
           users = doc.data().name;
           profPic = doc.data().photoURL;
         }
@@ -250,29 +239,28 @@ function ChatClose(MessagesRoom){
     getUser();
   }, []);
 
-  return(
-    <div className ="chatAppClose">
-     
-    {messages && messages.map(msg => <ChatCloseMessage key={msg.id} message={msg} />)}
+  return (
+    <div className="chatAppClose">
 
-  <span ref={dummy}></span>
-  </div>
+      {messages && messages.map(msg => <ChatCloseMessage key={msg.id} message={msg} />)}
+
+      <span ref={dummy}></span>
+    </div>
   )
 }
 
 
 //Sets the messages and avatars from the closed chat room 
-function ChatCloseMessage(props){
+function ChatCloseMessage(props) {
 
-  const { text, uid, photoURL, user, createdAt } = props.message;
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+  const { text, photoURL, user } = props.message;
 
-  return(
+  return (
     <div className="chatAppCloseMessages">
-      <Tooltip title ={text} placement="left" interactive>
-      <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
+      <Tooltip title={text} placement="left" interactive>
+        <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg' />
       </Tooltip>
-  </div> 
+    </div>
   )
 }
 

@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route} from "react-router-dom";
 import fire from './config/fire.js';
 
-import './chatApp.css';
-
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
@@ -12,6 +10,7 @@ import 'firebase/analytics';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -28,23 +27,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import GroupIcon from '@material-ui/icons/Group';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HelpIcon from '@material-ui/icons/Help';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import Avatar from '@material-ui/core/Avatar';
-import theme from "./theme.js";
 
-import {useAuthState} from 'react-firebase-hooks/auth';
-import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 import icon from './Icon.png';
 import Profile from './profile.js';
-import TeamPage from './teams.js';
 
-import LeftNav from './LeftNavigation.css';
-import { SentimentSatisfied } from '@material-ui/icons';
-const firestore = fire.firestore();
+import './LeftNavigation.css';
+
+
 const auth = fire.auth();
 
 
@@ -131,7 +125,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function LeftNavigation() {
-  const[page, setPage] = useState("");
 
 const [user,setUser] = useState('');
 const [photoURL,setProfPic] = useState('');
@@ -146,7 +139,7 @@ function getUser(){
     let users = '';
     let profPic = '';
     querySnapshot.forEach((doc)=>{
-      if(doc.id == currUser.uid){
+      if(doc.id === currUser.uid){
         users = doc.data().name;
         profPic = doc.data().photoURL;
       }
@@ -200,7 +193,7 @@ useEffect(() => {
           >
             <MenuIcon />
           </IconButton>
-          <img src={icon} width='70px'></img>
+          <img src={icon} width='70px' alt ="icon"></img>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -284,10 +277,3 @@ function Logout(){
   auth.signOut();
 }
 
-
-function loadProfile(){
-
-  return(
-    <Profile/>
-  )
-}
