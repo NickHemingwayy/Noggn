@@ -57,7 +57,7 @@ function DashBoard(MessagesRoom){
     <div style = {navStyle} className="rightNav">
       <div>
       <button onClick = {() => setState(!toggle)} className="toggle">{toggleInd}</button>
-      {toggle ? <ChatApp {...MessagesRoom}/> : null}
+      {toggle ? <ChatApp {...MessagesRoom}/> : <ChatClose {...MessagesRoom} />}
       </div>
     </div>
     </div>
@@ -91,7 +91,7 @@ function ChatApp(MessagesRoom) {
 
 
 
-// responsible for the inputs/writes to DB and receiving/returning the message
+// responsible for the inputs/writes to DB and receiving/returning the message for the open chat room
 function ChatRoom(MessagesRoom) {
 
   const dummy = useRef();
@@ -136,8 +136,6 @@ function ChatRoom(MessagesRoom) {
 
     const {uid} = auth.currentUser;
 
-    //TODO: Add name into message collection
-
     await messagesRef.add({
       text: formValue,
       createdAt: + new Date(),
@@ -173,8 +171,6 @@ function ChatRoom(MessagesRoom) {
     <span ref={dummy}></span>
     {setScroll()}
     </div>
-    
-    
     <form onSubmit={sendMessage} className='chatForm' >
     <div className='chat'>
     <TextField
@@ -190,11 +186,8 @@ function ChatRoom(MessagesRoom) {
           size='small'
           
         />
-        
-     {/* <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="New Message..." /> */}
       <Button variant="contained" color="primary"type="submit" disabled={!formValue} style={{width: "5%", marginRight: '10px', marginLeft: '10px'}}>Send</Button>
       </div>
-
     </form>
   </>)
 }
@@ -202,7 +195,6 @@ function ChatRoom(MessagesRoom) {
 // Is used directly by the ChatRoom function to return the message and verify who sent it
 function ChatMessage(props) {
   const { text, uid, photoURL, user, createdAt } = props.message;
-
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
   //Convert Unix time stamp to time
@@ -211,13 +203,10 @@ function ChatMessage(props) {
   var utcString = date.toUTCString();
   var time = utcString.slice(-11, -7);
 
-
   return (<>
     <div className={`message ${messageClass}`}>      
       <Tooltip title={user}>
       <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
-      
-      {/*Tooltip acts as a hover that displays the name */}
       </Tooltip>
       <p className="textP">{text}</p>
       <h6 className="timeStamp">{time}</h6>
@@ -226,10 +215,66 @@ function ChatMessage(props) {
   </>)
 }
 
-function Logout(){
-  auth.signOut();
+//Gets the chat message and avatar values based on the team for chat close
+function ChatClose(MessagesRoom){
+  const dummy = useRef();
+  //console.log(MessagesRoom)
+  const messagesRef = firestore.collection(MessagesRoom.room);
+  const query = messagesRef.orderBy('createdAt').limitToLast(8);
+
+  const [messages] = useCollectionData(query, { idField: 'id' });
+
+  const [formValue, setFormValue] = useState('');
+
+  const [user,setUser] = useState('');
+  const [photoURL,setProfPic] = useState('');
+  const currUser = fire.auth().currentUser; 
+
+  const userRef = fire.firestore().collection("Users");
+
+  function getUser(){
+    userRef.onSnapshot((querySnapshot) =>{
+      let users = '';
+      let profPic = '';
+      querySnapshot.forEach((doc)=>{
+        if(doc.id == currUser.uid){
+          users = doc.data().name;
+          profPic = doc.data().photoURL;
+        }
+      });
+      setUser(users);
+      setProfPic(profPic);
+    });
+  }
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  return(
+    <div className ="chatAppClose">
+     
+    {messages && messages.map(msg => <ChatCloseMessage key={msg.id} message={msg} />)}
+
+  <span ref={dummy}></span>
+  </div>
+  )
 }
 
+
+//Sets the messages and avatars from the closed chat room 
+function ChatCloseMessage(props){
+
+  const { text, uid, photoURL, user, createdAt } = props.message;
+  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+
+  return(
+    <div className="chatAppCloseMessages">
+      <Tooltip title ={text} placement="left">
+      <Avatar src= {photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg'/>
+      </Tooltip>
+  </div> 
+  )
+}
 
 
 //export default ChatApp;
