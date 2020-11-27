@@ -49,6 +49,7 @@ function TeamPage() {
 
   const teamsRef = firestore.collection('Teams');
   const [room, setRoom] = useState('');
+  
   function loadTeam(e){
     console.log(e.target.textContent)
     let chosenTeam = e.target.textContent;

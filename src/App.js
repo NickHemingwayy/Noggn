@@ -5,7 +5,7 @@ import Home from './Home.js';
 import Login from './Login.js';
 import DashBoard from './chatApp.js';
 import TeamPage from './teams.js'
-
+import IdeaBoard from './ideaBoard.js'
 class App extends Component {
   constructor(props){
     super(props);
@@ -34,7 +34,8 @@ class App extends Component {
 render(){
   return (
     <div> {/*can use className ='App' here*/}
-        {this.state.user ? (<TeamPage/>):(<Login/>)}
+        {/*this.state.user ? (<TeamPage/>):(<Login/>)*/}
+        {<IdeaBoard/>}
     </div>
   );
 }
