@@ -276,3 +276,6 @@ function Logout(){
   auth.signOut();
 }
 
+function goHome(){
+  window.location.reload();
+}
