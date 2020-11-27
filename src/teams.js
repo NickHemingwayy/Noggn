@@ -7,7 +7,7 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import DashBoard from './chatApp.js';
 
-import LeftNav from './LeftNavigation.js';
+import LeftNavigation from './LeftNavigation.js';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from "./theme.js";
@@ -109,7 +109,7 @@ function TeamPage() {
           {currentTeams}
           </div>
         </div>
-        <LeftNav />
+        <LeftNavigation/>
     </ThemeProvider>
   )
 }

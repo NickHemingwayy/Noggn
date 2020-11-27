@@ -37,8 +37,8 @@ class App extends Component {
 render(){
   return (
     <div> {/*can use className ='App' here*/}
-        {/*this.state.user ? (<TeamPage/>):(<Login/>)*/}
-        {<IdeaBoard/>}
+        {this.state.user ? (<TeamPage/>):(<Login/>)}
+        {/*<IdeaBoard/>*/}
     </div>
   );
 }
