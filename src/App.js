@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import fire from './config/fire';
-import Home from './Home.js';
+
 import Login from './Login.js';
-import DashBoard from './chatApp.js';
+
 import TeamPage from './teams.js'
 import IdeaBoard from './ideaBoard.js'
+
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
 class App extends Component {
   constructor(props){
     super(props);

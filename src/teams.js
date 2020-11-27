@@ -7,8 +7,6 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import DashBoard from './chatApp.js';
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 import LeftNav from './LeftNavigation.js';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
@@ -21,7 +19,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const firestore = fire.firestore();
 const auth = fire.auth();
-const analytics = fire.analytics();
 
 
 function TeamPage() {
@@ -35,7 +32,7 @@ function TeamPage() {
     userRef.onSnapshot((querySnapshot) => {
       let users = '';
       querySnapshot.forEach((doc) => {
-        if (doc.id == currUser.uid) {
+        if (doc.id === currUser.uid) {
           users = doc.data().name;
         }
       });
@@ -46,6 +43,7 @@ function TeamPage() {
   useEffect(() => {
     getUser();
   }, []);
+  
 
   const teamsRef = firestore.collection('Teams');
   const [room, setRoom] = useState('');
@@ -60,7 +58,7 @@ function TeamPage() {
       querySnapshot.forEach((doc) => {
         teamName = doc.data().teamName;
         admin = doc.data().Admin
-        if(teamName == chosenTeam){
+        if(teamName === chosenTeam){
           roomID = '/messages/' + admin + teamName + '/' + admin + teamName
         }
 
@@ -83,8 +81,8 @@ function TeamPage() {
         teamMembers = doc.data().splitUsers;
         admin = doc.data().Admin
         if(teamMembers.includes(currUser.email) ){
-          roomID = '/messages/' + admin + teamName + '/' + admin + teamName
-          teamNames.push(<Button color="primary" onClick={loadTeam} style={{width: '40%'}}>{teamName}</Button>);
+          roomID = '/messages/' + admin + teamName + '/' + admin + teamName;
+          teamNames.push(<div style={{alignItems: 'left'}}><Button color="primary" onClick={loadTeam}>{teamName}</Button></div>);
         }
 
       });
@@ -95,53 +93,23 @@ function TeamPage() {
     getTeams();
   }, []);
   console.log(room)
-  {/*MATERIAL UI DIALOG STYLING */ }
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  {/*MATERIAL UI DIALOG STYLING*/}
-  
   return (
     <ThemeProvider theme={theme}>
-      <div>
         <div className='background'>
-          <div className='content'>
-            <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>.</h1>
-            <p>This is your dashboard where you can <b>create and select Teams</b></p>
-
+        <div className='content'>
             {/* -----------Nick's form. Keeping here in case mine doesnt work 
             {showForm ?  null : <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Create Team</Button>}
             {showForm ? <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Close</Button> : null}
-            {showForm ? <TeamForm/> : null} */}
-
-            <Button variant="contained" color="primary" onClick={handleClickOpen} style={{width: '40%'}}>
-              Create Team
-            </Button>
+  {showForm ? <TeamForm/> : null} */}
+   
+          {room ? <DashBoard room={room}/> : <DisplayDashboard/>}
           </div>
-          
-          <div  className='currentTeams'>
+          <div className='currentTeams'>
           <h1>Active Teams:</h1>
           {currentTeams}
-          {room ? <DashBoard room={room}/> : null}
           </div>
-
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title" color='secondary'>Create a Noggn Team</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Add members by inputing their emails separated by commas. For example: test1@gmail.com, test2@gmail.com, test3@gmail.com.
-              </DialogContentText>
-              <TeamForm />
-            </DialogContent>
-          </Dialog>
-          
         </div>
         <LeftNav />
-      </div>
     </ThemeProvider>
   )
 }
@@ -186,14 +154,14 @@ function TeamForm() {
 
     for (let i = 0; i < splitUsers.length; i++) { //Correctly formats user emails to be pushed to DB array
       splitUsers[i] = splitUsers[i].trim();
-      if (expression.test(splitUsers[i].toLocaleLowerCase()) == false) { //Validates each email string
+      if (expression.test(splitUsers[i].toLocaleLowerCase()) === false) { //Validates each email string
         validEmails = false;
         break;
       }
     }
 
     // validates form details before uplaoding to DB, informs the user accordingly
-    if (formValTeamName != '' && formValTeamUsers != '' && validEmails == true) {
+    if (formValTeamName !== '' && formValTeamUsers !== '' && validEmails === true) {
       for (let i = 0; i < currentTeams.length; i++) {
         console.log(currentTeams[i])
         if (currentTeams[i].includes(formValTeamName) && currentTeams[i].includes(uid)) { // checks if user has already created a team by this name
@@ -203,7 +171,7 @@ function TeamForm() {
 
       splitUsers.push(currUser.email)
 
-      if (validTeamName == true) {
+      if (validTeamName === true) {
         await teamsRef.add({ // Pushes new team to DB
           Admin: uid,
           teamName: formValTeamName,
@@ -273,5 +241,57 @@ function TeamForm() {
   )
 }
 
+function DisplayDashboard(){
+  const [user, setUser] = useState('');
+  const currUser = fire.auth().currentUser;
+
+  const userRef = fire.firestore().collection("Users");
+
+  function getUser() {
+    userRef.onSnapshot((querySnapshot) => {
+      let users = '';
+      querySnapshot.forEach((doc) => {
+        if (doc.id === currUser.uid) {
+          users = doc.data().name;
+        }
+      });
+      setUser(users);
+    });
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return(
+    <ThemeProvider theme={theme}>
+    
+        
+          <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>.</h1>
+          <p>This is your dashboard where you can <b>create and select Teams</b></p>
+          <Button variant="contained" color="primary" onClick={handleClickOpen} style={{width: '40%'}}>
+              Create Team
+            </Button>
+          
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title" color='secondary'>Create a Noggn Team</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Add members by inputing their emails separated by commas. For example: test1@gmail.com, test2@gmail.com, test3@gmail.com.
+              </DialogContentText>
+              <TeamForm />
+            </DialogContent>
+          </Dialog>
+        </ThemeProvider>  )
+
+
+}
 
 export default TeamPage;

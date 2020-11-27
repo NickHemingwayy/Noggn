@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import fire from './config/fire.js';
-
-import './chatApp.css';
 
 import 'firebase/firestore';
 import 'firebase/auth';
@@ -12,6 +10,7 @@ import 'firebase/analytics';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -28,21 +27,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import GroupIcon from '@material-ui/icons/Group';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HelpIcon from '@material-ui/icons/Help';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import Avatar from '@material-ui/core/Avatar';
-import theme from "./theme.js";
 
-import {useAuthState} from 'react-firebase-hooks/auth';
-import {useCollectionData} from 'react-firebase-hooks/firestore';
 
 import icon from './Icon.png';
 import Profile from './profile.js';
 
-import LeftNav from './LeftNavigation.css';
-const firestore = fire.firestore();
+import './LeftNavigation.css';
+
+
 const auth = fire.auth();
 
 
@@ -143,7 +139,7 @@ function getUser(){
     let users = '';
     let profPic = '';
     querySnapshot.forEach((doc)=>{
-      if(doc.id == currUser.uid){
+      if(doc.id === currUser.uid){
         users = doc.data().name;
         profPic = doc.data().photoURL;
       }
@@ -170,7 +166,9 @@ useEffect(() => {
     setOpen(false);
   };
 
+ 
   return (
+    <Router>
     <ThemeProvider theme={theme}>
     
       <div className="background">
@@ -194,7 +192,7 @@ useEffect(() => {
           >
             <MenuIcon />
           </IconButton>
-          <img src={icon} width='70px'></img>
+          <img src={icon} width='70px' alt ="icon"></img>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -220,7 +218,7 @@ useEffect(() => {
           {/* HOME */}
           
           
-          <ListItem button className={classes.ListItem}>
+          <ListItem button className={classes.ListItem} onClick={goHome}>
             <ListItemIcon><HomeIcon color='primary'></HomeIcon></ListItemIcon>
             <ListItemText>Dashboard</ListItemText>
           </ListItem>
@@ -256,21 +254,21 @@ useEffect(() => {
           </ListItem>
           {/* PROFILE */}
           <ListItem button className={classes.ListItem}>
-             
             <ListItemIcon><Avatar src={photoURL} className={classes.small}/></ListItemIcon>
-            <ListItemText>{user}</ListItemText>
+            <ListItemText>Profile</ListItemText>
           </ListItem>
         </List>
 
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-            {/*Diagrams will go here */}
       </main>
     </div>
     </div>
     
+
     </ThemeProvider>
+    </Router>
   );
 }
 
@@ -278,5 +276,6 @@ function Logout(){
   auth.signOut();
 }
 
-
-
+function goHome(){
+  window.location.reload();
+}

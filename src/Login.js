@@ -5,8 +5,6 @@ import firebase from 'firebase/app';
 //MATERIAL UI
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import { withStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from '@material-ui/styles';
 
 import theme from "./theme.js";
@@ -96,7 +94,7 @@ class Login extends React.Component{
             <div className ='FormBox'>
             <div className = 'Form'>
         
-                <img src ={mainLogo} />
+                <img src ={mainLogo} alt="Noggn Logo" />
                 <h1>Welcome to Noggn.</h1>
                 <h4>Create an account to start collaborating with your teams in real time. Or Sign in.</h4>
                 <div className ='Field'>
@@ -119,7 +117,7 @@ class Login extends React.Component{
             <div className="GoogleLogin">
             <h4>Or Sign in with</h4>
             </div>
-            <button onClick={this.signInGoogle}><img src={googleImage} width='25px'></img></button>
+            <button onClick={this.signInGoogle}><img src={googleImage} width='25px' alt ="Google Sign up"></img></button>
           </div>
           </div>
           </div>
