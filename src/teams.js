@@ -8,7 +8,7 @@ import 'firebase/analytics';
 import DashBoard from './chatApp.js';
 import IdeaBoard from './ideaBoard.js';
 
-import LeftNavigation from './LeftNavigation.js';
+import TopNavigation from './TopNavigation.js';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from "./theme.js";
@@ -117,7 +117,7 @@ function TeamPage() {
           
         </div>
         
-        <LeftNavigation/>
+        <TopNavigation/>
     </ThemeProvider>
   )
 }
