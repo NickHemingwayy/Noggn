@@ -43,3 +43,11 @@ form{
     display: flex;
     flex-direction: column;
 }
+.ideaBoard{
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left:5%;
+    width: 50%;
+
+}

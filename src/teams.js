@@ -6,6 +6,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
 import DashBoard from './chatApp.js';
+import IdeaBoard from './ideaBoard.js';
 
 import LeftNavigation from './LeftNavigation.js';
 import Button from '@material-ui/core/Button';
@@ -59,7 +60,7 @@ function TeamPage() {
         teamName = doc.data().teamName;
         admin = doc.data().Admin
         if(teamName === chosenTeam){
-          roomID = '/messages/' + admin + teamName + '/' + admin + teamName
+          roomID = admin + teamName + '/' + admin + teamName
         }
 
       });
@@ -96,19 +97,26 @@ function TeamPage() {
   return (
     <ThemeProvider theme={theme}>
         <div className='background'>
+        <div className='ideaBoard'>
+          {room ? <IdeaBoard room={'/Points/' + room}/> : null}
+        </div>
         <div className='content'>
+        
             {/* -----------Nick's form. Keeping here in case mine doesnt work 
             {showForm ?  null : <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Create Team</Button>}
             {showForm ? <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Close</Button> : null}
   {showForm ? <TeamForm/> : null} */}
-   
-          {room ? <DashBoard room={room}/> : <DisplayDashboard/>}
+          
+          {room ? <DashBoard room={'/messages/' + room}/> : <DisplayDashboard/>}
           </div>
           <div className='currentTeams'>
           <h1>Active Teams:</h1>
-          {currentTeams}
+          {room ? null:currentTeams}
           </div>
+          
+          
         </div>
+        
         <LeftNavigation/>
     </ThemeProvider>
   )
@@ -179,12 +187,18 @@ function TeamForm() {
           teamID : uid+formValTeamName
         })
         const newChatRef = firestore.collection('messages/'+uid+formValTeamName+'/'+uid+formValTeamName);
+        const newPointsRef = firestore.collection('Points/'+uid+formValTeamName+'/'+uid+formValTeamName);
         await newChatRef.add({ // Pushes new team to DB
           text: 'Welcome to your new Team!',
           createdAt: + new Date(),
           uid:'mEPP5vonIEe6rLayGVlnUPA6uGR2',
           photoURL: 'https://www.fkbga.com/wp-content/uploads/2018/07/person-icon-6.png',
           user: 'chatAssistant'
+        })
+        await newPointsRef.doc('node_1').set({
+          key: 'node_1',
+          value: formValTeamName + "'s" + " first node",
+          outputs: [],
         })
         setNameFormValue('');
         setUsersFormValue('');
@@ -290,8 +304,6 @@ function DisplayDashboard(){
             </DialogContent>
           </Dialog>
         </ThemeProvider>  )
-
-
 }
 
 export default TeamPage;
