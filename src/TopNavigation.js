@@ -14,6 +14,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -85,6 +86,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     height: theme.spacing(3),
   },
+
+  dialog:{
+    padding: '50'
+  }
 }));
 
 
@@ -188,6 +193,7 @@ useEffect(() => {
           <Dialog
             open={helpOpen}
             onClose={handleHelpClose}
+            className = {classes.dialog}
           >
 
             <DialogTitle>Noggn Help center</DialogTitle>
@@ -286,6 +292,8 @@ useEffect(() => {
               >
                <Typography className={classes.typography}>{user}
               </Typography>
+              <Typography className = {classes.typography}>{email}</Typography>
+              <Button onclick={Logout}><ExitToAppIcon/>Logout</Button>
             </Popover>
             
 
