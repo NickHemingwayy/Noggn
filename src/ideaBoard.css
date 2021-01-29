@@ -1,0 +1,25 @@
+
+.nodeOptions{
+    height:5%;
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    padding-left: 1%;
+    padding-right: 1%;
+    width: 20%;
+    justify-content: space-between;
+    margin: 0 auto;
+    border: 1px solid lightgray;
+}
+.optionsContainer{
+    width: 90vw;
+    padding-bottom: 3%;
+    display: flex;
+    text-align:center;
+}
+.cancelBtn{
+    position: absolute;
+    right:-15%;
+    padding-top: 5px;
+
+}

@@ -1,11 +1,21 @@
 import React, { Component ,useState,useEffect } from 'react';
 import { Flowpoint, Flowspace } from 'flowpoints';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ColorLensIcon from '@material-ui/icons/ColorLens';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Fab from '@material-ui/core/Fab';
 import fire from './config/fire.js';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
 import * as firebase from 'firebase';
+import './ideaBoard.css'
 
 const firestore = fire.firestore();
 const auth = fire.auth();
@@ -103,9 +113,9 @@ function nodeFunctions(node){
     editIsClicked = false;
     newConnectIsClicked = false;
     deleteIsClicked = false;
-    document.getElementById("editBtn").style.cssText = "background-color: light-grey; color: black"
-    document.getElementById("connectionBtn").style.cssText = "background-color: light-grey; color: black"
-    document.getElementById("deleteBtn").style.cssText = "background-color: light-grey; color: black"
+    document.getElementById("editBtn").style.cssText = "color: color='secondary'"
+    document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
+    document.getElementById("deleteBtn").style.cssText = "color: 'secondary'"
     toggleCancel(false);
   }
   //same as creating your state variable where "Next" is the default value for buttonText and setButtonText is the setter function for your state variable instead of setState
@@ -115,17 +125,27 @@ function nodeFunctions(node){
 
       return (
           <>
-        
-      <button onClick={pushPointDB}>New Node</button> {/*Triggers newPoint Function*/}
-      <button id = 'editBtn' onClick={function(){resetBtns() ;editIsClicked = true; document.getElementById("editBtn").style.cssText = "background-color: #2D2E4E; color: white" ; toggleCancel(true)} }>Edit Node Name</button> {/*Triggers newPoint Function*/}
-      <button id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true; document.getElementById("connectionBtn").style.cssText = "background-color: #2D2E4E; color: white" ; toggleCancel(true)}}>New Connection</button> {/*Triggers newPoint Function*/}
-      <button id = 'deleteBtn' onClick={function(){resetBtns();deleteIsClicked = true; document.getElementById("deleteBtn").style.cssText = "background-color: #2D2E4E; color: white" ; toggleCancel(true)}}>Delete Node</button> {/*Triggers newPoint Function*/}
-      {cancelShow ? <button onClick={resetBtns}>Cancel</button> : null}
+      <div class="optionsContainer">
+        <div class="nodeOptions">
+        <IconButton component="span" color="secondary" onClick={pushPointDB}><AddCircleIcon /></IconButton>
+        <IconButton component="span" color="secondary"id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true;  toggleCancel(true); document.getElementById("connectionBtn").style.cssText = "color: grey"}}><AccountTreeIcon /></IconButton>
+        <IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton>
+        <IconButton component="span" color="secondary"><ColorLensIcon/></IconButton>
+        <IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton>
+        </div>
+        <div class="cancelBtn">
+          {cancelShow ? <Fab size="small" style={{ backgroundColor: 'red' , color:"white"}} onClick={resetBtns} >
+            <CancelIcon />
+          </Fab> : null}
+        </div>
+      </div>
+      
+      
         <Flowspace 
           theme="indigo"
           variant="outlined"
           background="white"
-          style={{ width:'90vw', height:'85vh' }}
+          style={{ width:'90vw', height:'80vh' }}
           connectionSize = {4}
           arrowStart={false}
           arrowEnd={true}
