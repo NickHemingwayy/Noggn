@@ -89,7 +89,11 @@ const useStyles = makeStyles((theme) => ({
 
   dialog:{
     padding: '50'
-  }
+  },
+  logoButton: {
+    marginLeft: theme.spacing(3),
+    cursor: 'pointer'
+  },
 }));
 
 
@@ -172,8 +176,7 @@ useEffect(() => {
         })}
       >
         <Toolbar>
-          
-          <img src={icon} width='70px' alt ="icon"></img>
+          <img src={icon} width='60px' alt ="icon" onClick={goHome} className= {classes.logoButton}></img>
           <Grid item xs />
           <IconButton onClick={goHome}>
             <HomeIcon className ={classes.ListItemIcon}/>
@@ -290,6 +293,7 @@ useEffect(() => {
                   horizontal: 'center',
                 }}
               >
+                <Typography className={classes.typography}>Signed in as</Typography>
                <Typography className={classes.typography}>{user}
               </Typography>
               <Typography className = {classes.typography}>{email}</Typography>
