@@ -8,7 +8,7 @@ import 'firebase/analytics';
 import DashBoard from './chatApp.js';
 import IdeaBoard from './ideaBoard.js';
 
-import LeftNavigation from './LeftNavigation.js';
+import TopNavigation from './TopNavigation.js';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from "./theme.js";
@@ -101,11 +101,6 @@ function TeamPage() {
           {room ? <IdeaBoard room={'/Points/' + room}/> : null}
         </div>
         <div className='content'>
-        
-            {/* -----------Nick's form. Keeping here in case mine doesnt work 
-            {showForm ?  null : <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Create Team</Button>}
-            {showForm ? <Button variant='contained' onClick = {() => setState(!showForm)} color='primary'>Close</Button> : null}
-  {showForm ? <TeamForm/> : null} */}
           
           {room ? <DashBoard room={'/messages/' + room}/> : <DisplayDashboard/>}
           </div>
@@ -117,7 +112,7 @@ function TeamPage() {
           
         </div>
         
-        <LeftNavigation/>
+        <TopNavigation/>
     </ThemeProvider>
   )
 }
@@ -246,10 +241,7 @@ function TeamForm() {
             Create Team
           </Button>
         </DialogActions>
-        {/* ---------------This is Nick's styling -- keeping it here just in case--------------------
-        <TextField id="teamName" label="Team Name" variant="outlined" style={{width: '80%'}} value={formValTeamName} onChange={(e) => setNameFormValue(e.target.value)} color='secondary' required/>
-        <TextField id="users" label="Invite team members (email seperated by comma)" variant="outlined" style={{width: '80%'}} value={formValTeamUsers} onChange={(e) => setUsersFormValue(e.target.value)} color='secondary' required/>
-        <Button variant='contained' type="submit" color='primary'>Create Team</Button> */}
+        
       </form>
     </div>
   )
