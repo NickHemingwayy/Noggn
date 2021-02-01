@@ -68,7 +68,8 @@ function ChatApp(MessagesRoom) {
   return (
     <div>
       <div className="headerSection">
-      <p>hi</p>
+      <p>Team Information will go here</p>
+      <hr></hr>
       </div>
       <div className="chatApp">
         <div className="chatAppSection">
@@ -163,7 +164,7 @@ function ChatRoom(MessagesRoom) {
       {setScroll()}
     </div>
     <form onSubmit={sendMessage} className='chatForm' >
-      <div className='chat'>
+     
         <TextField
           id="outlined-multiline-flexible"
           label="Type Something"
@@ -171,14 +172,14 @@ function ChatRoom(MessagesRoom) {
           rowsMax={2}
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
-          variant="outlined"
+          variant="filled"
           color='secondary'
           style={{ width: "70%" }}
           size='small'
 
         />
         <Button variant="contained" color="primary" type="submit" disabled={!formValue} style={{ width: "5%", marginRight: '10px', marginLeft: '10px' }}>Send</Button>
-      </div>
+      
     </form>
   </>)
 }
