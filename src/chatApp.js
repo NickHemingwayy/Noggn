@@ -48,7 +48,7 @@ function DashBoard(MessagesRoom) {
     <ThemeProvider theme={theme}>
       <div>
 
-        {/*This is where the left Navigation Comes in*/}
+        
         <div style={navStyle} className="rightNav">
           <div>
             <button onClick={() => setState(!toggle)} className="toggle">{toggleInd}</button>
@@ -68,7 +68,7 @@ function ChatApp(MessagesRoom) {
   return (
     <div>
       <div className="headerSection">
-
+      <p>hi</p>
       </div>
       <div className="chatApp">
         <div className="chatAppSection">
@@ -187,6 +187,7 @@ function ChatRoom(MessagesRoom) {
 function ChatMessage(props) {
   const { text, uid, photoURL, user, createdAt } = props.message;
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+  const nameClass = uid === auth.currentUser.uid ? 'sent2' : 'received2';
 
   //Convert Unix time stamp to time
   var timeStamp = createdAt;
@@ -196,11 +197,16 @@ function ChatMessage(props) {
 
   return (<>
     <div className={`message ${messageClass}`}>
-      <Tooltip title={user}>
-        <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg' />
-      </Tooltip>
+      
+      
+      <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg' />
+      <div>
+      <h6 className={`timeStamp ${messageClass}`}>{user}</h6>
+      <Tooltip title={time}>
       <p className="textP">{text}</p>
-      <h6 className="timeStamp">{time}</h6>
+      </Tooltip>
+      </div>
+      
 
     </div>
   </>)
