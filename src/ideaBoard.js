@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 import fire from './config/fire.js';
 import 'firebase/firestore';
 import 'firebase/auth';
@@ -31,7 +32,8 @@ function IdeaBoard(ideaRoom) {
   let savedPoints = [];
   const [points, setPoints] = useState(savedPoints);
   const pointsRef = fire.firestore().collection(ideaRoom.room);
-  const [cancelShow,toggleCancel] = useState(false)
+  const [cancelShow,toggleCancel] = useState(false);
+  const [pointPos,setPointPos] = useState([0,0]);
   function changeText(node,name) {
     
     if (name != null){
@@ -68,15 +70,19 @@ function nodeFunctions(node){
 }
 
 
-
-
   function getPoints(){
     pointsRef.onSnapshot((querySnapshot) => {
       savedPoints = [];
       querySnapshot.forEach((doc) => {
         console.log("this room:" + ideaRoom.room)
         savedPoints.push([
-          <Flowpoint key= {doc.data().key} onClick={() => nodeFunctions(doc.data().key)} outputs={doc.data().outputs}>{doc.data().value}</Flowpoint>
+          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil(doc.data().value.length / 20) * 30)}} theme='#5855FC' key= {doc.data().key} onClick={ nodeFunctions(doc.data().key)} outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
+          <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'center', paddingLeft:2, paddingRight:2}}>
+            {
+              doc.data().value
+            }
+          </div>
+        </div></Flowpoint>
         ]);
       });
       setPoints(savedPoints);
@@ -118,6 +124,11 @@ function nodeFunctions(node){
     document.getElementById("deleteBtn").style.cssText = "color: 'secondary'"
     toggleCancel(false);
   }
+
+  function savePositions(){
+  
+   
+  }
   //same as creating your state variable where "Next" is the default value for buttonText and setButtonText is the setter function for your state variable instead of setState
 
 
@@ -127,11 +138,11 @@ function nodeFunctions(node){
           <>
       <div class="optionsContainer">
         <div class="nodeOptions">
-        <IconButton component="span" color="secondary" onClick={pushPointDB}><AddCircleIcon /></IconButton>
-        <IconButton component="span" color="secondary"id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true;  toggleCancel(true); document.getElementById("connectionBtn").style.cssText = "color: grey"}}><AccountTreeIcon /></IconButton>
-        <IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton>
-        <IconButton component="span" color="secondary"><ColorLensIcon/></IconButton>
-        <IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton>
+        <Tooltip title="Add Node"><IconButton component="span" color="secondary" onClick={pushPointDB}><AddCircleIcon /></IconButton></Tooltip>
+        <Tooltip title="Add Connection"><IconButton component="span" color="secondary"id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true;  toggleCancel(true); document.getElementById("connectionBtn").style.cssText = "color: grey"}}><AccountTreeIcon /></IconButton></Tooltip>
+        <Tooltip title="Change Node Text"><IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton></Tooltip>
+        <Tooltip title="Change Node Colour"><IconButton component="span" color="secondary" onClick={savePositions}><ColorLensIcon/></IconButton></Tooltip>
+        <Tooltip title="Delete Node"><IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton></Tooltip>
         </div>
         <div class="cancelBtn">
           {cancelShow ? <Fab size="small" style={{ backgroundColor: 'red' , color:"white"}} onClick={resetBtns} >
@@ -143,16 +154,16 @@ function nodeFunctions(node){
       
         <Flowspace 
           theme="indigo"
-          variant="outlined"
-          background="white"
-          style={{ width:'90vw', height:'80vh' }}
+          variant="filled"
+          background="#F1F2F8"
+          style={{ width:'90vw', height:'80vh'}}
           connectionSize = {4}
           arrowStart={false}
           arrowEnd={true}
           selected="point_a"
           selectedLine={{ a:"point_a", b:"point_b" }}
           onLineClick={(key_a, key_b, e) => {
-            console.log('Click connection ' + key_a + ' -> ' + key_b)
+            console.log('yes')
           }}
           onClick={e => {}}
           >
