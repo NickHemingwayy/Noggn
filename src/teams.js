@@ -65,11 +65,13 @@ function TeamPage() {
 
       });
       setRoom(roomID);
+      setCurrTeamName(teamName);
     });
   }
 
 
   const [currentTeams, setTeamName] = useState([]);
+  const [teamName, setCurrTeamName] = useState('');
   function getTeams() { // retrieves all teams in DB
     teamsRef.onSnapshot((querySnapshot) => {
       let teamNames = [];
@@ -102,7 +104,7 @@ function TeamPage() {
         </div>
         <div className='content'>
           
-          {room ? <DashBoard room={'/messages/' + room}/> : <DisplayDashboard/>}
+          {room ? <DashBoard room={'/messages/' + room} teamName={teamName}/> : <DisplayDashboard/>}
           </div>
           <div className='currentTeams'>
           <h1>Active Teams:</h1>

@@ -13,8 +13,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
+import Divider from '@material-ui/core/Divider';
 import theme from "./theme.js";
 
 const firestore = fire.firestore();
@@ -29,7 +32,6 @@ function DashBoard(MessagesRoom) {
   let toggleInd = <ChevronLeftIcon style={{ fontSize: '30px' }} />
   const [toggle, setState] = useState(true);
   console.log(toggle);
-
 
 
   if (toggle === false) {
@@ -65,11 +67,23 @@ function DashBoard(MessagesRoom) {
 
 function ChatApp(MessagesRoom) {
 
-  return (
+    return (
     <div>
       <div className="headerSection">
-      <p>Team Information will go here</p>
-      <hr></hr>
+      <div className = "teamNameBlock">
+        <div className ="teamName">
+      <h1 ><b>{MessagesRoom.teamName}</b></h1>
+      </div>
+      <div className= "teamIcons">
+      <AddBoxIcon />
+      <EditIcon style={{marginLeft: '15px'}} />
+      </div>
+      </div>
+      <Divider />
+      
+      
+      
+      
       </div>
       <div className="chatApp">
         <div className="chatAppSection">
@@ -163,6 +177,7 @@ function ChatRoom(MessagesRoom) {
       <span ref={dummy}></span>
       {setScroll()}
     </div>
+    <Divider />
     <form onSubmit={sendMessage} className='chatForm' >
      
         <TextField
@@ -203,7 +218,7 @@ function ChatMessage(props) {
       <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg' />
       <div>
       <h6 className={`timeStamp ${messageClass}`}>{user}</h6>
-      <Tooltip title={time}>
+      <Tooltip title={time} placement="left">
       <p className="textP">{text}</p>
       </Tooltip>
       </div>
@@ -265,7 +280,7 @@ function ChatCloseMessage(props) {
   return (
     <div className="chatAppCloseMessages">
       <Tooltip title={text} placement="left" interactive>
-        <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImg' />
+        <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImgClose' />
       </Tooltip>
     </div>
   )
