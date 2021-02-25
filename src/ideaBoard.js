@@ -9,6 +9,7 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import CancelIcon from '@material-ui/icons/Cancel';
+import LinkIcon from '@material-ui/icons/Link';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import fire from './config/fire.js';
@@ -17,7 +18,7 @@ import 'firebase/auth';
 import 'firebase/analytics';
 import * as firebase from 'firebase';
 import './ideaBoard.css'
-
+import icon from './Icon.png';
 const firestore = fire.firestore();
 const auth = fire.auth();
 const currUser = fire.auth().currentUser;
@@ -25,6 +26,7 @@ const currUser = fire.auth().currentUser;
 
 let editIsClicked = false;
 let newConnectIsClicked = false;
+let addUrlIsClicked = false;
 let deleteIsClicked = false;
 let connectionNodes = [];
 
@@ -34,11 +36,19 @@ function IdeaBoard(ideaRoom) {
   const pointsRef = fire.firestore().collection(ideaRoom.room);
   const [cancelShow,toggleCancel] = useState(false);
   const [pointPos,setPointPos] = useState([0,0]);
+
   function changeText(node,name) {
     
     if (name != null){
       pointsRef.doc(node).update({value:name});
   }
+}
+
+function addURL(node,url){
+  if(url != null){
+    pointsRef.doc(node).update({url:url});
+  }
+  
 }
 
 function deleteNode(node){
@@ -67,20 +77,63 @@ function nodeFunctions(node){
     deleteNode(node);
     resetBtns();
   }
+  else if(addUrlIsClicked){
+    addURL(node,prompt('Enter URL'));
+    resetBtns();
+  }
 }
 
+function linkify(inputText) {
+  var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+  //URLs starting with http://, https://, or ftp://
+  replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+  replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+  //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+  replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+  replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+  //Change email addresses to mailto:: links.
+  replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+  replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+  return replacedText;
+}
+function ActionLink(link) {
+  console.log(link.link);
+  function handleClick(e) {
+    e.preventDefault();
+    if(link.link.length != 0){
+      
+    window.open(link.link, "_blank")
+
+    }
+    
+  }
+
+  return (
+    <a href={link.link} onClick={handleClick}>
+      {link.link}
+    </a>
+  );
+}
 
   function getPoints(){
+    
     pointsRef.onSnapshot((querySnapshot) => {
       savedPoints = [];
       querySnapshot.forEach((doc) => {
-        console.log("this room:" + ideaRoom.room)
         savedPoints.push([
-          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil(doc.data().value.length / 20) * 30)}} theme='#5855FC' key= {doc.data().key} onClick={ nodeFunctions(doc.data().key)} outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
+          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30)}} theme='#5855FC' onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
+          
           <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'center', paddingLeft:2, paddingRight:2}}>
-            {
-              doc.data().value
-            }
+            
+              {linkify(doc.data().value)}
+              
+            
+            <br></br>
+            <ActionLink link={doc.data().url}/>
           </div>
         </div></Flowpoint>
         ]);
@@ -94,7 +147,6 @@ function nodeFunctions(node){
     getPoints();
   }, []);
 
- 
     function pushPointDB(){
       //let nodeNum = points.length + 1;
       var newNodeRef = pointsRef.doc();
@@ -103,6 +155,7 @@ function nodeFunctions(node){
         value: 'New Node',
         x:20,
         y:20,
+        url:''
 
   })
   getPoints();
@@ -118,9 +171,11 @@ function nodeFunctions(node){
   function resetBtns(){
     editIsClicked = false;
     newConnectIsClicked = false;
+    addUrlIsClicked = false;
     deleteIsClicked = false;
     document.getElementById("editBtn").style.cssText = "color: color='secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
+    document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("deleteBtn").style.cssText = "color: 'secondary'"
     toggleCancel(false);
   }
@@ -136,12 +191,14 @@ function nodeFunctions(node){
 
       return (
           <>
+          
       <div class="optionsContainer">
         <div class="nodeOptions">
         <Tooltip title="Add Node"><IconButton component="span" color="secondary" onClick={pushPointDB}><AddCircleIcon /></IconButton></Tooltip>
         <Tooltip title="Add Connection"><IconButton component="span" color="secondary"id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true;  toggleCancel(true); document.getElementById("connectionBtn").style.cssText = "color: grey"}}><AccountTreeIcon /></IconButton></Tooltip>
         <Tooltip title="Change Node Text"><IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton></Tooltip>
         <Tooltip title="Change Node Colour"><IconButton component="span" color="secondary" onClick={savePositions}><ColorLensIcon/></IconButton></Tooltip>
+        <Tooltip title="Add Link"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
         <Tooltip title="Delete Node"><IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton></Tooltip>
         </div>
         <div class="cancelBtn">

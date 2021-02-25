@@ -196,6 +196,7 @@ function TeamForm() {
           key: 'node_1',
           value: formValTeamName + "'s" + " first node",
           outputs: [],
+          url: '',
         })
         setNameFormValue('');
         setUsersFormValue('');
@@ -280,8 +281,7 @@ function DisplayDashboard(){
   };
   return(
     <ThemeProvider theme={theme}>
-    
-        
+  
           <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>.</h1>
           <p>This is your dashboard where you can <b>create and select Teams</b></p>
           <Button variant="contained" color="primary" onClick={handleClickOpen} style={{width: '40%'}}>
