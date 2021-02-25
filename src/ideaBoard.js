@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import CancelIcon from '@material-ui/icons/Cancel';
 import LinkIcon from '@material-ui/icons/Link';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import fire from './config/fire.js';
@@ -30,12 +31,16 @@ let addUrlIsClicked = false;
 let deleteIsClicked = false;
 let connectionNodes = [];
 
+var htmlToImage = require('html-to-image');
+
 function IdeaBoard(ideaRoom) {
   let savedPoints = [];
   const [points, setPoints] = useState(savedPoints);
   const pointsRef = fire.firestore().collection(ideaRoom.room);
   const [cancelShow,toggleCancel] = useState(false);
   const [pointPos,setPointPos] = useState([0,0]);
+
+  var diagramRef = null;
 
   function changeText(node,name) {
     
@@ -119,6 +124,7 @@ function ActionLink(link) {
   );
 }
 
+
   function getPoints(){
     
     pointsRef.onSnapshot((querySnapshot) => {
@@ -177,6 +183,7 @@ function ActionLink(link) {
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("deleteBtn").style.cssText = "color: 'secondary'"
+    document.getElementById("saveBtn").style.cssText = "color: 'secondary'"
     toggleCancel(false);
   }
 
@@ -199,7 +206,19 @@ function ActionLink(link) {
         <Tooltip title="Change Node Text"><IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton></Tooltip>
         <Tooltip title="Change Node Colour"><IconButton component="span" color="secondary" onClick={savePositions}><ColorLensIcon/></IconButton></Tooltip>
         <Tooltip title="Add Link"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
+        <Tooltip title="Save Diagram"><IconButton component="span" color="secondary"id = 'saveBtn' onClick={() => {
+                    htmlToImage.toPng(diagramRef).then(function (dataUrl) {
+                    var img = new Image();
+                    img.src = dataUrl;
+                    var link = document.createElement('a');
+                    link.download = 'diagram.png';
+                    link.href = dataUrl;
+                    link.click();
+                  });
+
+        }}><SaveAltIcon/></IconButton></Tooltip>
         <Tooltip title="Delete Node"><IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton></Tooltip>
+        
         </div>
         <div class="cancelBtn">
           {cancelShow ? <Fab size="small" style={{ backgroundColor: 'red' , color:"white"}} onClick={resetBtns} >
@@ -217,6 +236,7 @@ function ActionLink(link) {
           connectionSize = {4}
           arrowStart={false}
           arrowEnd={true}
+          getDiagramRef={ref => {diagramRef = ref}}
           selected="point_a"
           selectedLine={{ a:"point_a", b:"point_b" }}
           onLineClick={(key_a, key_b, e) => {

@@ -43,7 +43,7 @@ import icon from './Icon.png';
 
 import './TopNavigation.css';
 
-
+const firestore = fire.firestore();
 const auth = fire.auth();
 
 
@@ -316,7 +316,7 @@ useEffect(() => {
 }
 
 function Logout(){
-  auth.signOut();
+  firestore.auth.signOut();
 }
 
 function goHome(){
