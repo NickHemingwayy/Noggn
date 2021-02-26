@@ -44,7 +44,7 @@ import icon from './Icon.png';
 import './TopNavigation.css';
 
 
-const auth = fire.auth();
+let auth = fire.auth();
 
 
 
@@ -297,7 +297,7 @@ useEffect(() => {
                <Typography className={classes.typography}>{user}
               </Typography>
               <Typography className = {classes.typography}>{email}</Typography>
-              <Button onclick={Logout}><ExitToAppIcon/>Logout</Button>
+              <Button onClick={logout}><ExitToAppIcon/>Logout</Button>
             </Popover>
             
 
@@ -313,11 +313,12 @@ useEffect(() => {
     </ThemeProvider>
     
   );
+
+}
+function logout(){
+  fire.auth().signOut();
 }
 
-function Logout(){
-  auth.signOut();
-}
 
 function goHome(){
   window.location.reload();

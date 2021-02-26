@@ -13,6 +13,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import fire from './config/fire.js';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
@@ -23,13 +24,13 @@ const firestore = fire.firestore();
 const auth = fire.auth();
 const currUser = fire.auth().currentUser;
 
-
 let editIsClicked = false;
 let newConnectIsClicked = false;
 let addUrlIsClicked = false;
 let deleteIsClicked = false;
+let rmCtnIsClicked = false;
 let connectionNodes = [];
-
+let updatedConnections = [];
 function IdeaBoard(ideaRoom) {
   let savedPoints = [];
   const [points, setPoints] = useState(savedPoints);
@@ -51,10 +52,118 @@ function addURL(node,url){
   
 }
 
-function deleteNode(node){
-  pointsRef.doc(node).get()
- 
+function updateConnection(ctnNodes){
+  let oldOuts;
+  let oldIns;
+  let newOuts;
+  let newIns;
+  let inNode;
+  let outNode;
+  let node1 = ctnNodes[0];
+  let node2 = ctnNodes[1];
+  pointsRef.onSnapshot((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      oldOuts = doc.data().outputs;
+      oldIns = doc.data().inputs;
+      if(doc.id == node1 || doc.id == node2){
+        if(doc.id == node1){
+          if(oldOuts != null){
+            if(oldOuts.length != 0){
+            for (let i = 0; i < oldOuts.length;i++){
+              if(oldOuts[i] == node2){
+                newOuts = oldOuts.splice(0,i);
+                (async () => {
+                  await pointsRef.doc(doc.id).update({outputs:newOuts});
+              })()
+              }
+            }
+          }
+          }
+        }else{
+          if(oldIns != null){
+            if(oldIns.length != 0){
+            for (let i = 0; i < oldIns.length;i++){
+              if(oldIns[i] == node1){
+                newIns = oldIns.splice(0,i);
+                
+                (async () => {
+                  await pointsRef.doc(doc.id).update({inputs:newIns});
+              })()
+              }
+            }
+          }
+          }
+        }
+      }
+    });
+  });
 
+}
+
+function deleteNode(node){
+  
+  let outputs;
+  let inputs;
+  let updateNode;
+  let origIns;
+  let newIns;
+  let origOuts;
+  let newOuts;
+  pointsRef.onSnapshot((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      if(doc.id == node){
+        outputs = doc.data().outputs;
+        inputs = doc.data().inputs;
+        console.log(outputs,inputs);
+        if(outputs != null){
+          let i; 
+          for(i=0; i< outputs.length; i++){
+            updateNode = outputs[i];
+
+            pointsRef.onSnapshot((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                if(doc.id == updateNode){
+                  origIns = doc.data().inputs;
+                  for(let j=0;j<origIns.length;j++){
+                    if(origIns[j] == node){
+                      newIns = origIns.splice(0,j);
+                      pointsRef.doc(updateNode).update({inputs:newIns});
+                      getPoints();
+                    }
+                  }
+                }
+              });
+            });
+            
+          }
+        }
+        if(inputs != null){
+          let i;
+          for(i=0; i< inputs.length; i++){
+            updateNode = inputs[i];
+
+            pointsRef.onSnapshot((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                if(doc.id == updateNode){
+                  origOuts = doc.data().outputs;
+                  for(let j=0;j<origOuts.length;j++){
+                    if(origOuts[j] == node){
+                      newOuts = origOuts.splice(0,j);
+                      pointsRef.doc(updateNode).update({outputs:newOuts});
+                      getPoints();
+                    }
+                  }
+                }
+              });
+            });
+            
+          }
+        }
+
+      }
+    });
+  });
+  //console.log(pointsRef.doc(node).get());
   pointsRef.doc(node).delete();
 }
 
@@ -72,7 +181,6 @@ function nodeFunctions(node){
       connectionNodes = [];
       resetBtns();
     }
-    console.log(connectionNodes);
   }else if(deleteIsClicked){
     deleteNode(node);
     resetBtns();
@@ -80,6 +188,15 @@ function nodeFunctions(node){
   else if(addUrlIsClicked){
     addURL(node,prompt('Enter URL'));
     resetBtns();
+  }else if(rmCtnIsClicked){
+    if(updatedConnections.length < 2){
+      updatedConnections.push(node);
+    }
+    if(updatedConnections.length == 2 && updatedConnections[0] != updatedConnections[1]){
+      updateConnection(updatedConnections);
+      updatedConnections = [];
+      resetBtns();
+    }
   }
 }
 
@@ -162,9 +279,12 @@ function ActionLink(link) {
     }
 
     function createConnection(connectionNodes){
-      pointsRef.doc(connectionNodes[0]).update({outputs:firebase.firestore.FieldValue.arrayUnion(connectionNodes[1])});
-      pointsRef.doc(connectionNodes[1]).update({inputs:firebase.firestore.FieldValue.arrayUnion(connectionNodes[0])});
-      getPoints();
+      console.log("nodes",connectionNodes[1]);
+      (async () => {
+        await pointsRef.doc(connectionNodes[0]).update({outputs:firebase.firestore.FieldValue.arrayUnion(connectionNodes[1])});
+        await pointsRef.doc(connectionNodes[1]).update({inputs:firebase.firestore.FieldValue.arrayUnion(connectionNodes[0])});
+    })()
+      
     }
 
  
@@ -173,9 +293,11 @@ function ActionLink(link) {
     newConnectIsClicked = false;
     addUrlIsClicked = false;
     deleteIsClicked = false;
+    rmCtnIsClicked = false;
     document.getElementById("editBtn").style.cssText = "color: color='secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
+    document.getElementById("rmCtnBtn").style.cssText = "color: 'secondary'"
     document.getElementById("deleteBtn").style.cssText = "color: 'secondary'"
     toggleCancel(false);
   }
@@ -199,6 +321,7 @@ function ActionLink(link) {
         <Tooltip title="Change Node Text"><IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton></Tooltip>
         <Tooltip title="Change Node Colour"><IconButton component="span" color="secondary" onClick={savePositions}><ColorLensIcon/></IconButton></Tooltip>
         <Tooltip title="Add Link"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
+        <Tooltip title="Delete Connection"><IconButton component="span" color="secondary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: grey"}}><RemoveCircleIcon/></IconButton></Tooltip>
         <Tooltip title="Delete Node"><IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton></Tooltip>
         </div>
         <div class="cancelBtn">

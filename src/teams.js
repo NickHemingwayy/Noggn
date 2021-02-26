@@ -53,19 +53,22 @@ function TeamPage() {
     console.log(e.target.textContent)
     let chosenTeam = e.target.textContent;
     let roomID;
+    let chosnTeam;
     teamsRef.onSnapshot((querySnapshot) => {
       let teamName = '';
       let admin;
       querySnapshot.forEach((doc) => {
+        admin = doc.data().Admin;
         teamName = doc.data().teamName;
-        admin = doc.data().Admin
         if(teamName === chosenTeam){
-          roomID = admin + teamName + '/' + admin + teamName
+          roomID = admin + teamName + '/' + admin + teamName;
+          chosnTeam = teamName
         }
 
       });
       setRoom(roomID);
-      setCurrTeamName(teamName);
+      setCurrTeamName(chosnTeam);
+      console.log(roomID,chosnTeam);
     });
   }
 
