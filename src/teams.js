@@ -85,10 +85,12 @@ function TeamPage() {
       querySnapshot.forEach((doc) => {
         teamName = doc.data().teamName;
         teamMembers = doc.data().splitUsers;
+
+        
         admin = doc.data().Admin
         if(teamMembers.includes(currUser.email) ){
           roomID = '/messages/' + admin + teamName + '/' + admin + teamName;
-          teamNames.push(<div style={{alignItems: 'left'}}><Button color="primary" onClick={loadTeam}>{teamName}</Button></div>);
+          teamNames.push(<div className ="teams" style={{alignItems: 'left'}}><Button style={{color: 'white', textTransform: 'capitalize'}} onClick={loadTeam} className="teamsButton">{teamName}</Button><p className="teamsp">{teamMembers[0]}</p><p className="teamsp">{teamMembers[1]}</p></div>);
         }
 
       });
@@ -108,12 +110,18 @@ function TeamPage() {
         <div className='content'>
           
           {room ? <DashBoard room={'/messages/' + room} teamName={teamName}/> : <DisplayDashboard/>}
-          </div>
+          
           <div className='currentTeams'>
-          <h1>Active Teams:</h1>
+            <div className="scroll">
+          <div className='title'>
+          <h2>Active Teams</h2>
+          </div>
+          <div className="teamsList">
           {room ? null:currentTeams}
           </div>
-          
+          </div>
+          </div>
+          </div>
           
         </div>
         
@@ -284,9 +292,10 @@ function DisplayDashboard(){
   };
   return(
     <ThemeProvider theme={theme}>
-  
-          <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>.</h1>
-          <p>This is your dashboard where you can <b>create and select Teams</b></p>
+          <div className="dashboard">
+          <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>!</h1>
+          <p className="welcomep">This is your personalized Noggn dashboard. </p>
+          <p className="welcomep">Get started creating beautiful mind maps by clicking the button below, or select an active team.</p>
           <Button variant="contained" color="primary" onClick={handleClickOpen} style={{width: '40%'}}>
               Create Team
             </Button>
@@ -300,6 +309,8 @@ function DisplayDashboard(){
               <TeamForm />
             </DialogContent>
           </Dialog>
+          </div>
+          
         </ThemeProvider>  )
 }
 

@@ -376,7 +376,7 @@ function ActionLink(link) {
         <Flowspace 
           theme="indigo"
           variant="filled"
-          background="#F1F2F8"
+          background="#EEF1FA"
           style={{ width:'90vw', height:'80vh'}}
           connectionSize = {4}
           arrowStart={false}
