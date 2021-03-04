@@ -2,6 +2,7 @@
   .rightNav{
     background-color: #F6F7FB;
     width: 20%;
+    
     top: 0px;
     position: absolute;
     left: 0px;
@@ -22,7 +23,6 @@
     top:8%;
     padding: 10px;
     background-color: #F6F7FB;
-    font-size: 40px;
     border: none;
     cursor: pointer;
     border-radius: 30px;

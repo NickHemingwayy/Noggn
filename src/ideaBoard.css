@@ -6,13 +6,12 @@
     border-radius: 10px;
     padding-left: 1%;
     padding-right: 1%;
-    width: 26%;
     justify-content: space-between;
-    margin: 0 auto;
-    border: 1px solid lightgray;
+    margin-left: 20px;
+    box-shadow: 0px 0px 12px rgba(45, 46, 78, 0.23);
 }
 .optionsContainer{
-    width: 90vw;
+    margin-left: 70%;
     padding-bottom: 3%;
     display: flex;
     text-align:center;
@@ -27,6 +26,7 @@
     text-align: center;
     height:210px;
 }
+
 a {
 
     /* These are technically the same, but use both */
@@ -45,4 +45,17 @@ a {
     -webkit-hyphens: auto;
     hyphens: auto;
   
+  }
+
+::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+::-webkit-scrollbar-track {
+    background: #EEF1FA;
+  }
+  
+::-webkit-scrollbar-thumb {
+    background:#B9BACA;
+    border-radius: 25px;
   }

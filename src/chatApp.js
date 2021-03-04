@@ -38,9 +38,9 @@ function DashBoard(MessagesRoom) {
 
   if (toggle === false) {
     navWidth = '8%'
-    toggleInd = <ChevronRightIcon color="primary" />
+    toggleInd = <ChevronRightIcon color="primary" size="large" />
   } else {
-    navWidth = '20%'
+    navWidth = '400px'
     toggleInd = <ChevronLeftIcon color="primary" />
   }
 
