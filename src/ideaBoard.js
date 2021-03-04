@@ -85,43 +85,7 @@ function updateConnection(ctnNodes){
     await pointsRef.doc(node2).update({'outputs': firebase.firestore.FieldValue.arrayRemove(node1)});
     await pointsRef.doc(node2).update({'inputs': firebase.firestore.FieldValue.arrayRemove(node1)});
 })()
-  /*pointsRef.onSnapshot((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      oldOuts = doc.data().outputs;
-      oldIns = doc.data().inputs;
-      if(doc.id == node1 || doc.id == node2){
-        if(doc.id == node1){
-          if(oldOuts != null){
-            if(oldOuts.length != 0){
-            for (let i = 0; i < oldOuts.length;i++){
-              if(oldOuts[i] == node2){
-                console.log(newOuts)
-                newOuts = oldOuts.splice(0,i);
-                (async () => {
-                  await pointsRef.doc(doc.id).update({outputs:newOuts});
-              })()
-              }
-            }
-          }
-          }
-        }else{
-          if(oldIns != null){
-            if(oldIns.length != 0){
-            for (let i = 0; i < oldIns.length;i++){
-              if(oldIns[i] == node1){
-                newIns = oldIns.splice(0,i);
-                console.log(newIns);
-                (async () => {
-                  await pointsRef.doc(doc.id).update({inputs:newIns});
-              })()
-              }
-            }
-          }
-          }
-        }
-      }
-    });
-  }); */
+
 
 }
 
