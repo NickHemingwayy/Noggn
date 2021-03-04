@@ -85,8 +85,6 @@ function TeamPage() {
       querySnapshot.forEach((doc) => {
         teamName = doc.data().teamName;
         teamMembers = doc.data().splitUsers;
-
-        
         admin = doc.data().Admin
         if(teamMembers.includes(currUser.email) ){
           roomID = '/messages/' + admin + teamName + '/' + admin + teamName;
