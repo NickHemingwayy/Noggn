@@ -10,8 +10,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import CancelIcon from '@material-ui/icons/Cancel';
 import LinkIcon from '@material-ui/icons/Link';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
+import Popover from '@material-ui/core/Popover';
+
+import { ChromePicker } from 'react-color'
+
 import fire from './config/fire.js';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import 'firebase/firestore';
@@ -20,6 +25,7 @@ import 'firebase/analytics';
 import * as firebase from 'firebase';
 import './ideaBoard.css'
 import icon from './Icon.png';
+import { render } from '@testing-library/react';
 const firestore = fire.firestore();
 const auth = fire.auth();
 const currUser = fire.auth().currentUser;
@@ -28,9 +34,16 @@ let editIsClicked = false;
 let newConnectIsClicked = false;
 let addUrlIsClicked = false;
 let deleteIsClicked = false;
+
 let rmCtnIsClicked = false;
 let connectionNodes = [];
 let updatedConnections = [];
+
+let colorChangeIsClicked = false;
+
+var htmlToImage = require('html-to-image');
+
+
 function IdeaBoard(ideaRoom) {
   let savedPoints = [];
   const [points, setPoints] = useState(savedPoints);
@@ -38,6 +51,9 @@ function IdeaBoard(ideaRoom) {
   const [cancelShow,toggleCancel] = useState(false);
   const [pointPos,setPointPos] = useState([0,0]);
 
+  var diagramRef = null;
+
+ 
   function changeText(node,name) {
     
     if (name != null){
@@ -46,6 +62,7 @@ function IdeaBoard(ideaRoom) {
 }
 
 function addURL(node,url){
+
   if(url != null){
     pointsRef.doc(node).update({url:url});
   }
@@ -61,7 +78,14 @@ function updateConnection(ctnNodes){
   let outNode;
   let node1 = ctnNodes[0];
   let node2 = ctnNodes[1];
-  pointsRef.onSnapshot((querySnapshot) => {
+  (async () => {
+    console.log(node1,node2);
+    await pointsRef.doc(node1).update({"outputs": firebase.firestore.FieldValue.arrayRemove(node2)});
+    await pointsRef.doc(node1).update({'inputs': firebase.firestore.FieldValue.arrayRemove(node2)});
+    await pointsRef.doc(node2).update({'outputs': firebase.firestore.FieldValue.arrayRemove(node1)});
+    await pointsRef.doc(node2).update({'inputs': firebase.firestore.FieldValue.arrayRemove(node1)});
+})()
+  /*pointsRef.onSnapshot((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       oldOuts = doc.data().outputs;
       oldIns = doc.data().inputs;
@@ -71,6 +95,7 @@ function updateConnection(ctnNodes){
             if(oldOuts.length != 0){
             for (let i = 0; i < oldOuts.length;i++){
               if(oldOuts[i] == node2){
+                console.log(newOuts)
                 newOuts = oldOuts.splice(0,i);
                 (async () => {
                   await pointsRef.doc(doc.id).update({outputs:newOuts});
@@ -85,7 +110,7 @@ function updateConnection(ctnNodes){
             for (let i = 0; i < oldIns.length;i++){
               if(oldIns[i] == node1){
                 newIns = oldIns.splice(0,i);
-                
+                console.log(newIns);
                 (async () => {
                   await pointsRef.doc(doc.id).update({inputs:newIns});
               })()
@@ -96,7 +121,7 @@ function updateConnection(ctnNodes){
         }
       }
     });
-  });
+  }); */
 
 }
 
@@ -119,6 +144,10 @@ function deleteNode(node){
           let i; 
           for(i=0; i< outputs.length; i++){
             updateNode = outputs[i];
+
+  pointsRef.doc(node).get();
+ 
+
 
             pointsRef.onSnapshot((querySnapshot) => {
               querySnapshot.forEach((doc) => {
@@ -168,6 +197,14 @@ function deleteNode(node){
 }
 
 
+function changeColor(node, color){
+  
+  if (color != null){
+      pointsRef.doc(node).update({theme:color});
+  }
+  
+}
+
 function nodeFunctions(node){
   if(editIsClicked){
     changeText(node,prompt('Enter Node Text'));
@@ -198,6 +235,10 @@ function nodeFunctions(node){
       resetBtns();
     }
   }
+  else if(colorChangeIsClicked){
+    changeColor(node, prompt('Enter the HexCode'));
+    resetBtns();
+  }
 }
 
 function linkify(inputText) {
@@ -218,7 +259,6 @@ function linkify(inputText) {
   return replacedText;
 }
 function ActionLink(link) {
-  console.log(link.link);
   function handleClick(e) {
     e.preventDefault();
     if(link.link.length != 0){
@@ -236,13 +276,14 @@ function ActionLink(link) {
   );
 }
 
+
   function getPoints(){
     
     pointsRef.onSnapshot((querySnapshot) => {
       savedPoints = [];
       querySnapshot.forEach((doc) => {
         savedPoints.push([
-          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30)}} theme='#5855FC' onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
+          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30)}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
           
           <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'center', paddingLeft:2, paddingRight:2}}>
             
@@ -272,7 +313,8 @@ function ActionLink(link) {
         value: 'New Node',
         x:20,
         y:20,
-        url:''
+        url:'',
+        theme: '#5855FC'
 
   })
   getPoints();
@@ -293,19 +335,25 @@ function ActionLink(link) {
     newConnectIsClicked = false;
     addUrlIsClicked = false;
     deleteIsClicked = false;
+
     rmCtnIsClicked = false;
     document.getElementById("editBtn").style.cssText = "color: color='secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("rmCtnBtn").style.cssText = "color: 'secondary'"
+
+    colorChangeIsClicked = false;
+    document.getElementById("editBtn").style.cssText = "color: color='secondary'"
+    document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
+    document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
+    document.getElementById("colorBtn").style.cssText = "color: 'secondary'"
+
     document.getElementById("deleteBtn").style.cssText = "color: 'secondary'"
+    document.getElementById("saveBtn").style.cssText = "color: 'secondary'"
     toggleCancel(false);
   }
 
-  function savePositions(){
-  
-   
-  }
+ 
   //same as creating your state variable where "Next" is the default value for buttonText and setButtonText is the setter function for your state variable instead of setState
 
 
@@ -317,12 +365,34 @@ function ActionLink(link) {
       <div class="optionsContainer">
         <div class="nodeOptions">
         <Tooltip title="Add Node"><IconButton component="span" color="secondary" onClick={pushPointDB}><AddCircleIcon /></IconButton></Tooltip>
+        
         <Tooltip title="Add Connection"><IconButton component="span" color="secondary"id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true;  toggleCancel(true); document.getElementById("connectionBtn").style.cssText = "color: grey"}}><AccountTreeIcon /></IconButton></Tooltip>
+        
         <Tooltip title="Change Node Text"><IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton></Tooltip>
-        <Tooltip title="Change Node Colour"><IconButton component="span" color="secondary" onClick={savePositions}><ColorLensIcon/></IconButton></Tooltip>
-        <Tooltip title="Add Link"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
+        
+        <Tooltip title="Change Node Colour"><IconButton component="span" color="secondary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: grey"}} ><ColorLensIcon/></IconButton></Tooltip>
+        
+
+        <Tooltip title="Add URL"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
+
         <Tooltip title="Delete Connection"><IconButton component="span" color="secondary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: grey"}}><RemoveCircleIcon/></IconButton></Tooltip>
+
+        
+        <Tooltip title="Save Diagram"><IconButton component="span" color="secondary"id = 'saveBtn' onClick={() => {
+                    htmlToImage.toPng(diagramRef).then(function (dataUrl) {
+                    var img = new Image();
+                    img.src = dataUrl;
+                    var link = document.createElement('a');
+                    link.download = 'noggn_mindmap.png';
+                    link.href = dataUrl;
+                    link.click();
+                  });
+
+        }}><SaveAltIcon/></IconButton></Tooltip>
+
+
         <Tooltip title="Delete Node"><IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton></Tooltip>
+        
         </div>
         <div class="cancelBtn">
           {cancelShow ? <Fab size="small" style={{ backgroundColor: 'red' , color:"white"}} onClick={resetBtns} >
@@ -340,6 +410,7 @@ function ActionLink(link) {
           connectionSize = {4}
           arrowStart={false}
           arrowEnd={true}
+          getDiagramRef={ref => {diagramRef = ref}}
           selected="point_a"
           selectedLine={{ a:"point_a", b:"point_b" }}
           onLineClick={(key_a, key_b, e) => {

@@ -44,7 +44,12 @@ import icon from './Icon.png';
 import './TopNavigation.css';
 
 
-let auth = fire.auth();
+
+
+
+const firestore = fire.firestore();
+const auth = fire.auth();
+
 
 
 
@@ -314,6 +319,10 @@ useEffect(() => {
     
   );
 
+
+function Logout(){
+  firestore.auth.signOut();
+
 }
 function logout(){
   fire.auth().signOut();
@@ -323,4 +332,4 @@ function logout(){
 function goHome(){
   window.location.reload();
 }
-
+}
