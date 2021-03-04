@@ -36,6 +36,7 @@ let addUrlIsClicked = false;
 let deleteIsClicked = false;
 
 let rmCtnIsClicked = false;
+let colorChangeIsClicked = false;
 let connectionNodes = [];
 let updatedConnections = [];
 
@@ -43,6 +44,8 @@ let colorChangeIsClicked = false;
 
 var htmlToImage = require('html-to-image');
 
+
+var htmlToImage = require('html-to-image');
 
 function IdeaBoard(ideaRoom) {
   let savedPoints = [];
@@ -203,6 +206,10 @@ function nodeFunctions(node){
     changeColor(node, prompt('Enter the HexCode'));
     resetBtns();
   }
+  else if(colorChangeIsClicked){
+    changeColor(node, prompt('Enter the HexCode'));
+    resetBtns();
+  }
 }
 
 function linkify(inputText) {
@@ -341,6 +348,7 @@ function ActionLink(link) {
 
         <Tooltip title="Delete Connection"><IconButton component="span" color="secondary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: grey"}}><RemoveCircleIcon/></IconButton></Tooltip>
 
+        <Tooltip title="Add Link"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
         
         <Tooltip title="Save Diagram"><IconButton component="span" color="secondary"id = 'saveBtn' onClick={() => {
                     htmlToImage.toPng(diagramRef).then(function (dataUrl) {

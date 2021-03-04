@@ -43,10 +43,13 @@ import icon from './Icon.png';
 
 import './TopNavigation.css';
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> Noggn/dev
 const firestore = fire.firestore();
 const auth = fire.auth();
 
@@ -322,10 +325,13 @@ useEffect(() => {
 
 function Logout(){
   firestore.auth.signOut();
+<<<<<<< HEAD
 
 }
 function logout(){
   fire.auth().signOut();
+=======
+>>>>>>> Noggn/dev
 }
 
 
