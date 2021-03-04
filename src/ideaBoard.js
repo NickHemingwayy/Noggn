@@ -40,7 +40,6 @@ let colorChangeIsClicked = false;
 let connectionNodes = [];
 let updatedConnections = [];
 
-let colorChangeIsClicked = false;
 
 var htmlToImage = require('html-to-image');
 
