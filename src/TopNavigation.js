@@ -59,15 +59,16 @@ const useStyles = makeStyles((theme) => ({
     
   root: {
     flexGrow: 1,  
+    
   },
   appBar: {
-    backgroundColor: '#2D2E4E',
-    
+    backgroundColor: '#FFFFFF',
+    boxShadow: 'none',
   },
   title: {
     flexGrow: 1,
   },
-  
+
   typography: {
     padding: theme.spacing(2),
   },
@@ -83,10 +84,15 @@ const useStyles = makeStyles((theme) => ({
   },
   
   ListItemIcon:{
-    color: '#F1F2F8',
+    color: '#6A67FF',
   },
 
-
+  button:{
+    color: '#2D2E4E',
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
+    marginLeft: '50'
+  },
   small: {
     width: theme.spacing(3),
     height: theme.spacing(3),
@@ -181,23 +187,25 @@ useEffect(() => {
         })}
       >
         <Toolbar>
-          <img src={icon} width='60px' alt ="icon" onClick={goHome} className= {classes.logoButton}></img>
+          <img src={icon} width='70px' alt ="icon" onClick={goHome} className= {classes.logoButton}></img>
           <Grid item xs />
-          <IconButton onClick={goHome}>
-            <HomeIcon className ={classes.ListItemIcon}/>
-          </IconButton>
-          <IconButton>
-            <GitHubIcon className ={classes.ListItemIcon}/>
-          </IconButton>
-          {/*TODO: Build help center dialog */}
-
-          <IconButton
-            onClick ={handleHelpOpen}
-          >
+          
             
-            <HelpIcon className ={classes.ListItemIcon}/>
-          </IconButton>
-
+          <Button onClick={goHome} className={classes.button}>
+            Home
+          </Button>
+          
+          <Button className={classes.button}>
+            Github
+          </Button>
+          
+          <Button
+            onClick ={handleHelpOpen}
+            className={classes.button}
+          >
+            Help Centre
+          </Button>
+          
           <Dialog
             open={helpOpen}
             onClose={handleHelpClose}

@@ -6,6 +6,12 @@
     align-items: center;
     height: 100%;
     justify-content: center;
-    background-color: #F1F2F8;
+    background-color: #EEF1FA;
+}
+
+.box-shadow{
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
 }
 /*} text-align: center; */
