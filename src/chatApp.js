@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import fire from './config/fire.js';
 
+
+
 import './chatApp.css';
 
 import 'firebase/firestore';
