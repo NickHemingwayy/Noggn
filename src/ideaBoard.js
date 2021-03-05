@@ -327,7 +327,7 @@ function nodeImg(node,img){
             <br></br>
             <ActionLink link={doc.data().url}/>
             
-            {hasImg ?  <img src="" id={doc.data().key} style={{width:'100px'}}/>: null}
+            {hasImg ?  <img src="" id={doc.data().key} style={{width:'120px'}}/>: null}
             
           </div>
         </div></Flowpoint>
@@ -335,7 +335,7 @@ function nodeImg(node,img){
         console.log(imgHeight);
       });
       
-      setPoints(savedPoints);
+      setPoints(savedPoints); 
     });
     
   }
@@ -353,7 +353,8 @@ function nodeImg(node,img){
         x:20,
         y:20,
         url:'',
-        theme: '#5855FC'
+        theme: '#5855FC',
+        img: false
 
   })
   getPoints();

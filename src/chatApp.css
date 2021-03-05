@@ -120,6 +120,11 @@
     width: 100%;
   }
 
+  .teamIcons{
+    float: right;
+    display:flex;
+    cursor: pointer;
+  }
   
  
   .chatAppSection {

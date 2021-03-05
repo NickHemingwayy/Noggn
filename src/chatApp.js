@@ -34,6 +34,7 @@ function DashBoard(MessagesRoom) {
   let toggleX = '380 px'
   let toggleInd = <ChevronLeftIcon />
   const [toggle, setState] = useState(true);
+
   console.log(toggle);
 
 
@@ -71,7 +72,28 @@ function DashBoard(MessagesRoom) {
 
 
 function ChatApp(MessagesRoom) {
+  const teamRef = fire.firestore().collection("Teams");
+  let teamID = '';
+  let membersString = ''
+  let dbTeamMebers;
+  let fileBase = /[^/]*$/.exec(MessagesRoom.room)[0];
+  const [teamMembers,setTeamMembers] = useState('')
+  teamRef.onSnapshot((querySnapshot) => {
 
+    querySnapshot.forEach((doc) => {   
+    teamID = doc.data().teamID;
+    console.log(fileBase,teamID);
+    if(fileBase == teamID){
+      dbTeamMebers = doc.data().splitUsers
+    
+      for(let i=0;i<dbTeamMebers.length;i++){
+        membersString = membersString + '\n' + dbTeamMebers[i];
+      }
+      setTeamMembers(membersString)
+    }
+
+    });
+  });
     return (
     <div>
       <div className="headerSection">
@@ -79,7 +101,7 @@ function ChatApp(MessagesRoom) {
       <div className = "teamNameBlock">
       <div className ="teamName">
       <h3>Team Members</h3>
-      
+      {teamMembers}
       
       <div className= "teamIcons">
         <p>Add New</p>
