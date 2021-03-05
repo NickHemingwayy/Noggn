@@ -14,7 +14,7 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
-
+import ImageIcon from '@material-ui/icons/Image';
 import { ChromePicker } from 'react-color'
 
 import fire from './config/fire.js';
@@ -34,17 +34,18 @@ let editIsClicked = false;
 let newConnectIsClicked = false;
 let addUrlIsClicked = false;
 let deleteIsClicked = false;
+let addImgIsClicked = false;
 
 let rmCtnIsClicked = false;
 let colorChangeIsClicked = false;
 let connectionNodes = [];
 let updatedConnections = [];
-
+let file;
+let imgUrl;
+let imgHeight = 0;
 
 var htmlToImage = require('html-to-image');
 
-
-var htmlToImage = require('html-to-image');
 
 function IdeaBoard(ideaRoom) {
   let savedPoints = [];
@@ -52,10 +53,11 @@ function IdeaBoard(ideaRoom) {
   const pointsRef = fire.firestore().collection(ideaRoom.room);
   const [cancelShow,toggleCancel] = useState(false);
   const [pointPos,setPointPos] = useState([0,0]);
-
+ 
   var diagramRef = null;
 
- 
+  let fileBase = /[^/]*$/.exec(ideaRoom.room)[0];
+
   function changeText(node,name) {
     
     if (name != null){
@@ -70,14 +72,9 @@ function addURL(node,url){
   }
   
 }
+ 
 
 function updateConnection(ctnNodes){
-  let oldOuts;
-  let oldIns;
-  let newOuts;
-  let newIns;
-  let inNode;
-  let outNode;
   let node1 = ctnNodes[0];
   let node2 = ctnNodes[1];
   (async () => {
@@ -90,6 +87,35 @@ function updateConnection(ctnNodes){
 
 
 }
+
+let fileUpload = document.getElementById("fileImg");
+if(fileUpload){
+  fileUpload.addEventListener('change', function(e){
+    file = e.target.files[0];
+  });  
+  
+}
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+function uploadImg(node){
+
+      let storageRef = fire.storage().ref(fileBase + '/' + node);
+      storageRef.put(file);
+
+      pointsRef.doc(node).update({img:true});
+
+      (async () => {
+        let storageRef = fire.storage().ref(fileBase + '/' + node);
+        await storageRef.put(file);
+        await delay(10000);
+        await pointsRef.doc(node).update({img:true});
+        getPoints();
+    })()
+
+      
+} 
+
+
 
 function deleteNode(node){
   
@@ -205,8 +231,8 @@ function nodeFunctions(node){
     changeColor(node, prompt('Enter the HexCode'));
     resetBtns();
   }
-  else if(colorChangeIsClicked){
-    changeColor(node, prompt('Enter the HexCode'));
+  else if(addImgIsClicked){
+    uploadImg(node);
     resetBtns();
   }
 }
@@ -247,13 +273,64 @@ function ActionLink(link) {
 }
 
 
+
+function nodeImg(node,img){
+  console.log('node',node.img);
+  let test;
+  if(img){
+ 
+     fire.storage().ref(fileBase + '/' + node).getDownloadURL().then(function(url) {
+        test = url;
+        document.getElementById(node+'img').src = test;
+        document.getElementById(node+'img').addEventListener("load", function () {
+
+          imgHeight = this.height;
+          console.log(imgHeight);
+          console.log(points);
+          });
+
+      }).catch(function(error) {
+      
+      });
+  }else{
+    imgHeight = 0;
+  }
+
+}
+
+function NodeImage(node,img){
+
+ let test;
+    fire.storage().ref(fileBase + '/' + node).getDownloadURL().then(function(url) {
+      test = url;
+      document.getElementById(node + 'img').src = test;
+     });
+
+console.log(test);
+
+  return(
+    <>
+    {img ? <img id = {node + 'img'} src= {test}  width="100"/> : null}
+    </>
+  );
+}
+
+
+
   function getPoints(){
     
     pointsRef.onSnapshot((querySnapshot) => {
       savedPoints = [];
-      querySnapshot.forEach((doc) => {
+      let imgHt;
+      querySnapshot.forEach((doc) => {   
+        let hasImg = null;
+        if(doc.data().img == true){
+          hasImg = true;
+        } 
+        nodeImg(doc.data().key,doc.data().img);
+    
         savedPoints.push([
-          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30)}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
+          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
           
           <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'center', paddingLeft:2, paddingRight:2}}>
             
@@ -262,10 +339,15 @@ function ActionLink(link) {
             
             <br></br>
             <ActionLink link={doc.data().url}/>
+            
+            {hasImg ? <NodeImage/> : null}
+            
           </div>
         </div></Flowpoint>
         ]);
+        console.log(imgHeight);
       });
+      
       setPoints(savedPoints);
     });
     
@@ -299,19 +381,19 @@ function ActionLink(link) {
       
     }
 
- 
+
   function resetBtns(){
     editIsClicked = false;
     newConnectIsClicked = false;
     addUrlIsClicked = false;
     deleteIsClicked = false;
-
+    addImgIsClicked = false;
     rmCtnIsClicked = false;
     document.getElementById("editBtn").style.cssText = "color: color='secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("rmCtnBtn").style.cssText = "color: 'secondary'"
-
+    document.getElementById("imgBtn").style.cssText = "color: 'secondary'"
     colorChangeIsClicked = false;
     document.getElementById("editBtn").style.cssText = "color: color='secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
@@ -326,7 +408,11 @@ function ActionLink(link) {
  
   //same as creating your state variable where "Next" is the default value for buttonText and setButtonText is the setter function for your state variable instead of setState
 
-
+  const hiddenFileInput = React.useRef(null);
+  
+  const handleClick = event => {
+    hiddenFileInput.current.click();
+  };
 
 
       return (
@@ -347,7 +433,7 @@ function ActionLink(link) {
 
         <Tooltip title="Delete Connection"><IconButton component="span" color="secondary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: grey"}}><RemoveCircleIcon/></IconButton></Tooltip>
 
-        <Tooltip title="Add Link"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
+        <Tooltip title="Add Image"><IconButton component="span" color="secondary"id = 'imgBtn' onClick={function(){handleClick();resetBtns(); addImgIsClicked = true; toggleCancel(true); document.getElementById("imgBtn").style.cssText = "color: grey"}}><ImageIcon/><input ref={hiddenFileInput} type="file" id="fileImg" style={{display: 'none'}}></input></IconButton></Tooltip>
         
         <Tooltip title="Save Diagram"><IconButton component="span" color="secondary"id = 'saveBtn' onClick={() => {
                     htmlToImage.toPng(diagramRef).then(function (dataUrl) {

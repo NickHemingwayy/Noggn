@@ -6,7 +6,7 @@
     border-radius: 10px;
     padding-left: 1%;
     padding-right: 1%;
-    width: 26%;
+    
     justify-content: space-between;
     margin: 0 auto;
     border: 1px solid lightgray;
@@ -45,4 +45,8 @@ a {
     -webkit-hyphens: auto;
     hyphens: auto;
   
+  }
+
+  .fileImg{
+      display: none;
   }
