@@ -31,7 +31,8 @@ const auth = fire.auth();
 function DashBoard(MessagesRoom) {
 
   let navWidth = '';
-  let toggleInd = <ChevronLeftIcon/>
+  let toggleX = '380 px'
+  let toggleInd = <ChevronLeftIcon />
   const [toggle, setState] = useState(true);
   console.log(toggle);
 
@@ -39,9 +40,11 @@ function DashBoard(MessagesRoom) {
   if (toggle === false) {
     navWidth = '8%'
     toggleInd = <ChevronRightIcon color="primary" size="large" />
+    toggleX = '130px'
   } else {
     navWidth = '400px'
     toggleInd = <ChevronLeftIcon color="primary" />
+    toggleX = '380px'
   }
 
   let navStyle = {
@@ -55,7 +58,7 @@ function DashBoard(MessagesRoom) {
         
         <div style={navStyle} className="rightNav">
           <div>
-            <button onClick={() => setState(!toggle)} className="toggle">{toggleInd}</button>
+            <button style={{left:toggleX}} onClick={() => setState(!toggle)} className="toggle">{toggleInd}</button>
             {toggle ? <ChatApp {...MessagesRoom} /> : <ChatClose {...MessagesRoom} />}
           </div>
         </div>

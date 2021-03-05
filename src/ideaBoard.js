@@ -281,12 +281,12 @@ function nodeImg(node,img){
  
      fire.storage().ref(fileBase + '/' + node).getDownloadURL().then(function(url) {
         test = url;
-        document.getElementById(node+'img').src = test;
-        document.getElementById(node+'img').addEventListener("load", function () {
+        document.getElementById(node).src = test;
+        document.getElementById(node).addEventListener("load", function () {
 
           imgHeight = this.height;
-          console.log(imgHeight);
-          console.log(points);
+          pointsRef.doc(node).update({imgHeight:imgHeight});
+          
           });
 
       }).catch(function(error) {
@@ -298,22 +298,6 @@ function nodeImg(node,img){
 
 }
 
-function NodeImage(node,img){
-
- let test;
-    fire.storage().ref(fileBase + '/' + node).getDownloadURL().then(function(url) {
-      test = url;
-      document.getElementById(node + 'img').src = test;
-     });
-
-console.log(test);
-
-  return(
-    <>
-    {img ? <img id = {node + 'img'} src= {test}  width="100"/> : null}
-    </>
-  );
-}
 
 
 
@@ -326,7 +310,10 @@ console.log(test);
         let hasImg = null;
         if(doc.data().img == true){
           hasImg = true;
-        } 
+          imgHeight = doc.data().imgHeight;
+        } else{
+          imgHeight = 0;
+        }
         nodeImg(doc.data().key,doc.data().img);
     
         savedPoints.push([
@@ -340,7 +327,7 @@ console.log(test);
             <br></br>
             <ActionLink link={doc.data().url}/>
             
-            {hasImg ? <NodeImage/> : null}
+            {hasImg ?  <img src="" id={doc.data().key} style={{width:'100px'}}/>: null}
             
           </div>
         </div></Flowpoint>
@@ -434,7 +421,7 @@ console.log(test);
 
         <Tooltip title="Delete Connection"><IconButton component="span" color="primary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: #2D2E4E"}}><RemoveCircleIcon/></IconButton></Tooltip>
 
-        <Tooltip title="Add Image"><IconButton component="span" color="secondary"id = 'imgBtn' onClick={function(){handleClick();resetBtns(); addImgIsClicked = true; toggleCancel(true); document.getElementById("imgBtn").style.cssText = "color: grey"}}><ImageIcon/><input ref={hiddenFileInput} type="file" id="fileImg" style={{display: 'none'}}></input></IconButton></Tooltip>
+        <Tooltip title="Add Image"><IconButton component="span" color="primary"id = 'imgBtn' onClick={function(){handleClick();resetBtns(); addImgIsClicked = true; toggleCancel(true); document.getElementById("imgBtn").style.cssText = "color: #2D2E4E"}}><ImageIcon/><input ref={hiddenFileInput} type="file" id="fileImg" style={{display: 'none'}}></input></IconButton></Tooltip>
         
         </div>
         <div class="nodeOptions">
