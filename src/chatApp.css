@@ -22,7 +22,7 @@
     left: 380px;
     top:8%;
     padding: 10px;
-    background-color: #F6F7FB;
+    background-color: #EEF1FA;
     border: none;
     cursor: pointer;
     border-radius: 30px;
@@ -257,6 +257,7 @@
     border-radius: 50%;
     margin-top: 30px;
     margin-left: 5px;
+    margin-right: 5px;
   }
 
   .chatImgClose{

@@ -291,6 +291,7 @@ function DisplayDashboard(){
   return(
     <ThemeProvider theme={theme}>
           <div className="dashboard">
+            <div className="createTeamDiv">
           <h1>Welcome, <span style={{ color: '#5855FC' }}>{user}</span>!</h1>
           <p className="welcomep">This is your personalized Noggn dashboard. </p>
           <p className="welcomep">Get started creating beautiful mind maps by clicking the button below, or select an active team.</p>
@@ -307,6 +308,18 @@ function DisplayDashboard(){
               <TeamForm />
             </DialogContent>
           </Dialog>
+          </div>
+          <div className="bottomNavigation">
+          <div className="bottomNavigationDiv">
+            <h3>Not sure where to start?</h3>
+            <Button variant="contained"  onClick={handleClickOpen} style={{width: '70%', backgroundColor: '#E789FF', color:'#FFFFFF', marginTop: '40px'}}>Visit Help Centre</Button>
+          </div>
+          <div className="bottomNavigationDiv" style={{marginLeft:'20px'}}>
+            <h3>What are Mind Maps?</h3>
+            <p>Mind maps are creative tools used for brainstorming ideas. In Noggn's case, mind maps are made up of nodes that represented by ideas connected by lines to show connections between ideas.</p>
+            <p>Mind maps have so many great uses. Get started now by creating a team!</p>
+          </div>
+          </div>
           </div>
           
         </ThemeProvider>  )

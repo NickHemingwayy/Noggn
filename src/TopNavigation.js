@@ -39,7 +39,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import Avatar from '@material-ui/core/Avatar';
 
-import icon from './Icon.png';
+import icon from './logo.svg';
 
 import './TopNavigation.css';
 
@@ -69,9 +69,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 
-  typography: {
-    padding: theme.spacing(2),
-  },
   toolbar: {
     
     display: 'flex',
@@ -187,7 +184,7 @@ useEffect(() => {
         })}
       >
         <Toolbar>
-          <img src={icon} width='70px' alt ="icon" onClick={goHome} className= {classes.logoButton}></img>
+          <img src={icon} width='80px' alt ="icon" onClick={goHome} className= {classes.logoButton}></img>
           <Grid item xs />
           
             
@@ -306,11 +303,11 @@ useEffect(() => {
                   horizontal: 'center',
                 }}
               >
-                <Typography className={classes.typography}>Signed in as</Typography>
-               <Typography className={classes.typography}>{user}
-              </Typography>
-              <Typography className = {classes.typography}>{email}</Typography>
-              <Button onClick={logout}><ExitToAppIcon/>Logout</Button>
+                <p className="profileText" > Signed in as <span style={{color: '#6A67FF'}}>{user}</span></p>
+
+              
+              <p className = 'profileText'>{email}</p>
+              <Button onClick={logout} style={{paddingLeft: '20px', paddingRight: '20px'}}><ExitToAppIcon className={classes.ListItemIcon}/>Logout</Button>
             </Popover>
             
 
@@ -328,10 +325,7 @@ useEffect(() => {
   );
 
 
-function Logout(){
-  firestore.auth.signOut();
 
-}
 function logout(){
   fire.auth().signOut();
 }
