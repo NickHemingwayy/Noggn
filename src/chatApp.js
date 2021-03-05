@@ -31,17 +31,17 @@ const auth = fire.auth();
 function DashBoard(MessagesRoom) {
 
   let navWidth = '';
-  let toggleInd = <ChevronLeftIcon style={{ fontSize: '30px' }} />
+  let toggleInd = <ChevronLeftIcon/>
   const [toggle, setState] = useState(true);
   console.log(toggle);
 
 
   if (toggle === false) {
-    navWidth = '5%'
-    toggleInd = <ChevronLeftIcon />
+    navWidth = '8%'
+    toggleInd = <ChevronRightIcon color="primary" size="large" />
   } else {
-    navWidth = '25%'
-    toggleInd = <ChevronRightIcon />
+    navWidth = '400px'
+    toggleInd = <ChevronLeftIcon color="primary" />
   }
 
   let navStyle = {
@@ -72,16 +72,19 @@ function ChatApp(MessagesRoom) {
     return (
     <div>
       <div className="headerSection">
+      <h2 style={{textAlign:'center'}}><b>{MessagesRoom.teamName}</b></h2>
       <div className = "teamNameBlock">
-        <div className ="teamName">
-      <h1 ><b>{MessagesRoom.teamName}</b></h1>
-      </div>
+      <div className ="teamName">
+      <h3>Team Members</h3>
+      
+      
       <div className= "teamIcons">
+        <p>Add New</p>
       <AddBoxIcon />
-      <EditIcon style={{marginLeft: '15px'}} />
       </div>
       </div>
-      <Divider />
+      </div>
+      
       
       
       
@@ -179,7 +182,7 @@ function ChatRoom(MessagesRoom) {
       <span ref={dummy}></span>
       {setScroll()}
     </div>
-    <Divider />
+    
     <form onSubmit={sendMessage} className='chatForm' >
      
         <TextField
@@ -189,7 +192,7 @@ function ChatRoom(MessagesRoom) {
           rowsMax={2}
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
-          variant="filled"
+          variant="outlined"
           color='secondary'
           style={{ width: "70%" }}
           size='small'
@@ -265,10 +268,16 @@ function ChatClose(MessagesRoom) {
 
   return (
     <div className="chatAppClose">
-
+      <div className="chatAppCloseTeamName">
+        {MessagesRoom.teamName}
+      </div>
+      <div className="messagesSectionClose">
+      <div className="chatAppCloseMessages">
       {messages && messages.map(msg => <ChatCloseMessage key={msg.id} message={msg} />)}
 
       <span ref={dummy}></span>
+      </div>
+      </div>
     </div>
   )
 }
@@ -277,13 +286,18 @@ function ChatClose(MessagesRoom) {
 //Sets the messages and avatars from the closed chat room 
 function ChatCloseMessage(props) {
 
-  const { text, photoURL, user } = props.message;
+  const { text, photoURL, user, createdAt } = props.message;
+  var timeStamp = createdAt;
+  var date = new Date(timeStamp);
+  var utcString = date.toUTCString();
+  var time = utcString.slice(-11, -7);
 
   return (
-    <div className="chatAppCloseMessages">
+    <div className="closeMsg">
       <Tooltip title={text} placement="left" interactive>
         <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImgClose' />
       </Tooltip>
+      <p style={{marginLeft: '15px', color: '#828282'}}>{time}</p>
     </div>
   )
 }

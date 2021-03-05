@@ -389,13 +389,13 @@ console.log(test);
     deleteIsClicked = false;
     addImgIsClicked = false;
     rmCtnIsClicked = false;
-    document.getElementById("editBtn").style.cssText = "color: color='secondary'"
+    document.getElementById("editBtn").style.cssText = "color: 'secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("rmCtnBtn").style.cssText = "color: 'secondary'"
     document.getElementById("imgBtn").style.cssText = "color: 'secondary'"
     colorChangeIsClicked = false;
-    document.getElementById("editBtn").style.cssText = "color: color='secondary'"
+    document.getElementById("editBtn").style.cssText = "color: 'secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("colorBtn").style.cssText = "color: 'secondary'"
@@ -418,24 +418,27 @@ console.log(test);
       return (
           <>
           
-      <div class="optionsContainer">
+        <div class="optionsContainer">
         <div class="nodeOptions">
-        <Tooltip title="Add Node"><IconButton component="span" color="secondary" onClick={pushPointDB}><AddCircleIcon /></IconButton></Tooltip>
+        <Tooltip title="Add Node"><IconButton component="span" color="primary" onClick={pushPointDB}><AddCircleIcon /></IconButton></Tooltip>
         
-        <Tooltip title="Add Connection"><IconButton component="span" color="secondary"id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true;  toggleCancel(true); document.getElementById("connectionBtn").style.cssText = "color: grey"}}><AccountTreeIcon /></IconButton></Tooltip>
+        <Tooltip title="Add Connection"><IconButton component="span" color="primary"id = 'connectionBtn' onClick={function(){resetBtns(); newConnectIsClicked = true;  toggleCancel(true); document.getElementById("connectionBtn").style.cssText = "color: #2D2E4E"}}><AccountTreeIcon /></IconButton></Tooltip>
+        </div>
+        <div class="nodeOptions">
+        <Tooltip title="Change Node Text"><IconButton component="span" color="primary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: #2D2E4E"} }><TextFieldsIcon /></IconButton></Tooltip>
         
-        <Tooltip title="Change Node Text"><IconButton component="span" color="secondary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: grey"} }><TextFieldsIcon /></IconButton></Tooltip>
-        
-        <Tooltip title="Change Node Colour"><IconButton component="span" color="secondary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: grey"}} ><ColorLensIcon/></IconButton></Tooltip>
+        <Tooltip title="Change Node Colour"><IconButton component="span" color="primary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: #2D2E4E"}} ><ColorLensIcon/></IconButton></Tooltip>
         
 
-        <Tooltip title="Add URL"><IconButton component="span" color="secondary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: grey"}}><LinkIcon/></IconButton></Tooltip>
+        <Tooltip title="Add URL"><IconButton component="span" color="primary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: #2D2E4E"}}><LinkIcon/></IconButton></Tooltip>
 
-        <Tooltip title="Delete Connection"><IconButton component="span" color="secondary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: grey"}}><RemoveCircleIcon/></IconButton></Tooltip>
+        <Tooltip title="Delete Connection"><IconButton component="span" color="primary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: #2D2E4E"}}><RemoveCircleIcon/></IconButton></Tooltip>
 
         <Tooltip title="Add Image"><IconButton component="span" color="secondary"id = 'imgBtn' onClick={function(){handleClick();resetBtns(); addImgIsClicked = true; toggleCancel(true); document.getElementById("imgBtn").style.cssText = "color: grey"}}><ImageIcon/><input ref={hiddenFileInput} type="file" id="fileImg" style={{display: 'none'}}></input></IconButton></Tooltip>
         
-        <Tooltip title="Save Diagram"><IconButton component="span" color="secondary"id = 'saveBtn' onClick={() => {
+        </div>
+        <div class="nodeOptions">
+        <Tooltip title="Save Diagram"><IconButton component="span" color="primary"id = 'saveBtn' onClick={() => {
                     htmlToImage.toPng(diagramRef).then(function (dataUrl) {
                     var img = new Image();
                     img.src = dataUrl;
@@ -448,7 +451,7 @@ console.log(test);
         }}><SaveAltIcon/></IconButton></Tooltip>
 
 
-        <Tooltip title="Delete Node"><IconButton component="span" color="secondary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: grey"}}><DeleteIcon/></IconButton></Tooltip>
+        <Tooltip title="Delete Node"><IconButton component="span" color="primary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: #2D2E4E"}}><DeleteIcon/></IconButton></Tooltip>
         
         </div>
         <div class="cancelBtn">
@@ -462,7 +465,7 @@ console.log(test);
         <Flowspace 
           theme="indigo"
           variant="filled"
-          background="#F1F2F8"
+          background="#EEF1FA"
           style={{ width:'90vw', height:'80vh'}}
           connectionSize = {4}
           arrowStart={false}

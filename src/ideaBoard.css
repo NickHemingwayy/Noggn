@@ -8,18 +8,18 @@
     padding-right: 1%;
     
     justify-content: space-between;
-    margin: 0 auto;
-    border: 1px solid lightgray;
+    margin-left: 20px;
+    box-shadow: 0px 0px 12px rgba(45, 46, 78, 0.23);
 }
 .optionsContainer{
-    width: 90vw;
+    margin-left: 70%;
     padding-bottom: 3%;
     display: flex;
     text-align:center;
 }
 .cancelBtn{
     position: absolute;
-    right:-20%;
+    right:-30%;
     padding-top: 5px;
 
 }
@@ -27,6 +27,7 @@
     text-align: center;
     height:210px;
 }
+
 a {
 
     /* These are technically the same, but use both */
@@ -47,6 +48,17 @@ a {
   
   }
 
-  .fileImg{
-      display: none;
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+::-webkit-scrollbar-track {
+    background: #EEF1FA;
+  }
+  
+::-webkit-scrollbar-thumb {
+    background:#B9BACA;
+    border-radius: 25px;
   }
