@@ -5,12 +5,16 @@ import './teams.css'
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
 import DashBoard from './chatApp.js';
 import IdeaBoard from './ideaBoard.js';
 
 import TopNavigation from './TopNavigation.js';
 import Button from '@material-ui/core/Button';
-import { ThemeProvider } from '@material-ui/styles';
+
 import theme from "./theme.js";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,15 +22,40 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import HelpIcon from '@material-ui/icons/Help';
+
+import HelpCentre from './HelpCentre.js'
+
 const firestore = fire.firestore();
 const auth = fire.auth();
 
+const useStyles = makeStyles((theme) => ({
+    
+ 
+  dialog:{
+    padding: '100px',
+    color: '#2D2E4E',
+  },
+  dialogTitle:{
+    color: '#2D2E4E',
+    paddingTop: '30px',
+    paddingLeft: '30px',
+    paddingRight: '30px',
+    paddingBottom: '10px'
+  },
+  dialogAccordian:{
+    paddingLeft: '30px',
+    paddingRight: '30px',
+    paddingBottom: '30px'
+  },
+
+}));
 
 function TeamPage() {
   const [showForm, setState] = useState(false);
   const [user, setUser] = useState('');
   const currUser = fire.auth().currentUser;
-
+  
   const userRef = fire.firestore().collection("Users");
 
   function getUser() {
@@ -269,9 +298,20 @@ function TeamForm() {
 function DisplayDashboard(){
   const [user, setUser] = useState('');
   const currUser = fire.auth().currentUser;
-
+  const classes = useStyles();
+  const theme = useTheme();
   const userRef = fire.firestore().collection("Users");
 
+  const [helpOpen, setHelpOpen]  = React.useState(false);
+
+  const handleHelpOpen = () =>{
+    setHelpOpen(true);
+  }
+
+  const handleHelpClose = () => {
+    setHelpOpen(false);
+  }
+  
   function getUser() {
     userRef.onSnapshot((querySnapshot) => {
       let users = '';
@@ -319,7 +359,27 @@ function DisplayDashboard(){
           <div className="bottomNavigation">
           <div className="bottomNavigationDiv">
             <h3>Not sure where to start?</h3>
-            <Button variant="contained"  onClick={handleClickOpen} style={{width: '70%', backgroundColor: '#E789FF', color:'#FFFFFF', marginTop: '40px'}}>Visit Help Centre</Button>
+
+            <Button variant="contained"  onClick={handleHelpOpen} style={{width: '70%', backgroundColor: '#E789FF', color:'#FFFFFF', marginTop: '40px'}}>Visit Help Centre</Button>
+         
+            <Dialog
+            open={helpOpen}
+            onClose={handleHelpClose}
+            
+          >
+
+            <DialogTitle className = {classes.dialogTitle}>Noggn Help Centre <HelpIcon /></DialogTitle>
+
+            <DialogContentText className = {classes.dialogTitle}>
+            Welcome to Noggn's Help Centre. Here, you'll find answers to any questions you may have on how to use Noggn!
+            </DialogContentText>
+
+            <DialogContentText className = {classes.dialogAccordian}>
+            <HelpCentre />
+            </DialogContentText>
+
+          </Dialog>
+         
           </div>
           <div className="bottomNavigationDiv" style={{marginLeft:'20px'}}>
             <h3>What are Mind Maps?</h3>

@@ -189,10 +189,12 @@
   }
   
   .chatForm {
-    padding: 5%;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: white;
     display: flex;
-    flex-direction: row;    
+    flex-direction:row;    
     align-items: left;
     border-radius: 15px;
   }

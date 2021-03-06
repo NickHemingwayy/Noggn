@@ -15,6 +15,7 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
 import ImageIcon from '@material-ui/icons/Image';
+import ColorPicker, { useColor } from "react-color-palette";
 
 import Menu from '@material-ui/core/Menu';
 
@@ -425,19 +426,7 @@ function nodeImg(node,img){
         <div class="nodeOptions">
         <Tooltip title="Change Node Text"><IconButton component="span" color="primary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: #2D2E4E"} }><TextFieldsIcon /></IconButton></Tooltip>
         
-        <Tooltip title="Change Node Colour"><IconButton component="span" color="primary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: #2D2E4E"}} ><ColorLensIcon/></IconButton></Tooltip>
-        
-        <Button onClick={handleColorClick}> Color Swatch</Button>
-        <Menu 
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleColorClose}
-        >
-          
-        </Menu>
-        
+        <Tooltip title="Change Node Colour"><IconButton component="span" color="primary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: #2D2E4E"}} ><ColorLensIcon/></IconButton></Tooltip>      
 
         <Tooltip title="Add URL"><IconButton component="span" color="primary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: #2D2E4E"}}><LinkIcon/></IconButton></Tooltip>
 

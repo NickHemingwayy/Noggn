@@ -215,9 +215,9 @@ function ChatRoom(MessagesRoom) {
     </div>
     
     <form onSubmit={sendMessage} className='chatForm'  >
-     
+      
         <TextField
-          id="outlined-multiline-flexible"
+          id="filled-multiline-flexible"
           label="Type Something"
           multiline
           rowsMax={2}
@@ -228,9 +228,9 @@ function ChatRoom(MessagesRoom) {
             if (e.key === 'Enter') {
             sendMessage(e);
         }}}
-          variant="outlined"
+          variant="filled"
           color='secondary'
-          style={{ width: "70%" }}
+          style={{ width: "90%" }}
           size='small'
 
         />

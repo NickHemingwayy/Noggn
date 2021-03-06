@@ -43,7 +43,7 @@ import icon from './logo.svg';
 
 import './TopNavigation.css';
 
-
+import HelpCentre from './HelpCentre.js'
 
 
 
@@ -96,7 +96,20 @@ const useStyles = makeStyles((theme) => ({
   },
 
   dialog:{
-    padding: '50'
+    padding: '100px',
+    color: '#2D2E4E',
+  },
+  dialogTitle:{
+    color: '#2D2E4E',
+    paddingTop: '30px',
+    paddingLeft: '30px',
+    paddingRight: '30px',
+    paddingBottom: '10px'
+  },
+  dialogAccordian:{
+    paddingLeft: '30px',
+    paddingRight: '30px',
+    paddingBottom: '30px'
   },
   logoButton: {
     marginLeft: theme.spacing(3),
@@ -164,11 +177,7 @@ useEffect(() => {
     setOpen(false);
   }
   
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleAccordianChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+ 
  
   return (
     
@@ -206,78 +215,18 @@ useEffect(() => {
           <Dialog
             open={helpOpen}
             onClose={handleHelpClose}
-            className = {classes.dialog}
+            
           >
 
-            <DialogTitle>Noggn Help center</DialogTitle>
+            <DialogTitle className = {classes.dialogTitle}>Noggn Help Centre <HelpIcon /></DialogTitle>
 
-            <DialogContentText>
-            <Accordion expanded={expanded === 'panel1'} onChange={handleAccordianChange('panel1')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography className={classes.secondaryHeading}>Dashboard</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-            maximus est, id dignissim quam.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel2'} onChange={handleAccordianChange('panel2')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2bh-content"
-          id="panel2bh-header"
-        >
-          <Typography className={classes.secondaryHeading}>
-            Create Team
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-            diam eros in elit. Pellentesque convallis laoreet laoreet.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel3'} onChange={handleAccordianChange('panel3')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3bh-content"
-          id="panel3bh-header"
-        >
-          
-          <Typography className={classes.secondaryHeading}>
-            Chat
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-            vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel4'} onChange={handleAccordianChange('panel4')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography className={classes.heading}>Mind Map Creation</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-            vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-              </DialogContentText>
+            <DialogContentText className = {classes.dialogTitle}>
+            Welcome to Noggn's Help Centre. Here, you'll find answers to any questions you may have on how to use Noggn!
+            </DialogContentText>
+
+            <DialogContentText className = {classes.dialogAccordian}>
+            <HelpCentre />
+            </DialogContentText>
 
           </Dialog>
 
