@@ -110,6 +110,7 @@ function uploadImg(node){
         await delay(10000);
         await pointsRef.doc(node).update({img:true});
         getPoints();
+       
     })()
 
       
@@ -233,6 +234,7 @@ function nodeFunctions(node){
   }
   else if(addImgIsClicked){
     uploadImg(node);
+    alert("Your image is being uploaded. Please wait a moment.");
     resetBtns();
   }
 }
@@ -283,7 +285,6 @@ function nodeImg(node,img){
         test = url;
         document.getElementById(node).src = test;
         document.getElementById(node).addEventListener("load", function () {
-
           imgHeight = this.height;
           pointsRef.doc(node).update({imgHeight:imgHeight});
           

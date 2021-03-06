@@ -77,18 +77,25 @@ function TeamPage() {
   const [teamName, setCurrTeamName] = useState('');
   function getTeams() { // retrieves all teams in DB
     teamsRef.onSnapshot((querySnapshot) => {
+      
       let teamNames = [];
       let teamName = '';
       let teamMembers;
+      let membersString = '';
       let roomID;
       let admin;
       querySnapshot.forEach((doc) => {
         teamName = doc.data().teamName;
         teamMembers = doc.data().splitUsers;
         admin = doc.data().Admin
+        
+        //for(let i=0;i<teamMembers.length;i++){
+          //membersString = membersString + '\n' + teamMembers[i];
+        //} 
         if(teamMembers.includes(currUser.email) ){
+         
           roomID = '/messages/' + admin + teamName + '/' + admin + teamName;
-          teamNames.push(<div className ="teams" style={{alignItems: 'left'}}><Button style={{color: 'white', textTransform: 'capitalize'}} onClick={loadTeam} className="teamsButton">{teamName}</Button><p className="teamsp">{teamMembers[0]}</p><p className="teamsp">{teamMembers[1]}</p></div>);
+          teamNames.push(<div className ="teams" style={{alignItems: 'left'}}><Button style={{color: 'white', textTransform: 'capitalize'}} onClick={loadTeam} className="teamsButton">{teamName}</Button><p className="teamsp">{teamMembers[0]}</p><p className="teamsp">{teamMembers[1]}</p><p className="teamsp">{teamMembers[2]}</p></div>);
         }
 
       });

@@ -39,7 +39,7 @@ function DashBoard(MessagesRoom) {
 
 
   if (toggle === false) {
-    navWidth = '8%'
+    navWidth = '150px'
     toggleInd = <ChevronRightIcon color="primary" size="large" />
     toggleX = '130px'
   } else {
@@ -101,12 +101,12 @@ function ChatApp(MessagesRoom) {
       <div className = "teamNameBlock">
       <div className ="teamName">
       <h3>Team Members</h3>
-      {teamMembers}
-      
-      <div className= "teamIcons">
-        <p>Add New</p>
-      <AddBoxIcon />
+      {/*<p>Add New</p>
+      <AddBoxIcon /> */}
       </div>
+      <div className ="teamMembers">
+      {teamMembers}
+            
       </div>
       </div>
       
@@ -133,7 +133,7 @@ function ChatRoom(MessagesRoom) {
   const dummy = useRef();
   console.log(MessagesRoom)
   const messagesRef = firestore.collection(MessagesRoom.room);
-  const query = messagesRef.orderBy('createdAt').limit(25);
+  const query = messagesRef.orderBy('createdAt').limit(45);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
 
@@ -188,14 +188,20 @@ function ChatRoom(MessagesRoom) {
     var msgDiv = document.getElementById("messagesDiv");
     //console.log(msgDiv);
     if (msgDiv !== null) {
-      console.log(msgDiv);
-      console.log("Height = " + msgDiv.scrollHeight);
-      console.log("Scrolled : " + msgDiv.scrollTop);
+      
       msgDiv.scrollTop = msgDiv.scrollHeight;
-      console.log("Scrolled after: " + msgDiv.scrollTop);
+      
     }
   }
 
+  
+  const handleEnterPress = async(e) => {
+    //it triggers by pressing the enter key
+  if (e.keyCode === 13) {
+    console.log(e);
+    sendMessage();
+  }
+};
 
   return (<>
 
@@ -208,7 +214,7 @@ function ChatRoom(MessagesRoom) {
       {setScroll()}
     </div>
     
-    <form onSubmit={sendMessage} className='chatForm' >
+    <form onSubmit={sendMessage} className='chatForm'  >
      
         <TextField
           id="outlined-multiline-flexible"
@@ -217,6 +223,11 @@ function ChatRoom(MessagesRoom) {
           rowsMax={2}
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
+          onKeyUp={(e) =>{
+            
+            if (e.key === 'Enter') {
+            sendMessage(e);
+        }}}
           variant="outlined"
           color='secondary'
           style={{ width: "70%" }}
