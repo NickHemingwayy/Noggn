@@ -15,7 +15,8 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
 import ImageIcon from '@material-ui/icons/Image';
-import { ChromePicker } from 'react-color'
+
+import Menu from '@material-ui/core/Menu';
 
 import fire from './config/fire.js';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
@@ -394,7 +395,15 @@ function nodeImg(node,img){
     toggleCancel(false);
   }
 
- 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleColorClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleColorClose = () => {
+    setAnchorEl(null);
+  };
+
   //same as creating your state variable where "Next" is the default value for buttonText and setButtonText is the setter function for your state variable instead of setState
 
   const hiddenFileInput = React.useRef(null);
@@ -417,6 +426,17 @@ function nodeImg(node,img){
         <Tooltip title="Change Node Text"><IconButton component="span" color="primary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: #2D2E4E"} }><TextFieldsIcon /></IconButton></Tooltip>
         
         <Tooltip title="Change Node Colour"><IconButton component="span" color="primary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: #2D2E4E"}} ><ColorLensIcon/></IconButton></Tooltip>
+        
+        <Button onClick={handleColorClick}> Color Swatch</Button>
+        <Menu 
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleColorClose}
+        >
+          
+        </Menu>
         
 
         <Tooltip title="Add URL"><IconButton component="span" color="primary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: #2D2E4E"}}><LinkIcon/></IconButton></Tooltip>
@@ -452,11 +472,11 @@ function nodeImg(node,img){
       
       
         <Flowspace 
-          theme="indigo"
+          theme="#2D2E4E"
           variant="filled"
           background="#EEF1FA"
           style={{ width:'90vw', height:'80vh'}}
-          connectionSize = {4}
+          connectionSize = {2}
           arrowStart={false}
           arrowEnd={true}
           getDiagramRef={ref => {diagramRef = ref}}
