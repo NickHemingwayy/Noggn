@@ -322,7 +322,7 @@ function nodeImg(node,img){
         savedPoints.push([
           <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
           
-          <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'center', paddingLeft:2, paddingRight:2}}>
+          <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'left', paddingLeft:5, paddingRight:2}}>
             
               {linkify(doc.data().value)}
               
