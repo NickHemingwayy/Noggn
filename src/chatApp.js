@@ -20,6 +20,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import Divider from '@material-ui/core/Divider';
+
+import Badge from '@material-ui/core/Badge';
 import theme from "./theme.js";
 
 const firestore = fire.firestore();

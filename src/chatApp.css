@@ -217,17 +217,18 @@
   }
   
   .textP {
-    max-width: 250px;
+    max-width: 270px;
     min-width: 60px;
     margin-top: 4px;
     margin-bottom: 0px;
     line-height: 20px;
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-radius: 8px;
     position: relative;
     color: white;
     text-align: left;
     word-wrap: break-word;
+    font-size: smaller;
   }
 
   .timeStamp {

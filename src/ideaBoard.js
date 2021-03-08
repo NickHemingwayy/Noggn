@@ -15,7 +15,9 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
 import ImageIcon from '@material-ui/icons/Image';
-import ColorPicker, { useColor } from "react-color-palette";
+
+
+import Link from '@material-ui/core/Link';
 
 import Menu from '@material-ui/core/Menu';
 
@@ -218,7 +220,7 @@ function nodeFunctions(node){
     resetBtns();
   }
   else if(addUrlIsClicked){
-    addURL(node,prompt('Enter URL'));
+    addURL(node,prompt('Enter URL starting with https://'));
     resetBtns();
   }else if(rmCtnIsClicked){
     if(updatedConnections.length < 2){
@@ -231,7 +233,7 @@ function nodeFunctions(node){
     }
   }
   else if(colorChangeIsClicked){
-    changeColor(node, prompt('Enter the HexCode'));
+    changeColor(node, prompt('Type the color you want or enter a custom Hexcode'));
     resetBtns();
   }
   else if(addImgIsClicked){
@@ -270,9 +272,9 @@ function ActionLink(link) {
   }
 
   return (
-    <a href={link.link} onClick={handleClick}>
+    <Link href={link.link} onClick={handleClick}>
       {link.link}
-    </a>
+    </Link>
   );
 }
 

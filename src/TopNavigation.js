@@ -7,9 +7,10 @@ import 'firebase/auth';
 import 'firebase/analytics';
 
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
+import Badge from '@material-ui/core/Badge';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -50,7 +51,34 @@ import HelpCentre from './HelpCentre.js'
 const firestore = fire.firestore();
 const auth = fire.auth();
 
-
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}))(Badge);
 
 
 const drawerWidth = 240;
@@ -60,6 +88,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,  
     
+  },
+  avatarRoot: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
   },
   appBar: {
     backgroundColor: '#FFFFFF',
@@ -201,7 +235,7 @@ useEffect(() => {
             Home
           </Button>
           
-          <Button className={classes.button}>
+          <Button className={classes.button} href="https://github.com/NickHemingwayy/Noggn">
             Github
           </Button>
           
@@ -236,7 +270,16 @@ useEffect(() => {
           <IconButton 
            edge = 'end'
            onClick={handleProfileMenu}>
+              <StyledBadge
+        overlap="circle"
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        variant="dot"
+      >
             <Avatar src={photoURL} className ={classes.small}/>
+            </StyledBadge>
           </IconButton>
           <Popover
                 id={id}

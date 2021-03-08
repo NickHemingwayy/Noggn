@@ -76,6 +76,7 @@
 }
 .teamsp{
     font-size: smaller;
+    padding: 0px;
 }
 .textField{
     display: flex;
