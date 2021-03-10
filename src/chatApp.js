@@ -87,7 +87,7 @@ function ChatApp(MessagesRoom) {
     console.log(fileBase,teamID);
     if(fileBase == teamID){
       dbTeamMebers = doc.data().splitUsers
-    
+      
       for(let i=0;i<dbTeamMebers.length;i++){
         membersString = membersString + '\n' + dbTeamMebers[i];
       }
