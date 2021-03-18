@@ -20,6 +20,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import { ThemeProvider } from '@material-ui/styles';
 import Divider from '@material-ui/core/Divider';
+
+import Badge from '@material-ui/core/Badge';
 import theme from "./theme.js";
 
 const firestore = fire.firestore();
@@ -39,7 +41,7 @@ function DashBoard(MessagesRoom) {
 
 
   if (toggle === false) {
-    navWidth = '8%'
+    navWidth = '150px'
     toggleInd = <ChevronRightIcon color="primary" size="large" />
     toggleX = '130px'
   } else {
@@ -85,7 +87,7 @@ function ChatApp(MessagesRoom) {
     console.log(fileBase,teamID);
     if(fileBase == teamID){
       dbTeamMebers = doc.data().splitUsers
-    
+      
       for(let i=0;i<dbTeamMebers.length;i++){
         membersString = membersString + '\n' + dbTeamMebers[i];
       }
@@ -101,12 +103,12 @@ function ChatApp(MessagesRoom) {
       <div className = "teamNameBlock">
       <div className ="teamName">
       <h3>Team Members</h3>
-      {teamMembers}
-      
-      <div className= "teamIcons">
-        <p>Add New</p>
-      <AddBoxIcon />
+      {/*<p>Add New</p>
+      <AddBoxIcon /> */}
       </div>
+      <div className ="teamMembers">
+      {teamMembers}
+            
       </div>
       </div>
       
@@ -133,7 +135,7 @@ function ChatRoom(MessagesRoom) {
   const dummy = useRef();
   console.log(MessagesRoom)
   const messagesRef = firestore.collection(MessagesRoom.room);
-  const query = messagesRef.orderBy('createdAt').limit(25);
+  const query = messagesRef.orderBy('createdAt').limit(45);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
 
@@ -188,14 +190,20 @@ function ChatRoom(MessagesRoom) {
     var msgDiv = document.getElementById("messagesDiv");
     //console.log(msgDiv);
     if (msgDiv !== null) {
-      console.log(msgDiv);
-      console.log("Height = " + msgDiv.scrollHeight);
-      console.log("Scrolled : " + msgDiv.scrollTop);
+      
       msgDiv.scrollTop = msgDiv.scrollHeight;
-      console.log("Scrolled after: " + msgDiv.scrollTop);
+      
     }
   }
 
+  
+  const handleEnterPress = async(e) => {
+    //it triggers by pressing the enter key
+  if (e.keyCode === 13) {
+    console.log(e);
+    sendMessage();
+  }
+};
 
   return (<>
 
@@ -208,18 +216,23 @@ function ChatRoom(MessagesRoom) {
       {setScroll()}
     </div>
     
-    <form onSubmit={sendMessage} className='chatForm' >
-     
+    <form onSubmit={sendMessage} className='chatForm'  >
+      
         <TextField
-          id="outlined-multiline-flexible"
+          id="filled-multiline-flexible"
           label="Type Something"
           multiline
           rowsMax={2}
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
-          variant="outlined"
+          onKeyUp={(e) =>{
+            
+            if (e.key === 'Enter') {
+            sendMessage(e);
+        }}}
+          variant="filled"
           color='secondary'
-          style={{ width: "70%" }}
+          style={{ width: "90%" }}
           size='small'
 
         />

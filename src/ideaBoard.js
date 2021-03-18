@@ -15,7 +15,11 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
 import ImageIcon from '@material-ui/icons/Image';
-import { ChromePicker } from 'react-color'
+
+
+import Link from '@material-ui/core/Link';
+
+import Menu from '@material-ui/core/Menu';
 
 import fire from './config/fire.js';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
@@ -110,6 +114,7 @@ function uploadImg(node){
         await delay(10000);
         await pointsRef.doc(node).update({img:true});
         getPoints();
+       
     })()
 
       
@@ -215,7 +220,7 @@ function nodeFunctions(node){
     resetBtns();
   }
   else if(addUrlIsClicked){
-    addURL(node,prompt('Enter URL'));
+    addURL(node,prompt('Enter URL starting with https://'));
     resetBtns();
   }else if(rmCtnIsClicked){
     if(updatedConnections.length < 2){
@@ -228,11 +233,12 @@ function nodeFunctions(node){
     }
   }
   else if(colorChangeIsClicked){
-    changeColor(node, prompt('Enter the HexCode'));
+    changeColor(node, prompt('Type the color you want or enter a custom Hexcode'));
     resetBtns();
   }
   else if(addImgIsClicked){
     uploadImg(node);
+    alert("Your image is being uploaded. Please wait a moment.");
     resetBtns();
   }
 }
@@ -266,9 +272,9 @@ function ActionLink(link) {
   }
 
   return (
-    <a href={link.link} onClick={handleClick}>
+    <Link href={link.link} onClick={handleClick}>
       {link.link}
-    </a>
+    </Link>
   );
 }
 
@@ -283,7 +289,6 @@ function nodeImg(node,img){
         test = url;
         document.getElementById(node).src = test;
         document.getElementById(node).addEventListener("load", function () {
-
           imgHeight = this.height;
           pointsRef.doc(node).update({imgHeight:imgHeight});
           
@@ -319,7 +324,7 @@ function nodeImg(node,img){
         savedPoints.push([
           <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
           
-          <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'center', paddingLeft:2, paddingRight:2}}>
+          <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'left', paddingLeft:5, paddingRight:2}}>
             
               {linkify(doc.data().value)}
               
@@ -393,7 +398,15 @@ function nodeImg(node,img){
     toggleCancel(false);
   }
 
- 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleColorClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleColorClose = () => {
+    setAnchorEl(null);
+  };
+
   //same as creating your state variable where "Next" is the default value for buttonText and setButtonText is the setter function for your state variable instead of setState
 
   const hiddenFileInput = React.useRef(null);
@@ -415,8 +428,7 @@ function nodeImg(node,img){
         <div class="nodeOptions">
         <Tooltip title="Change Node Text"><IconButton component="span" color="primary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: #2D2E4E"} }><TextFieldsIcon /></IconButton></Tooltip>
         
-        <Tooltip title="Change Node Colour"><IconButton component="span" color="primary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: #2D2E4E"}} ><ColorLensIcon/></IconButton></Tooltip>
-        
+        <Tooltip title="Change Node Colour"><IconButton component="span" color="primary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: #2D2E4E"}} ><ColorLensIcon/></IconButton></Tooltip>      
 
         <Tooltip title="Add URL"><IconButton component="span" color="primary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: #2D2E4E"}}><LinkIcon/></IconButton></Tooltip>
 
@@ -451,11 +463,11 @@ function nodeImg(node,img){
       
       
         <Flowspace 
-          theme="indigo"
+          theme="#2D2E4E"
           variant="filled"
           background="#EEF1FA"
           style={{ width:'90vw', height:'80vh'}}
-          connectionSize = {4}
+          connectionSize = {2}
           arrowStart={false}
           arrowEnd={true}
           getDiagramRef={ref => {diagramRef = ref}}

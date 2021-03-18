@@ -76,6 +76,7 @@
 }
 .teamsp{
     font-size: smaller;
+    padding: 0px;
 }
 .textField{
     display: flex;
@@ -99,6 +100,7 @@ form{
     bottom: 10%;
     left:5%;
     width: 50%;
+    margin-left: 50px;
 
 }
 .dashboard{
