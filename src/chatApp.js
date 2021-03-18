@@ -322,7 +322,7 @@ function ChatCloseMessage(props) {
       <Tooltip title={text} placement="left" interactive>
         <Avatar src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} title={user} className='chatImgClose' />
       </Tooltip>
-      <p style={{marginLeft: '15px', color: '#828282'}}>{time}</p>
+      <p style={{marginLeft: '15px', color: '#828282'}}>{time}</p> 
     </div>
   )
 }
