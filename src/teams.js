@@ -242,6 +242,8 @@ function TeamForm() {
           value: formValTeamName + "'s" + " first node",
           outputs: [],
           url: '',
+          x:200,
+          y:200
         })
         setNameFormValue('');
         setUsersFormValue('');

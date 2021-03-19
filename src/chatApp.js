@@ -57,8 +57,6 @@ function DashBoard(MessagesRoom) {
   return (
     <ThemeProvider theme={theme}>
       <div>
-
-        
         <div style={navStyle} className="rightNav">
           <div>
             <button style={{left:toggleX}} onClick={() => setState(!toggle)} className="toggle">{toggleInd}</button>
