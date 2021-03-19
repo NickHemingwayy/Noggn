@@ -1,7 +1,7 @@
 import React, { Component ,useState,useEffect } from 'react';
 import { Flowpoint, Flowspace } from 'flowpoints';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
@@ -13,16 +13,21 @@ import LinkIcon from '@material-ui/icons/Link';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
-import Popover from '@material-ui/core/Popover';
 import ImageIcon from '@material-ui/icons/Image';
+import HelpIcon from '@material-ui/icons/Help';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+
+
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+
 
 
 import Link from '@material-ui/core/Link';
 
-import Menu from '@material-ui/core/Menu';
+import Popover from '@material-ui/core/Popover';
 
 import fire from './config/fire.js';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
@@ -30,6 +35,30 @@ import * as firebase from 'firebase';
 import './ideaBoard.css'
 import icon from './Icon.png';
 import { render } from '@testing-library/react';
+import { ChangeHistoryOutlined, CloseOutlined } from '@material-ui/icons';
+
+const useStyles = makeStyles((theme) => ({
+
+
+  root:{
+    
+    },
+  paper:{
+   width: '100%',
+   boxShadow: '0 0 12px rgb(45, 46, 78, 0.23)',
+  },
+  content:{
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    paddingBottom: '20px',
+    width: '300px'
+  },
+  elevation8:{
+    
+  }
+
+
+}));
 const firestore = fire.firestore();
 const auth = fire.auth();
 const currUser = fire.auth().currentUser;
@@ -49,6 +78,8 @@ let imgUrl;
 let imgHeight = 0;
 
 var htmlToImage = require('html-to-image');
+
+var linkTheme = "#2D2E4E";
 
 
 function IdeaBoard(ideaRoom) {
@@ -272,9 +303,9 @@ function ActionLink(link) {
   }
 
   return (
-    <Link href={link.link} onClick={handleClick}>
+    <a href={link.link} onClick={handleClick}>
       {link.link}
-    </Link>
+    </a>
   );
 }
 
@@ -322,7 +353,7 @@ function nodeImg(node,img){
         nodeImg(doc.data().key,doc.data().img);
     
         savedPoints.push([
-          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
+          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div className ="flowpoint" style={{display:'table', width:'100%', height:'100%'}}>
           
           <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'left', paddingLeft:5, paddingRight:2}}>
             
@@ -382,30 +413,23 @@ function nodeImg(node,img){
     deleteIsClicked = false;
     addImgIsClicked = false;
     rmCtnIsClicked = false;
+    colorChangeIsClicked = false;
     document.getElementById("editBtn").style.cssText = "color: 'secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("rmCtnBtn").style.cssText = "color: 'secondary'"
     document.getElementById("imgBtn").style.cssText = "color: 'secondary'"
-    colorChangeIsClicked = false;
+
     document.getElementById("editBtn").style.cssText = "color: 'secondary'"
     document.getElementById("connectionBtn").style.cssText = "color: 'secondary'"
     document.getElementById("linkBtn").style.cssText = "color: 'secondary'"
     document.getElementById("colorBtn").style.cssText = "color: 'secondary'"
-
     document.getElementById("deleteBtn").style.cssText = "color: 'secondary'"
     document.getElementById("saveBtn").style.cssText = "color: 'secondary'"
     toggleCancel(false);
   }
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleColorClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleColorClose = () => {
-    setAnchorEl(null);
-  };
+ 
 
   //same as creating your state variable where "Next" is the default value for buttonText and setButtonText is the setter function for your state variable instead of setState
 
@@ -415,6 +439,21 @@ function nodeImg(node,img){
     hiddenFileInput.current.click();
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  
+  const profileOpen = Boolean(anchorEl);
+  const id = profileOpen ? 'simple-popover' : undefined;
+
+  const handleProfileMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setAnchorEl(null);
+  };
+    
+  const theme = useTheme();
+  const classes = useStyles();
 
       return (
           <>
@@ -429,10 +468,8 @@ function nodeImg(node,img){
         <Tooltip title="Change Node Text"><IconButton component="span" color="primary"id = 'editBtn' onClick={function(){resetBtns() ; editIsClicked = true; toggleCancel(true); document.getElementById("editBtn").style.cssText = "color: #2D2E4E"} }><TextFieldsIcon /></IconButton></Tooltip>
         
         <Tooltip title="Change Node Colour"><IconButton component="span" color="primary" id='colorBtn' onClick={function(){resetBtns() ; colorChangeIsClicked = true; toggleCancel(true); document.getElementById("colorBtn").style.cssText = "color: #2D2E4E"}} ><ColorLensIcon/></IconButton></Tooltip>      
-
+        
         <Tooltip title="Add URL"><IconButton component="span" color="primary"id = 'linkBtn' onClick={function(){resetBtns(); addUrlIsClicked = true; toggleCancel(true); document.getElementById("linkBtn").style.cssText = "color: #2D2E4E"}}><LinkIcon/></IconButton></Tooltip>
-
-        <Tooltip title="Delete Connection"><IconButton component="span" color="primary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: #2D2E4E"}}><RemoveCircleIcon/></IconButton></Tooltip>
 
         <Tooltip title="Add Image"><IconButton component="span" color="primary"id = 'imgBtn' onClick={function(){handleClick();resetBtns(); addImgIsClicked = true; toggleCancel(true); document.getElementById("imgBtn").style.cssText = "color: #2D2E4E"}}><ImageIcon/><input ref={hiddenFileInput} type="file" id="fileImg" style={{display: 'none'}}></input></IconButton></Tooltip>
         
@@ -450,6 +487,7 @@ function nodeImg(node,img){
 
         }}><SaveAltIcon/></IconButton></Tooltip>
 
+        <Tooltip title="Delete Connection"><IconButton component="span" color="primary"id = 'rmCtnBtn' onClick={function(){resetBtns(); rmCtnIsClicked = true; toggleCancel(true); document.getElementById("rmCtnBtn").style.cssText = "color: #2D2E4E"}}><RemoveCircleIcon/></IconButton></Tooltip>
 
         <Tooltip title="Delete Node"><IconButton component="span" color="primary"id = 'deleteBtn' onClick={function(){resetBtns(); deleteIsClicked = true; toggleCancel(true); document.getElementById("deleteBtn").style.cssText = "color: #2D2E4E"}}><DeleteIcon/></IconButton></Tooltip>
         
@@ -459,12 +497,13 @@ function nodeImg(node,img){
             <CancelIcon />
           </Fab> : null}
         </div>
+        
       </div>
       
       
         <Flowspace 
-          theme="#2D2E4E"
-          variant="filled"
+          theme="#70EBBE"
+          variant= "filled"
           background="#EEF1FA"
           style={{ width:'90vw', height:'80vh'}}
           connectionSize = {2}
@@ -479,7 +518,37 @@ function nodeImg(node,img){
           onClick={e => {}}
           >
             {points}
+            
         </Flowspace>
+        <div className ="help">
+          <IconButton onClick={handleProfileMenu}><HelpIcon fontSize ="large" color="primary"  /></IconButton>
+          <Popover
+                id={id}
+                className = {classes.paper}
+                open={profileOpen}
+                anchorEl={anchorEl}
+                onClose={handleProfileClose}
+                anchorOrigin={{
+                  vertical: 'center',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+              >
+                <div className ={classes.content}>
+                <p> <span style={{color: '2D2E4E', fontSize: '1.2em'}}><b>Quick Answers</b> </span></p>
+                <p><span style={{color: '#5855FC'}}>How do I create a connection?</span></p>
+                <p><span style={{fontSize: '0.9em'}}>Click the <AccountTreeIcon color="primary" className ={classes.icon}/> icon, then click the node you want the connection to start at and then click the node you want to connect it to.</span></p>
+                <p><span style={{color: '#5855FC'}}>How do I delete a connection?</span></p>
+                <p><span style={{fontSize: '0.9em'}}>Click the <RemoveCircleIcon color='primary' className ={classes.icon}/> icon, then click the nodes you want to delete the connection from.</span></p>
+                <p><span style={{color: '#5855FC'}}>What is a hexcode?</span></p>
+                <p><span style={{fontSize: '0.9em'}}>A hexcode is a combination of letters and numbers that pertains to a certain color. Visit <a href='https://coolors.co/'> Coolors</a> to find and create beautiful palettes that you can use for your mind map!</span></p>
+                </div>
+                
+                </Popover>
+          </div>
 </>
 
       );
