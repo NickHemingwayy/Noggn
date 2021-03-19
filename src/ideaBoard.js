@@ -47,7 +47,7 @@ let updatedConnections = [];
 let file;
 let imgUrl;
 let imgHeight = 0;
-
+let nodePos = []
 var htmlToImage = require('html-to-image');
 
 
@@ -67,6 +67,7 @@ function IdeaBoard(ideaRoom) {
     if (name != null){
       pointsRef.doc(node).update({value:name});
   }
+  
 }
 
 function addURL(node,url){
@@ -113,7 +114,6 @@ function uploadImg(node){
         await storageRef.put(file);
         await delay(10000);
         await pointsRef.doc(node).update({img:true});
-        getPoints();
        
     })()
 
@@ -154,7 +154,7 @@ function deleteNode(node){
                     if(origIns[j] == node){
                       newIns = origIns.splice(0,j);
                       pointsRef.doc(updateNode).update({inputs:newIns});
-                      getPoints();
+
                     }
                   }
                 }
@@ -176,7 +176,7 @@ function deleteNode(node){
                     if(origOuts[j] == node){
                       newOuts = origOuts.splice(0,j);
                       pointsRef.doc(updateNode).update({outputs:newOuts});
-                      getPoints();
+   
                     }
                   }
                 }
@@ -203,9 +203,12 @@ function changeColor(node, color){
 }
 
 function nodeFunctions(node){
+  
+  console.log('triggered')
   if(editIsClicked){
     changeText(node,prompt('Enter Node Text'));
     resetBtns();
+    updateNodePos();
   }else if(newConnectIsClicked){
     if(connectionNodes.length < 2){
       connectionNodes.push(node);
@@ -214,6 +217,7 @@ function nodeFunctions(node){
       createConnection(connectionNodes);
       connectionNodes = [];
       resetBtns();
+      updateNodePos();
     }
   }else if(deleteIsClicked){
     deleteNode(node);
@@ -222,6 +226,7 @@ function nodeFunctions(node){
   else if(addUrlIsClicked){
     addURL(node,prompt('Enter URL starting with https://'));
     resetBtns();
+    updateNodePos();
   }else if(rmCtnIsClicked){
     if(updatedConnections.length < 2){
       updatedConnections.push(node);
@@ -230,16 +235,19 @@ function nodeFunctions(node){
       updateConnection(updatedConnections);
       updatedConnections = [];
       resetBtns();
+      updateNodePos();
     }
   }
   else if(colorChangeIsClicked){
     changeColor(node, prompt('Type the color you want or enter a custom Hexcode'));
     resetBtns();
+    updateNodePos();
   }
   else if(addImgIsClicked){
     uploadImg(node);
     alert("Your image is being uploaded. Please wait a moment.");
     resetBtns();
+    updateNodePos();
   }
 }
 
@@ -302,15 +310,26 @@ function nodeImg(node,img){
   }
 
 }
+function updateNodePos(){
+  for(let i=0;i<nodePos.length;i++){
 
+      console.log(nodePos[i].x)
+      console.log(nodePos[i].y)
+      pointsRef.doc(nodePos[i].node).update({x:nodePos[i].x});
+      pointsRef.doc(nodePos[i].node).update({y:nodePos[i].y});
+    
+  }
+}
 
 
 
   function getPoints(){
     
+    
     pointsRef.onSnapshot((querySnapshot) => {
       savedPoints = [];
       let imgHt;
+      nodePos = [];
       querySnapshot.forEach((doc) => {   
         let hasImg = null;
         if(doc.data().img == true){
@@ -320,9 +339,21 @@ function nodeImg(node,img){
           imgHeight = 0;
         }
         nodeImg(doc.data().key,doc.data().img);
-    
+        console.log('triggered');
+        nodePos.push({node:doc.data().key,x:doc.data().x,y:doc.data().y});
         savedPoints.push([
-          <Flowpoint key= {doc.data().key}  startPosition={{ x:Math.floor(Math.random() * 800) + 200, y:Math.floor(Math.random() * 550) + 100 }}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
+          <Flowpoint key= {doc.data().key} 
+          onDrag={ (position) => {
+          for(let i=0;i<nodePos.length;i++){
+            //console.log('Drag', nodePos[i]); 
+            if(nodePos[i].node == doc.data().key){
+              
+              nodePos[i].x = position.x;
+              nodePos[i].y = position.y;
+              console.log(position.x,position.y);
+            }
+          }} } 
+          startPosition={{ x:doc.data().x, y:doc.data().y}}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
           
           <div style={{display:'table-cell', verticalAlign:'middle', textAlign:'left', paddingLeft:5, paddingRight:2}}>
             
@@ -355,14 +386,14 @@ function nodeImg(node,img){
       newNodeRef.set ({ 
         key: newNodeRef.id,
         value: 'New Node',
-        x:20,
-        y:20,
+        x:200,
+        y:200,
         url:'',
         theme: '#5855FC',
         img: false
 
   })
-  getPoints();
+  updateNodePos();
     }
 
     function createConnection(connectionNodes){
