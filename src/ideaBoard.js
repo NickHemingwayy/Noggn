@@ -26,8 +26,8 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
 import * as firebase from 'firebase';
-import './ideaBoard.css'
-import icon from './Icon.png';
+import './css/ideaBoard.css'
+import icon from './imgs/Icon.png';
 import { render } from '@testing-library/react';
 
 const useStyles = makeStyles((theme) => ({

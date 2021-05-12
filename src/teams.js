@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import fire from './config/fire.js';
 import TextField from '@material-ui/core/TextField';
-import './teams.css'
+import './css/teams.css'
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';

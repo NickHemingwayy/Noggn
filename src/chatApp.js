@@ -3,7 +3,7 @@ import fire from './config/fire.js';
 
 
 
-import './chatApp.css';
+import './css/chatApp.css';
 
 import 'firebase/firestore';
 import 'firebase/auth';

@@ -38,7 +38,7 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 
 import icon from './logo.svg';
 
-import './TopNavigation.css';
+import './css/TopNavigation.css';
 
 import HelpCentre from './HelpCentre.js'
 

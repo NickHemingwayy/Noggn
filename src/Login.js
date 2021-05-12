@@ -11,9 +11,9 @@ import theme from "./theme.js";
 
 //import logo from './logo.svg';
 //import './App.css';
-import './login.css';
-import mainLogo from './Logo Color.png';
-import googleImage from './googlesignin.png';
+import './css/login.css';
+import mainLogo from './imgs/Logo Color.png';
+import googleImage from './imgs/googlesignin.png';
 
 
 class Login extends React.Component{

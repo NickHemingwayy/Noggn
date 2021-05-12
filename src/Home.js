@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import fire from './config/fire';
 import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
 
 class Home extends Component{
 
