@@ -79,7 +79,6 @@ function TeamPage() {
   const [room, setRoom] = useState('');
   
   function loadTeam(e){
-    console.log(e.target.textContent)
     let chosenTeam = e.target.textContent;
     let roomID;
     let chosnTeam;
@@ -97,7 +96,6 @@ function TeamPage() {
       });
       setRoom(roomID);
       setCurrTeamName(chosnTeam);
-      console.log(roomID,chosnTeam);
     });
   }
 
@@ -134,7 +132,6 @@ function TeamPage() {
   useEffect(() => {
     getTeams();
   }, []);
-  console.log(room)
   return (
     <ThemeProvider theme={theme}>
         <div className='background'>
@@ -213,7 +210,6 @@ function TeamForm() {
     // validates form details before uplaoding to DB, informs the user accordingly
     if (formValTeamName !== '' && formValTeamUsers !== '' && validEmails === true) {
       for (let i = 0; i < currentTeams.length; i++) {
-        console.log(currentTeams[i])
         if (currentTeams[i].includes(formValTeamName) && currentTeams[i].includes(uid)) { // checks if user has already created a team by this name
           validTeamName = false;
         }

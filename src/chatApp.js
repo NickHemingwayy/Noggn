@@ -37,8 +37,6 @@ function DashBoard(MessagesRoom) {
   let toggleInd = <ChevronLeftIcon />
   const [toggle, setState] = useState(true);
 
-  console.log(toggle);
-
 
   if (toggle === false) {
     navWidth = '150px'
@@ -82,7 +80,6 @@ function ChatApp(MessagesRoom) {
 
     querySnapshot.forEach((doc) => {   
     teamID = doc.data().teamID;
-    console.log(fileBase,teamID);
     if(fileBase == teamID){
       dbTeamMebers = doc.data().splitUsers
       
@@ -131,7 +128,6 @@ function ChatApp(MessagesRoom) {
 function ChatRoom(MessagesRoom) {
 
   const dummy = useRef();
-  console.log(MessagesRoom)
   const messagesRef = firestore.collection(MessagesRoom.room);
   const query = messagesRef.orderBy('createdAt').limit(45);
 
@@ -165,7 +161,6 @@ function ChatRoom(MessagesRoom) {
   useEffect(() => {
     getUser();
   }, []);
-  console.log(user);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -198,7 +193,6 @@ function ChatRoom(MessagesRoom) {
   const handleEnterPress = async(e) => {
     //it triggers by pressing the enter key
   if (e.keyCode === 13) {
-    console.log(e);
     sendMessage();
   }
 };

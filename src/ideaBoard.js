@@ -106,7 +106,6 @@ function updateConnection(ctnNodes){
   let node1 = ctnNodes[0];
   let node2 = ctnNodes[1];
   (async () => {
-    console.log(node1,node2);
     await pointsRef.doc(node1).update({"outputs": firebase.firestore.FieldValue.arrayRemove(node2)});
     await pointsRef.doc(node1).update({'inputs': firebase.firestore.FieldValue.arrayRemove(node2)});
     await pointsRef.doc(node2).update({'outputs': firebase.firestore.FieldValue.arrayRemove(node1)});
@@ -159,7 +158,6 @@ function deleteNode(node){
       if(doc.id == node){
         outputs = doc.data().outputs;
         inputs = doc.data().inputs;
-        console.log(outputs,inputs);
         if(outputs != null){
           let i; 
           for(i=0; i< outputs.length; i++){
@@ -227,7 +225,6 @@ function changeColor(node, color){
 
 function nodeFunctions(node){
   
-  console.log('triggered')
   if(editIsClicked){
     changeText(node,prompt('Enter Node Text'));
     resetBtns();
@@ -312,7 +309,6 @@ function ActionLink(link) {
 
 
 function nodeImg(node,img){
-  console.log('node',node.img);
   let test;
   if(img){
  
@@ -336,8 +332,6 @@ function nodeImg(node,img){
 function updateNodePos(){
   for(let i=0;i<nodePos.length;i++){
 
-      console.log(nodePos[i].x)
-      console.log(nodePos[i].y)
       pointsRef.doc(nodePos[i].node).update({x:nodePos[i].x});
       pointsRef.doc(nodePos[i].node).update({y:nodePos[i].y});
     
@@ -362,7 +356,6 @@ function updateNodePos(){
           imgHeight = 0;
         }
         nodeImg(doc.data().key,doc.data().img);
-        console.log('triggered');
         nodePos.push({node:doc.data().key,x:doc.data().x,y:doc.data().y});
         savedPoints.push([
           <Flowpoint key= {doc.data().key} 
@@ -373,7 +366,6 @@ function updateNodePos(){
               
               nodePos[i].x = position.x;
               nodePos[i].y = position.y;
-              console.log(position.x,position.y);
             }
           }} } 
           startPosition={{ x:doc.data().x, y:doc.data().y}}  style={{height:Math.max(50, Math.ceil((doc.data().value.length + doc.data().url.length) / 20) * 30) + imgHeight}} theme={doc.data().theme} onClick={() => nodeFunctions(doc.data().key)}  outputs={doc.data().outputs}><div style={{display:'table', width:'100%', height:'100%'}}>
@@ -391,7 +383,6 @@ function updateNodePos(){
           </div>
         </div></Flowpoint>
         ]);
-        console.log(imgHeight);
       });
       
       setPoints(savedPoints); 
@@ -420,7 +411,6 @@ function updateNodePos(){
     }
 
     function createConnection(connectionNodes){
-      console.log("nodes",connectionNodes[1]);
       (async () => {
         await pointsRef.doc(connectionNodes[0]).update({outputs:firebase.firestore.FieldValue.arrayUnion(connectionNodes[1])});
         await pointsRef.doc(connectionNodes[1]).update({inputs:firebase.firestore.FieldValue.arrayUnion(connectionNodes[0])});
@@ -537,7 +527,6 @@ function updateNodePos(){
           selected="point_a"
           selectedLine={{ a:"point_a", b:"point_b" }}
           onLineClick={(key_a, key_b, e) => {
-            console.log('yes')
           }}
           onClick={e => {}}
           >

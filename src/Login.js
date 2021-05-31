@@ -23,11 +23,9 @@ class Login extends React.Component{
         const password = document.querySelector('#password').value;
 
         fire.auth().signInWithEmailAndPassword(email,password).then((u)=> {
-            console.log("Successfully Logged In");
         
         })
         .catch((err) => {
-            console.log("Error: " + err.toString());
             document.getElementById("login-error").innerHTML = "We couldn't find an account that matched. Please try again."
             
         })
@@ -54,7 +52,6 @@ class Login extends React.Component{
            
         })
         .catch((err) => {
-            console.log("Error: " + err.toString());
             document.getElementById("signup-error").innerHTML = "Your password must be more than 6 characters. Please try again."
         })
 
@@ -79,7 +76,6 @@ class Login extends React.Component{
             
         }).catch((err=>{
             alert("We're sorry, something went wrong. Please try again.")
-            console.log("Error: " + err.toString());
             
         }))
     }
